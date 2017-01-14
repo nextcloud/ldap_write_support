@@ -1,0 +1,3 @@
+createLDAPUser: qqq >> ppp
+deleteNCUser: qqq >> ppp
+deleteLDAP: qqq >> 
