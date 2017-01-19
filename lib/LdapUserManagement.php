@@ -14,28 +14,49 @@ class LdapUserManagement {
 
 		\OCP\Util::connectHook('OC_User', 'pre_deleteUser', 'OCA\LdapUserManagement\Hooks', 'deleteLDAPUser_hook');
 
+		\OCP\Util::connectHook('OC_Group', 'preCreate', 'OCA\LdapUserManagement\Hooks', 'addUserGroupLDAP_hook');
+
 	}
 
 	public static function createLDAPUser($params) {
 	/**
 	 * create LDAP user
 	 */
-		$ds = LdapUserManagement::connectLDAP();
-		if (LdapUserManagement::disconnectLDAP($ds)) {
-			$result = "OK";
-		} else {
-			$result = "Not OK";
-		}
+		$ds = LdapUserManagement::bindLDAP();
+
+		$entry = array(	
+			'o' => $params['uid'] ,
+			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
+			'cn' => $params['uid'] ,
+			'gidnumber' => 500,
+			'homedirectory' => '', // ignored by nextcloud
+			'mail' => '',
+			'sn' => $params['uid'] ,
+			'uid' => $params['uid'] , // mandatory
+			'uidnumber' => 1010, // mandatory - verify is autoincrement is needed
+			'userpassword' => $params['password'] ,
+		);
+		// when LDAP user is deleted, user folder remains there
+
+		$dn = "cn=" . $params['uid'] . ",ou=users,dc=localhost"; //TODO: make configurable
+
 		$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
 		fwrite($fid, "createLDAPUser: " . $params['uid'] . " >> " . $params['password'] . " >> $result \n");
 		fclose($fid);
+
+ 		if ( ldap_add ( $ds , $dn , $entry) ) {
+			return True; 			
+ 		} else {
+ 			return "fail - $dn - " . print_r($entry, true); // send to log
+ 		}		     
+
 	}
 
 	public static function deleteLDAPUser($params) {
 	/**
-	 * create LDAP user
+	 * delete LDAP user
 	 */
-		$uid = $params['uid']; // não é esso o parametro!!!
+		$uid = $params['uid'];
 		$ds = LdapUserManagement::connectLDAP();
 
 
@@ -54,38 +75,50 @@ class LdapUserManagement {
 		LdapUserManagement::disconnectLDAP($ds);
 
 		$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
-		fwrite($fid, "deleteLDAPUser: " . $params['uid'] . " >> " . $params['password'] . " >> $result \n");
+		fwrite($fid, "deleteLDAPUser: " . print_r($params, true) . " >> $result \n");
 		fclose($fid);
 	}
 
+	public static function addUserGroupLDAP($params) {
+	/**
+	 * create LDAP user
+	 */
+		$result = 'xx';
+		$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+		fwrite($fid, "addUserGroupLDAP: " . $params['group'] . " >> " . $params['user'] . " >> $result \n");
+		fclose($fid);
+	}
 
 	private static function connectLDAP() {
-		# code...
-		// LDAP variables
-		$ldaphost = "localhost";  // your ldap servers
-		$ldapport = 389;                 // your ldap server's port number
+		// TODO: get from LDAP plugin
+		$ldaphost = "localhost";
+		$ldapport = 389;
 
-		// Connecting to LDAP
+		// Connecting to LDAP - TODO: connect directly via LDAP plugin
 		$ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
 		          or die("Could not connect to $ldaphost");
 
 		if ($ds) {
-		    // bind with appropriate dn to give update access
-		    // $r = ldap_bind($ds, "cn=admin, dc=localhost", "abb3h5Mv");
-
-			// $dn = "dc=localhost";
-			// $filter="(objectClass=inetOrgPerson)";
-			// $justthese = array("ou", "sn", "givenname", "mail");
-		 //    $sr=ldap_search($ds, $dn, $filter, $justthese);
-
-			// $info = ldap_get_entries($ds, $sr);
-		 //    ldap_close($ds);
-
-			// return $info["count"]." entries returned\n";
+			// set LDAP config to work with version 3
+			ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
 			return $ds;
-
 		} else {
 		    return "Unable to connect to LDAP server";
+		}
+	}
+
+	private static function bindLDAP() {
+
+		// LDAP variables
+		$ds = LdapUserManagement::connectLDAP();
+		$dn = 'cn=admin,dc=localhost'; //TODO: get from LDAP plugin
+		$secret = 'abb3h5Mv'; //TODO: put in configuration file
+
+		// Connecting to LDAP
+		if (!ldap_bind($ds,$dn,$secret)) {
+			return FALSE;
+		} else {
+			return $ds;
 		}
 	}
 

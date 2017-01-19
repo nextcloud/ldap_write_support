@@ -27,5 +27,14 @@ class Hooks {
 		}
 	}
 
+	public static function addUserGroupLDAP_hook($params) {
+		if( \OCP\App::isEnabled('ldapusermanagement') ) {
+			// add LDAP User to LDAP group
+			\OCA\LdapUserManagement\LdapUserManagement::addUserGroupLDAP($params);
+		}
+	}
+
+
+
 
 }
