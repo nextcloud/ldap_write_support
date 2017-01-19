@@ -14,9 +14,7 @@ class Hooks {
 	public static function deleteNCUser_hook($params) {
 		if( \OCP\App::isEnabled('ldapusermanagement') ) {
 			// remove NextCloud User
-			$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-			fwrite($fid, "deleteNCUser: " . $params['uid'] . " >> " . $params['password'] . "\n");
-			fclose($fid);
+			\OCA\LdapUserManagement\LdapUserManagement::deleteNCUser($params);
 		}
 	}
 
@@ -33,8 +31,4 @@ class Hooks {
 			\OCA\LdapUserManagement\LdapUserManagement::addUserGroupLDAP($params);
 		}
 	}
-
-
-
-
 }

@@ -2,6 +2,8 @@
 
 namespace OCA\LdapUserManagement;
 
+use \OCA\LdapUserManagement\Service\UserService;
+
 class LdapUserManagement {
 	/**
 	 * register hooks
@@ -41,7 +43,7 @@ class LdapUserManagement {
 		$dn = "cn=" . $params['uid'] . ",ou=users,dc=localhost"; //TODO: make configurable
 
 		$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
-		fwrite($fid, "createLDAPUser: " . $params['uid'] . " >> " . $params['password'] . " >> $result \n");
+		fwrite($fid, "createLDAPUser: " . $params['uid'] . " >> " . $params['password'] . " >> \n");
 		fclose($fid);
 
  		if ( ldap_add ( $ds , $dn , $entry) ) {
@@ -52,6 +54,20 @@ class LdapUserManagement {
 
 	}
 
+	public static function deleteNCUser($params) {
+
+		$us = new UserService;
+		$r = $us->delete($params['uid']);
+
+		if ($r)
+			$return = "deleted";
+		else
+			$return = "failed";
+
+		$fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
+		fwrite($fid, "deleteNCUser: $return ". var_export($r,true) . "  --  ".  $params['uid'] . " >> " . $params['password'] . "\n");
+		fclose($fid);
+	}
 	public static function deleteLDAPUser($params) {
 	/**
 	 * delete LDAP user
