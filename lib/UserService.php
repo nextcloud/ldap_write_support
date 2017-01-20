@@ -9,7 +9,7 @@ class UserService {
         $this->userManager = $userManager;
     }
 
-    public function createLDAPUser($uid, $password) {
+    public static function createLDAPUser($uid, $password) {
     /**
      * create LDAP user
      */
@@ -31,16 +31,15 @@ class UserService {
 
         $dn = "cn=" . $uid . ",ou=users,dc=localhost"; //TODO: make configurable
 
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
-        fwrite($fid, "createLDAPUser: " . $uid . " >> " . $password . " >> \n");
-        fclose($fid);
-
         if ( ldap_add ( $ds , $dn , $entry) ) {
-            return True;            
+            $r = "success";
         } else {
-            return "fail - $dn - " . print_r($entry, true); // send to log
+            $r = "fail - $dn - " . print_r($entry, true); // send to log
         }            
 
+        \OC::$server->getLogger()->notice(
+                "CreateLDAPUser: $uid >> $password >> $r",
+                array('app' => 'ldapusermanagement'));
     }
 
     public function deleteNCUser($user) {            
@@ -52,12 +51,17 @@ class UserService {
         else
             $r = "not deleted";
 
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-        fwrite($fid, "UserHooks postCreateUser $user - $r \n");
-        fclose($fid);       
+        \OC::$server->getLogger()->notice(
+                "DeleteNCUser: " . $user->getUID() . " >> $r",
+                array('app' => 'ldapusermanagement'));
+
+        // cancel delete LDAP hook
+        $cb3 = ['OCA\LdapUserManagement\UserService', 'deleteLDAPUser'];
+        $this->userManager->removeListener(null, null, $cb3);
+
     }
 
-    public function deleteLDAPUser($user){
+    public static function deleteLDAPUser($user){
 
         $ds = UserService::bindLDAP();
         $dn = "cn=" . $user->getUID() . ",ou=users,dc=localhost"; //TODO: make configurable
@@ -67,9 +71,9 @@ class UserService {
         else
             $r = "not deleted";
 
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
-        fwrite($fid, "UserHooks delete LDAP user " . $user->getUID() . " $r\n");
-        fclose($fid);       
+        \OC::$server->getLogger()->notice(
+                "DeleteLDAPUser: " . $user->getUID() . " >> $r",
+                array('app' => 'ldapusermanagement'));
     }
 
 
