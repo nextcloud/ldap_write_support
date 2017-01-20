@@ -57,6 +57,21 @@ class UserService {
         fclose($fid);       
     }
 
+    public function deleteLDAPUser($user){
+
+        $ds = UserService::bindLDAP();
+        $dn = "cn=" . $user->getUID() . ",ou=users,dc=localhost"; //TODO: make configurable
+
+        if (ldap_delete($ds, $dn))
+            $r = "deleted";
+        else
+            $r = "not deleted";
+
+        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+        fwrite($fid, "UserHooks delete LDAP user " . $user->getUID() . " $r\n");
+        fclose($fid);       
+    }
+
 
     /* ldap functions should all come from LDAP plugin */
     private static function connectLDAP() {

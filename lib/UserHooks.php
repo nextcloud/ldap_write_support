@@ -18,6 +18,10 @@ class UserHooks {
 
         $cb = ['OCA\LdapUserManagement\UserService', 'deleteNCUser'];
         $this->userManager->listen('\OC\User', 'postCreateUser', $cb);
+
+        $cb = ['OCA\LdapUserManagement\UserService', 'deleteLDAPUser'];
+        $this->userManager->listen('\OC\User', 'preDelete', $cb);
+
     }
 
 }
