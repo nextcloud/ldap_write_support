@@ -3,8 +3,9 @@ namespace OCA\LdapUserManagement\AppInfo;
 
 use \OCP\AppFramework\App;
 
-use \OCA\LdapUserManagement\Service\UserService;
+// use \OCA\LdapUserManagement\Service\UserService;
 
+use \OCA\LdapUserManagement\UserHooks;
 
 class Application extends App {
 
@@ -13,17 +14,11 @@ class Application extends App {
 
         $container = $this->getContainer();
 
-        /**
-         * Controllers
-         */
-        $container->registerService('UserService', function($c) {
-            return new UserService(
-                $c->query('UserManager')
+        $container->registerService('UserHooks', function($c) {
+            return new UserHooks(
+                $c->query('ServerContainer')->getUserManager()
             );
         });
 
-        $container->registerService('UserManager', function($c) {
-            return $c->query('ServerContainer')->getUserManager();
-        });
     }
 }

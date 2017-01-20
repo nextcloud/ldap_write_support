@@ -1,6 +1,8 @@
 <?php
 
+
 use OCP\AppFramework\App;
+use OCA\LdapUserManagement\UserHooks;
 
 $app = new App('ldapusermanagement');
 $container = $app->getContainer();
@@ -30,4 +32,4 @@ $container->query('OCP\INavigationManager')->add(function () use ($container) {
 });
 
 // register hooks
-\OCA\LdapUserManagement\LdapUserManagement::registerHooks();
+$container->query('OCA\LdapUserManagement\UserHooks')->register();

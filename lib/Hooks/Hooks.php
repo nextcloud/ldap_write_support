@@ -10,7 +10,7 @@ class UserHooks {
         $this->userManager = $userManager;
     }
 
-    static public function register() {
+    public static function register() {
         $callback = function($user) {
 
             $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
