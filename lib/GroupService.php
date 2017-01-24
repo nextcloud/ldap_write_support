@@ -23,7 +23,7 @@ class GroupService {
             $r = "fail - $dn - " . print_r($entry, true); // send to log
         }            
 
-         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
          fwrite($fid, "Add User: " . $user->getUID( ). " to Group: " . $group->getGID() . " >> $r \n");
          fclose($fid);
 
@@ -49,13 +49,62 @@ class GroupService {
         }            
 
 
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
         fwrite($fid, "Remove User: " . $user->getUID( ). " from Group: " . $group->getGID() . " \n");
         fclose($fid);
 
 
         \OC::$server->getLogger()->notice(
                 "Remove User: " . $user->getUID( ). " to Group: " . $group->getGID(),
+                array('app' => 'ldapusermanagement'));
+    }
+
+    public static function createLDAPGroup($groupId) {
+    /**
+     * create LDAP user
+     */
+        $ds = GroupService::bindLDAP();
+
+        $entry = array( 
+            'objectClass' => array( 'posixGroup' , 'top' ),
+            'cn' => $groupId ,
+            'gidnumber' => 500, // autoincrement needed?
+        );
+
+        $dn = "cn=" . $groupId . ",ou=groups,dc=localhost"; //TODO: make configurable
+
+        if ( ldap_add ( $ds , $dn , $entry) ) {
+            $r = "success";
+        } else {
+            $r = "fail - $dn - " . print_r($entry, true); // send to log
+        }            
+
+         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+         fwrite($fid, "CreateLDAPGroup: " . $groupId . ">> $r \n");
+         fclose($fid);
+
+        \OC::$server->getLogger()->notice(
+                "CreateLDAPGroup: $groupId >> $r",
+                array('app' => 'ldapusermanagement'));
+    }
+
+    public static function deleteLDAPGroup(\OC\Group\Group $group){
+
+        $ds = GroupService::bindLDAP();
+        $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
+
+        if (ldap_delete($ds, $dn))
+            $r = "deleted";
+        else
+            $r = "not deleted";
+
+         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
+         fwrite($fid, "DeleteLDAPGroup: " . $group->getGID( ) . ">> $r \n");
+         fclose($fid);
+
+
+        \OC::$server->getLogger()->notice(
+                "DeleteLDAPGrup: " . $group->getGID() . " >> $r",
                 array('app' => 'ldapusermanagement'));
     }
 
