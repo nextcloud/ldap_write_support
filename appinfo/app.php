@@ -33,3 +33,4 @@ $container->query('OCP\INavigationManager')->add(function () use ($container) {
 
 // register hooks
 $container->query('OCA\LdapUserManagement\UserHooks')->register();
+$container->query('OCA\LdapUserManagement\GroupHooks')->register();

@@ -2,7 +2,7 @@
 
 namespace OCA\LdapUserManagement;
 use OCP\IUserManager;
-use OCA\LdapUserManagement\UserService;
+// use OCA\LdapUserManagement\UserService;
 class UserHooks {
 
     private $userManager;
@@ -41,8 +41,6 @@ class UserHooks {
 
         $cb2 = ['OCA\LdapUserManagement\UserService', 'deleteNCUser'];
         $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
-
-
 
     }
 
