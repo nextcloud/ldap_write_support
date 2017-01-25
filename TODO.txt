@@ -1,0 +1,10 @@
+
+Erros ldap manager
+
+1) criar usuário com espaço (NC muda o username)	
+2) Mensagem de erro ao apagar usuario ldap (apesar de apagar com sucesso)
+3) Mensagem de erro ao apagar grupo ldap (apesar de apagar com sucesso)
+5) Usuarios aparecem como grupos
+>>> configuração do plugin LDAP
+6) Precisa de um reload antes de adicionar um novo usuario a um grupo
+7) Precisa de um reload antes de adicionar um usuário velho a um novo grupo
