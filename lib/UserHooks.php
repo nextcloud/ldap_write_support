@@ -2,13 +2,13 @@
 
 namespace OCA\LdapUserManagement;
 use OCP\IUserManager;
-// use OCA\LdapUserManagement\UserService;
+
 class UserHooks {
 
     private $userManager;
 
-    public function __construct(IUserManager $userManager){
-        $this->userManager = $userManager;
+    public function __construct(IUserManager $UserManager){
+        $this->userManager = $UserManager;
     }
 
     public function register() {

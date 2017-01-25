@@ -8,7 +8,7 @@ class GroupHooks {
     private $GroupManager;
 
     public function __construct(IGroupManager $GroupManager){
-        $this->GroupManager = $GroupManager;
+        $this->groupManager = $GroupManager;
     }
 
     public function register() {
@@ -19,12 +19,15 @@ class GroupHooks {
              */
             // cancel delete LDAP hook
             
-            $this->GroupManager->removeListener(null, null, ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
+            $this->groupManager->removeListener(null, null, ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
 
             if ($group->delete())
                 $r = "deleted";
             else
                 $r = "not deleted";
+
+        // $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\LdapUserManagement\GroupService', 'addUserGroup']);
+
 
          $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
          fwrite($fid, "DeleteNCGroup: " . $group->getGID( ) . ">> $r \n");
@@ -37,15 +40,15 @@ class GroupHooks {
 
         };
 
-        $this->GroupManager->listen('\OC\Group', 'preAddUser', ['OCA\LdapUserManagement\GroupService', 'addUserGroup']);
+        $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\LdapUserManagement\GroupService', 'addUserGroup']);
 
-        $this->GroupManager->listen('\OC\Group', 'preRemoveUser', ['OCA\LdapUserManagement\GroupService', 'removeUserGroup']);
+        $this->groupManager->listen('\OC\Group', 'preRemoveUser', ['OCA\LdapUserManagement\GroupService', 'removeUserGroup']);
 
-        $this->GroupManager->listen('\OC\Group', 'preCreate', ['OCA\LdapUserManagement\GroupService', 'createLDAPGroup']);
+        $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\LdapUserManagement\GroupService', 'createLDAPGroup']);
 
-        $this->GroupManager->listen('\OC\Group', 'preDelete', ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
+        $this->groupManager->listen('\OC\Group', 'preDelete', ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
 
-        $this->GroupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
+        $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
 
 
 

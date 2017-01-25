@@ -6,6 +6,8 @@ use \OCP\AppFramework\App;
 // use \OCA\LdapUserManagement\Service\UserService;
 
 use \OCA\LdapUserManagement\UserHooks;
+use \OCA\LdapUserManagement\GroupHooks;
+
 
 class Application extends App {
 
@@ -19,6 +21,13 @@ class Application extends App {
                 $c->query('ServerContainer')->getUserManager()
             );
         });
+
+        $container->registerService('GroupHooks', function($c) {
+            return new GroupHooks(
+                $c->query('ServerContainer')->getGroupManager()
+            );
+        });
+
 
     }
 }
