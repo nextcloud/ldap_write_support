@@ -23,10 +23,12 @@ class GroupService {
             $r = "fail - $dn - " . print_r($entry, true); // send to log
         }            
 
-         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-         fwrite($fid, "Add User: " . $user->getUID( ). " to Group: " . $group->getGID() . " >> $r \n");
-         fclose($fid);
+        $config = \OC::$server->getConfig();
+        $datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data/');
 
+        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
+        fwrite($fid, "Add User: " . $user->getUID( ). " to Group: " . $group->getGID() . " >> $r $datadir \n");
+        fclose($fid);
 
         \OC::$server->getLogger()->notice(
                 "Add User: " . $user->getUID( ). " to Group: " . $group->getGID(),

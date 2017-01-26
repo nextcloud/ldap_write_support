@@ -20,12 +20,13 @@ class UserService {
             'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
             'cn' => $uid ,
             'gidnumber' => 500,
-            'homedirectory' => '', // ignored by nextcloud
-            'mail' => '',
+            'homedirectory' => 'x', // ignored by nextcloud
+            'mail' => 'x@x.com',
             'sn' => $uid ,
             'uid' => $uid , // mandatory
             'uidnumber' => 1010, // mandatory - verify is autoincrement is needed
             'userpassword' => $password ,
+            'displayName' => $uid,
         );
         // when LDAP user is deleted, user folder remains there
 

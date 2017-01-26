@@ -26,8 +26,6 @@ class GroupHooks {
             else
                 $r = "not deleted";
 
-        // $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\LdapUserManagement\GroupService', 'addUserGroup']);
-
 
          $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
          fwrite($fid, "DeleteNCGroup: " . $group->getGID( ) . ">> $r \n");
@@ -49,8 +47,6 @@ class GroupHooks {
         $this->groupManager->listen('\OC\Group', 'preDelete', ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
 
         $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
-
-
 
     }
 
