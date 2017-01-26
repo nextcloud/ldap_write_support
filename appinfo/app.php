@@ -7,30 +7,34 @@ use OCA\LdapUserManagement\UserHooks;
 $app = new App('ldapusermanagement');
 $container = $app->getContainer();
 
-$container->query('OCP\INavigationManager')->add(function () use ($container) {
-	$urlGenerator = $container->query('OCP\IURLGenerator');
-	$l10n = $container->query('OCP\IL10N');
-	return [
-		// the string under which your app will be referenced in Nextcloud
-		'id' => 'ldapusermanagement',
+// $container->query('OCP\INavigationManager')->add(function () use ($container) {
+// 	$urlGenerator = $container->query('OCP\IURLGenerator');
+// 	$l10n = $container->query('OCP\IL10N');
+// 	return [
+// 		// the string under which your app will be referenced in Nextcloud
+// 		'id' => 'ldapusermanagement',
 
-		// sorting weight for the navigation. The higher the number, the higher
-		// will it be listed in the navigation
-		'order' => 10,
+// 		// sorting weight for the navigation. The higher the number, the higher
+// 		// will it be listed in the navigation
+// 		'order' => 10,
 
-		// the route that will be shown on startup
-		'href' => $urlGenerator->linkToRoute('ldapusermanagement.page.index'),
+// 		// the route that will be shown on startup
+// 		'href' => $urlGenerator->linkToRoute('ldapusermanagement.page.index'),
 
-		// the icon that will be shown in the navigation
-		// this file needs to exist in img/
-		'icon' => $urlGenerator->imagePath('ldapusermanagement', 'app.svg'),
+// 		// the icon that will be shown in the navigation
+// 		// this file needs to exist in img/
+// 		'icon' => $urlGenerator->imagePath('ldapusermanagement', 'app.svg'),
 
-		// the title of your application. This will be used in the
-		// navigation or on the settings page of your app
-		'name' => $l10n->t('Ldap User Management'),
-	];
-});
+// 		// the title of your application. This will be used in the
+// 		// navigation or on the settings page of your app
+// 		'name' => $l10n->t('Ldap User Management'),
+// 	];
+// });
 
 // register hooks
 $container->query('OCA\LdapUserManagement\UserHooks')->register();
 $container->query('OCA\LdapUserManagement\GroupHooks')->register();
+
+// $settings = new \OCA\LdapUserManagement\Settings();
+
+// \OCP\App::registerPersonal('ldapusermanagement', 'personal');
