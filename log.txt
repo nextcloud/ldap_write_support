@@ -1,3 +1,3 @@
-createLDAPUser: qqq >> ppp
-deleteNCUser: qqq >> ppp
-deleteLDAP: qqq >> 
+CreateLDAPGroup: zgroup>> success 
+DeleteNCGroup: zgroup>> deleted 
+Add User: zteste to Group: zgroup >> success /home/alan/html/server/data 

@@ -5,5 +5,9 @@ Mensagens de erro ldap manager
 3) Mensagem de erro ao apagar grupo ldap (apesar de apagar com sucesso)
 4) Precisa de um reload antes de adicionar um usuário velho a um novo grupo
 >>> só após o reload ele cria o ldap_group_mapping
+5) Precisa de um reload antes de adicionar um usuário novo a um grupo velho (na parte de baixo)
+6) Precisa de um reload antes de adicionar um usuário novo a um novo grupo (na parte de baixo)
 
-Configuraçoes
+ERROR messages
+
+Rever Controller

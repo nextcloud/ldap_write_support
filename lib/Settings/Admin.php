@@ -21,9 +21,9 @@
  *
  */
 
-namespace OCA\LdapUserManagement\Settings;
+namespace OCA\Ldapusermanagement\Settings;
 
-use OCA\Theming\ThemingDefaults;
+use OCA\Ldapusermanagement\LdapusermanagementDefaults;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -36,17 +36,17 @@ class Admin implements ISettings {
 	/** @var IL10N */
 	private $l;
 	/** @var ThemingDefaults */
-	private $themingDefaults;
+	private $ldapusermanagementDefaults;
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
 	public function __construct(IConfig $config,
 								IL10N $l,
-								ThemingDefaults $themingDefaults,
+								LdapusermanagementDefaults $ldapusermanagementDefaults,
 								IURLGenerator $urlGenerator) {
 		$this->config = $config;
 		$this->l = $l;
-		$this->themingDefaults = $themingDefaults;
+		$this->ldapusermanagementDefaults = $ldapusermanagementDefaults;
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -54,21 +54,23 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm() {
-		$path = $this->urlGenerator->linkToRoute('theming.Theming.updateLogo');
+		// $path = $this->urlGenerator->linkToRoute('theming.Theming.updateLogo');
 
-		$themable = true;
-		$errorMessage = '';
-		$theme = $this->config->getSystemValue('theme', '');
-		if ($theme !== '') {
-			$themable = false;
-			$errorMessage = $this->l->t('You are already using a custom theme');
-		}
+		// $themable = true;
+		// $errorMessage = '';
+		// $theme = $this->config->getSystemValue('theme', '');
+		// if ($theme !== '') {
+		// 	$themable = false;
+		// 	$errorMessage = $this->l->t('You are already using a custom theme');
+		// }
 
 		$parameters = [
-			'host'			=> $host,
-			'port'			=> $port,
-			'dn'			=> $dn,
-			'password'		=> $password,
+			'host'			=> $this->ldapusermanagementDefaults->getHost(),
+			'port'			=> $this->ldapusermanagementDefaults->getPort(),
+			'dn'			=> $this->ldapusermanagementDefaults->getDN(),
+			'password'		=> $this->ldapusermanagementDefaults->getPassword(),
+			'groupbase'		=> $this->ldapusermanagementDefaults->getGroupbase(),
+			'userbase'		=> $this->ldapusermanagementDefaults->getUserbase(),
 			// 'themable'        => $themable,
 			// 'errorMessage'    => $errorMessage,
 			// 'name'            => $this->themingDefaults->getEntity(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
 
 class UserHooks {
 

@@ -1,13 +1,16 @@
 <?php
 
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
+
+use OCA\Ldapusermanagement;
+use OCP\IConfig;
 
 class LDAPConnect {
 
     public static function connect() {
         // TODO: get from LDAP plugin
-        $ldaphost = "localhost";
-        $ldapport = 389;
+        $ldaphost  = \OCP\Config::getAppValue('ldapusermanagement','host','');
+        $ldapport  = \OCP\Config::getAppValue('ldapusermanagement','port','');
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
         $ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
@@ -20,14 +23,20 @@ class LDAPConnect {
         } else {
             return "Unable to connect to LDAP server";
         }
+ 
+        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
+        fwrite($fid, "LDAP Connect: $host \n");
+        fclose($fid);
+
+
     }
 
     public static function bind() {
 
         // LDAP variables
         $ds = LDAPConnect::connect();
-        $dn = 'cn=admin,dc=localhost'; //TODO: get from LDAP plugin
-        $secret = 'abb3h5Mv'; //TODO: put in configuration file
+        $dn = \OCP\Config::getAppValue('ldapusermanagement','dn','');
+        $secret = \OCP\Config::getAppValue('ldapusermanagement','password','');
 
         // Connecting to LDAP
         if (!ldap_bind($ds,$dn,$secret)) {

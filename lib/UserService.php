@@ -1,5 +1,5 @@
 <?php
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
 
 class UserService {
 
@@ -30,7 +30,8 @@ class UserService {
         );
         // when LDAP user is deleted, user folder remains there
 
-        $dn = "cn=" . $uid . ",ou=users,dc=localhost"; //TODO: make configurable
+        // $dn = "cn=" . $uid . ",ou=users,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase',''); //TODO: make configurable
 
         if ( ldap_add ( $ds , $dn , $entry) ) {
             $r = "success";
@@ -57,7 +58,7 @@ class UserService {
                 array('app' => 'ldapusermanagement'));
 
         // cancel delete LDAP hook
-        $cb3 = ['OCA\LdapUserManagement\UserService', 'deleteLDAPUser'];
+        $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
         $this->userManager->removeListener(null, null, $cb3);
 
     }

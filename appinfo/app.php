@@ -2,7 +2,6 @@
 
 
 use OCP\AppFramework\App;
-use OCA\LdapUserManagement\UserHooks;
 
 $app = new App('ldapusermanagement');
 $container = $app->getContainer();
@@ -32,8 +31,8 @@ $container = $app->getContainer();
 // });
 
 // register hooks
-$container->query('OCA\LdapUserManagement\UserHooks')->register();
-$container->query('OCA\LdapUserManagement\GroupHooks')->register();
+$container->query('OCA\Ldapusermanagement\UserHooks')->register();
+$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
 
 // $settings = new \OCA\LdapUserManagement\Settings();
 

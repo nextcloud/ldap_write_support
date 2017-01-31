@@ -1,5 +1,9 @@
 <?php
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
+
+use OCP\IConfig;
+use OCP\IL10N;
+
 
 class GroupService {
 
@@ -41,7 +45,9 @@ class GroupService {
      */
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
+        // $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $group->getGID() . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
+        
         $entry['memberuid'] = $user->getUID();
 
         if ( ldap_mod_del ( $ds , $dn , $entry) ) {

@@ -7,15 +7,15 @@
     <description><![CDATA[This app modifies the way NC creates a new user. Instead of creating it on the NC database, this app creates the user on the LDAP base, allowing you to manage your LDAP users using the NC interface.]]></description>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
-    <version>0.0.2</version>
-    <namespace>LdapUserManagement</namespace>
+    <version>0.0.4</version>
+    <namespace>Ldapusermanagement</namespace>
     <category>auth</category>
     <dependencies>
         <owncloud min-version="9.1" max-version="9.1"/>
         <nextcloud min-version="10" max-version="11"/>
     </dependencies>
     <settings>
-        <admin>OCA\LdapUserManagement\Settings\Admin</admin>
-        <personal>OCA\LdapUserManagement\Settings\Section</personal>
+        <admin>OCA\Ldapusermanagement\Settings\Admin</admin>
+        <personal>OCA\Ldapusermanagement\Settings\Section</personal>
     </settings>
 </info>

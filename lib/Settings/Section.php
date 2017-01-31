@@ -21,7 +21,7 @@
  *
  */
 
-namespace OCA\LdapUserManagement\Settings;
+namespace OCA\Ldapusermanagement\Settings;
 
 use OCP\IL10N;
 use OCP\Settings\ISection;
@@ -51,7 +51,7 @@ class Section implements ISection {
 	 * @return string
 	 */
 	public function getName() {
-		return $this->l->t('LdapUserManagement');
+		return $this->l->t('Ldad User Management');
 	}
 
 	/**

@@ -1,0 +1,69 @@
+#ldapusermanagement input {
+    width: 17em;
+}
+
+#ldapusermanagement .upload-logo-field {
+    display: none;
+}
+
+#ldapusermanagement div > label {
+    position: relative;
+}
+
+#ldapusermanagement .theme-undo {
+    position: absolute;
+    top: -7px;
+    right: 7px;
+    cursor: pointer;
+    opacity: .3;
+    padding: 7px;
+    vertical-align: top;
+    display: inline-block;
+    visibility: hidden;
+}
+#ldapusermanagement form .theme-undo {
+    position: relative;
+    top: 4px;
+    left: 158px;
+    visibility: visible;
+}
+#ldapusermanagement input[type='text']:focus + .theme-undo,
+#ldapusermanagement input[type='text']:active + .theme-undo {
+    visibility: visible;
+}
+
+#ldapusermanagement .icon-loading-small:after {
+    margin: -10px 0 0 -10px;
+}
+
+#ldapusermanagement label span {
+    display: inline-block;
+    min-width: 90px;
+    padding: 8px 0px;
+}
+
+#ldapusermanagement .icon-upload,
+#ldapusermanagement .icon-loading-small {
+    display: inline-flex;
+    padding: 8px;
+    margin: 2px 0px;
+}
+
+div#ldapusermanagement_settings_msg {
+    margin-left: 10px;
+}
+
+#ldapusermanagement-preview {
+    width: 230px;
+    height: 140px;
+    background-size: cover;
+    background-position: center center;
+    text-align: center;
+    margin-left: 93px;
+}
+
+#ldapusermanagement-preview img {
+    max-width: 20%;
+    max-height: 20%;
+    margin-top: 20px;
+}

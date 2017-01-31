@@ -11,5 +11,59 @@ return [
     'routes' => [
 	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-    ]
-];
+
+	[
+		'name' => 'ldapusermanagement#updateStylesheet',
+		'url' => '/ajax/updateStylesheet',
+		'verb' => 'POST'
+	],
+	[
+		'name' => 'ldapusermanagement#undo',
+		'url' => '/ajax/undoChanges',
+		'verb' => 'POST'
+	],
+	[
+		'name' => 'ldapusermanagement#updateLogo',
+		'url' => '/ajax/updateLogo',
+		'verb' => 'POST'
+	],
+	[
+		'name' => 'ldapusermanagement#getStylesheet',
+		'url' => '/styles',
+		'verb' => 'GET',
+	],
+	[
+		'name' => 'ldapusermanagement#getLogo',
+		'url' => '/logo',
+		'verb' => 'GET',
+	],
+	[
+		'name' => 'ldapusermanagement#getLoginBackground',
+		'url' => '/loginbackground',
+		'verb' => 'GET',
+	],
+	[
+		'name' => 'ldapusermanagement#getJavascript',
+		'url' => '/js/Ldapusermanagement',
+		'verb' => 'GET',
+	],
+	[
+		'name'	=> 'Icon#getFavicon',
+		'url' => '/favicon/{app}',
+		'verb' => 'GET',
+		'defaults' => array('app' => 'core'),
+	],
+	[
+		'name'	=> 'Icon#getTouchIcon',
+		'url' => '/icon/{app}',
+		'verb' => 'GET',
+		'defaults' => array('app' => 'core'),
+	],
+	[
+		'name'	=> 'Icon#getThemedIcon',
+		'url' => '/img/{app}/{image}',
+		'verb' => 'GET',
+		'requirements' => array('image' => '.+')
+	],
+]];
+

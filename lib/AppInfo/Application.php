@@ -1,12 +1,12 @@
 <?php
-namespace OCA\LdapUserManagement\AppInfo;
+namespace OCA\Ldapusermanagement\AppInfo;
 
 use \OCP\AppFramework\App;
 
 // use \OCA\LdapUserManagement\Service\UserService;
 
-use \OCA\LdapUserManagement\UserHooks;
-use \OCA\LdapUserManagement\GroupHooks;
+use \OCA\Ldapusermanagement\UserHooks;
+use \OCA\Ldapusermanagement\GroupHooks;
 
 
 class Application extends App {

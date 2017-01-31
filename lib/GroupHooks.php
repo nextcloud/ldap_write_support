@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
 use OCP\IGroupManager;
 
 class GroupHooks {
@@ -19,7 +19,7 @@ class GroupHooks {
              */
             // cancel delete LDAP hook
             
-            $this->groupManager->removeListener(null, null, ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
+            $this->groupManager->removeListener(null, null, ['OCA\Ldapusermanagement\GroupService', 'deleteLDAPGroup']);
 
             if ($group->delete())
                 $r = "deleted";
@@ -38,13 +38,13 @@ class GroupHooks {
 
         };
 
-        $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\LdapUserManagement\GroupService', 'addUserGroup']);
+        $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\Ldapusermanagement\GroupService', 'addUserGroup']);
 
-        $this->groupManager->listen('\OC\Group', 'preRemoveUser', ['OCA\LdapUserManagement\GroupService', 'removeUserGroup']);
+        $this->groupManager->listen('\OC\Group', 'preRemoveUser', ['OCA\Ldapusermanagement\GroupService', 'removeUserGroup']);
 
-        $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\LdapUserManagement\GroupService', 'createLDAPGroup']);
+        $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\Ldapusermanagement\GroupService', 'createLDAPGroup']);
 
-        $this->groupManager->listen('\OC\Group', 'preDelete', ['OCA\LdapUserManagement\GroupService', 'deleteLDAPGroup']);
+        $this->groupManager->listen('\OC\Group', 'preDelete', ['OCA\Ldapusermanagement\GroupService', 'deleteLDAPGroup']);
 
         $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
 

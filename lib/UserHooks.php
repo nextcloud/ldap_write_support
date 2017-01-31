@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
 use OCP\IUserManager;
 
 class UserHooks {
@@ -18,7 +18,7 @@ class UserHooks {
              * delete NextCloud user
              */
             // cancel delete LDAP hook
-            $cb3 = ['OCA\LdapUserManagement\UserService', 'deleteLDAPUser'];
+            $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
             $this->userManager->removeListener(null, null, $cb3);
 
             if ($user->delete())
@@ -33,13 +33,13 @@ class UserHooks {
         };
 
 
-        $cb1 = ['OCA\LdapUserManagement\UserService', 'createLDAPUser'];
+        $cb1 = ['OCA\Ldapusermanagement\UserService', 'createLDAPUser'];
         $this->userManager->listen('\OC\User', 'preCreateUser', $cb1);
 
-        $cb3 = ['OCA\LdapUserManagement\UserService', 'deleteLDAPUser'];
+        $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
         $this->userManager->listen('\OC\User', 'preDelete', $cb3);
 
-        $cb2 = ['OCA\LdapUserManagement\UserService', 'deleteNCUser'];
+        $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
         $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
 
     }

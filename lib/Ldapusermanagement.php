@@ -1,10 +1,10 @@
 <?php
 
-namespace OCA\LdapUserManagement;
+namespace OCA\Ldapusermanagement;
 
 // use \OCA\LdapUserManagement\Service\UserService;
 
-class LdapUserManagement {
+class Ldapusermanagement {
 
 	// private $userService;
 
