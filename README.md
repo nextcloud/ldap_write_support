@@ -1,52 +1,24 @@
-# Ldap User Management
-Place this app in **nextcloud/apps/**
+# LdapUserManagement
+This is an experimental app. Use at your own risk!
 
-## Building the app
+LdapUserManagement App enables your NextCloud instance to fully work over an LDAP user base. LdapUserManagement modifies NextCloud functions of create/delete user, create/delete groups and add/remove users from groups to edit directly an LDAP user base on your desired server.
 
-The app can be built by using the provided Makefile by running:
+## Dependencies
 
-    make
+In order to use LdapUserManagement, `ldap_user` plugin must be enabled!
 
-This requires the following things to be present:
-* make
-* which
-* tar: for building the archive
-* curl: used if phpunit and composer are not installed to fetch them from the web
-* npm: for building and testing everything JS, only required if a package.json is placed inside the **js/** folder
+## Install
 
-The make command will install or update Composer dependencies if a composer.json is present and also **npm run build** if a package.json is present in the **js/** folder. The npm **build** script should use local paths for build systems and package managers, so people that simply want to build the app won't need to install npm libraries globally, e.g.:
-
-**package.json**:
-```json
-"scripts": {
-    "test": "node node_modules/gulp-cli/bin/gulp.js karma",
-    "prebuild": "npm install && node_modules/bower/bin/bower install && node_modules/bower/bin/bower update",
-    "build": "node node_modules/gulp-cli/bin/gulp.js"
-}
+Place this app in **nextcloud/apps/**. From your nextcloud root:
 ```
+cd apps/
+git clone git@gitlab.com:eita/LdapUserManagement.git
+```
+## Known issues
 
-
-## Publish to App Store
-
-First get an account for the [App Store](http://apps.nextcloud.com/) then run:
-
-    make && make appstore
-
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
-
-## Running tests
-You can use the provided Makefile to run all tests by using:
-
-    make test
-
-This will run the PHP unit and integration tests and if a package.json is present in the **js/** folder will execute **npm run test**
-
-Of course you can also install [PHPUnit](http://phpunit.de/getting-started.html) and use the configurations directly:
-
-    phpunit -c phpunit.xml
-
-or:
-
-    phpunit -c phpunit.integration.xml
-
-for integration tests
+* Usernames containing spaces do not work
+* Deleting LDAP users causes an error message, but works.
+* Deleting LDAP groups causes an error message, but works.
+* Adding an user to a newly created group do not work; you must reload before adding user to group
+* Adding a new user to an existing group do not work; you must reload before adding user to group
+* Adding a new user to a new group do not work; you must reload before adding user to group
