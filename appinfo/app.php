@@ -2,9 +2,20 @@
 
 
 use OCP\AppFramework\App;
+use OCP\AppFramework\OCS\OCSException;
 
-$app = new App('ldapusermanagement');
-$container = $app->getContainer();
+if (\OCP\App::isEnabled('user_ldap')) {
+
+	$app = new App('ldapusermanagement');
+	$container = $app->getContainer();
+	// register hooks
+	$container->query('OCA\Ldapusermanagement\UserHooks')->register();
+	$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
+
+} 
+// else {
+// 		throw new OCSException('The requested group could not be found', \OCP\API::RESPOND_NOT_FOUND);
+// }
 
 // $container->query('OCP\INavigationManager')->add(function () use ($container) {
 // 	$urlGenerator = $container->query('OCP\IURLGenerator');
@@ -30,9 +41,6 @@ $container = $app->getContainer();
 // 	];
 // });
 
-// register hooks
-$container->query('OCA\Ldapusermanagement\UserHooks')->register();
-$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
 
 // $settings = new \OCA\LdapUserManagement\Settings();
 
