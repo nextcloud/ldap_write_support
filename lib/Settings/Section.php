@@ -60,6 +60,6 @@ class Section implements ISection {
 	 * E.g.: 70
 	 */
 	public function getPriority() {
-		return 30;
+		return 99;
 	}
 }
