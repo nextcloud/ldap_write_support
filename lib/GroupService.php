@@ -4,7 +4,6 @@ namespace OCA\Ldapusermanagement;
 use OCP\IConfig;
 use OCP\IL10N;
 
-
 class GroupService {
 
     private $GroupManager;
@@ -18,25 +17,16 @@ class GroupService {
      * add LDAP user to LDAP group
      */
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $group->getGID() . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
         $entry['memberuid'] = $user->getUID();
 
-        if ( ldap_mod_add ( $ds , $dn , $entry) ) {
-            $r = "success";
+        if (!ldap_mod_add ( $ds , $dn , $entry)) {
+            $message = "Unable to add user " . $user->getUID( ). " to group " . $group->getGID();
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $r = "fail - $dn - " . print_r($entry, true); // send to log
-        }            
-
-        $config = \OC::$server->getConfig();
-        $datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data/');
-
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-        fwrite($fid, "Add User: " . $user->getUID( ). " to Group: " . $group->getGID() . " >> $r $datadir \n");
-        fclose($fid);
-
-        \OC::$server->getLogger()->notice(
-                "Add User: " . $user->getUID( ). " to Group: " . $group->getGID(),
-                array('app' => 'ldapusermanagement'));
+            $message = "Add user: " . $user->getUID( ). " to group: " . $group->getGID();
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
     }
 
     public static function removeUserGroup(\OC\Group\Group $group, \OC\User\User $user) {
@@ -45,26 +35,17 @@ class GroupService {
      */
 
         $ds = LDAPConnect::bind();
-        // $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
         $dn = "cn=" . $group->getGID() . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
-        
+
         $entry['memberuid'] = $user->getUID();
 
-        if ( ldap_mod_del ( $ds , $dn , $entry) ) {
-            $r = "success";
+        if ( !ldap_mod_del ( $ds , $dn , $entry) ) {
+            $message = "Unable to remove user: " . $user->getUID( ). " from group: " . $group->getGID();
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $r = "fail - $dn - " . print_r($entry, true); // send to log
+            $message = "Remove user: " . $user->getUID( ). " from group: " . $group->getGID();
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
         }            
-
-
-        $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-        fwrite($fid, "Remove User: " . $user->getUID( ). " from Group: " . $group->getGID() . " \n");
-        fclose($fid);
-
-
-        \OC::$server->getLogger()->notice(
-                "Remove User: " . $user->getUID( ). " to Group: " . $group->getGID(),
-                array('app' => 'ldapusermanagement'));
     }
 
     public static function createLDAPGroup($groupId) {
@@ -81,19 +62,13 @@ class GroupService {
 
         $dn = "cn=" . $groupId . ",ou=groups,dc=localhost"; //TODO: make configurable
 
-        if ( ldap_add ( $ds , $dn , $entry) ) {
-            $r = "success";
+        if ( !ldap_add ( $ds , $dn , $entry) ) {
+            $message = "Unable to create LDAP Group: " . $groupId;
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $r = "fail - $dn - " . print_r($entry, true); // send to log
-        }            
-
-         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'w');
-         fwrite($fid, "CreateLDAPGroup: " . $groupId . ">> $r \n");
-         fclose($fid);
-
-        \OC::$server->getLogger()->notice(
-                "CreateLDAPGroup: $groupId >> $r",
-                array('app' => 'ldapusermanagement'));
+            $message = "Create LDAP Group: " . $groupId;
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
     }
 
     public static function deleteLDAPGroup(\OC\Group\Group $group){
@@ -101,18 +76,12 @@ class GroupService {
         $ds = LDAPConnect::bind();
         $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
 
-        if (ldap_delete($ds, $dn))
-            $r = "deleted";
-        else
-            $r = "not deleted";
-
-         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-         fwrite($fid, "DeleteLDAPGroup: " . $group->getGID( ) . ">> $r \n");
-         fclose($fid);
-
-
-        \OC::$server->getLogger()->notice(
-                "DeleteLDAPGrup: " . $group->getGID() . " >> $r",
-                array('app' => 'ldapusermanagement'));
+        if ( !ldap_delete($ds, $dn) ) {
+            $message = "Unable to delete LDAP Group: " . $group->getGID() ;
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+        } else {
+            $message = "Delete LDAP Group: " . $group->getGID() ;
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
     }
 }

@@ -30,52 +30,29 @@ class UserService {
         );
         // when LDAP user is deleted, user folder remains there
 
-        // $dn = "cn=" . $uid . ",ou=users,dc=localhost"; //TODO: make configurable
-        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase',''); //TODO: make configurable
+        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
-        if ( ldap_add ( $ds , $dn , $entry) ) {
-            $r = "success";
+        if (!ldap_add ( $ds , $dn , $entry)) {
+            $message = "Unable to create LDAP user " . $uid;
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $r = "fail - $dn - " . print_r($entry, true); // send to log
-        }            
-
-        \OC::$server->getLogger()->notice(
-                "CreateLDAPUser: $uid >> $password >> $r",
-                array('app' => 'ldapusermanagement'));
-    }
-
-    public function deleteNCUser($user) {            
-    /**
-     * delete NextCloud user
-     */
-        if ($user->delete())
-            $r = "deleted";
-        else
-            $r = "not deleted";
-
-        \OC::$server->getLogger()->notice(
-                "DeleteNCUser: " . $user->getUID() . " >> $r",
-                array('app' => 'ldapusermanagement'));
-
-        // cancel delete LDAP hook
-        $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
-        $this->userManager->removeListener(null, null, $cb3);
-
+            $message = "Create LDAP user: " . $uid;
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
     }
 
     public static function deleteLDAPUser($user){
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $user->getUID() . ",ou=users,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
-        if (ldap_delete($ds, $dn))
-            $r = "deleted";
-        else
-            $r = "not deleted";
-
-        \OC::$server->getLogger()->notice(
-                "DeleteLDAPUser: " . $user->getUID() . " >> $r",
-                array('app' => 'ldapusermanagement'));
+        if (!ldap_delete ( $ds , $dn )) {
+            $message = "Unable to delete LDAP user " . $user->getUID();
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+        } else {
+            $message = "Delete LDAP user: " . $user->getUID();
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
     }
 
 }
