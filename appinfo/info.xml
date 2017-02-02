@@ -11,6 +11,7 @@
     <namespace>Ldapusermanagement</namespace>
     <category>auth</category>
     <dependencies>
+        <user_ldap />
         <owncloud min-version="9.1" max-version="9.1"/>
         <nextcloud min-version="10" max-version="11"/>
     </dependencies>

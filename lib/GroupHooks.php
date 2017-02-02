@@ -1,4 +1,23 @@
 <?php
+/**
+ * @author Alan Tygel <alan@eita.org.br>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 namespace OCA\Ldapusermanagement;
 use OCP\IGroupManager;
@@ -21,21 +40,13 @@ class GroupHooks {
             
             $this->groupManager->removeListener(null, null, ['OCA\Ldapusermanagement\GroupService', 'deleteLDAPGroup']);
 
-            if ($group->delete())
-                $r = "deleted";
-            else
-                $r = "not deleted";
-
-
-         $fid = fopen('/var/www/html/server/apps/ldapusermanagement/log.txt', 'a');
-         fwrite($fid, "DeleteNCGroup: " . $group->getGID( ) . ">> $r \n");
-         fclose($fid);
-
-
-            \OC::$server->getLogger()->notice(
-                    "DeleteNCGroup: " . $group->getGID() . " >> $r",
-                    array('app' => 'ldapusermanagement'));
-
+            if (!$group->delete()){
+                $message = "Unable to delete NextCloud group " . $group->getGID();
+                \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+            } else {
+                $message = "Delete NextCloud group " . $group->getGID();
+                \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+            }
         };
 
         $this->groupManager->listen('\OC\Group', 'preAddUser', ['OCA\Ldapusermanagement\GroupService', 'addUserGroup']);

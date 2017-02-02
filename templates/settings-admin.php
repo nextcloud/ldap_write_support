@@ -1,10 +1,6 @@
 <?php
 /**
-
- *
- * @author Bjoern Schiessle <bjoern@schiessle.org>
- * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
- * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Alan Tygel <alan@eita.org.br>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -22,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 script('ldapusermanagement', 'settings-admin');
-// script('theming', '3rdparty/jscolor/jscolor');
 style('ldapusermanagement', 'settings-admin');
 ?>
 <div id="ldapusermanagement" class="section">

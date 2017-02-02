@@ -8,6 +8,8 @@ Mensagens de erro ldap manager
 5) Precisa de um reload antes de adicionar um usuário novo a um grupo velho (na parte de baixo)
 6) Precisa de um reload antes de adicionar um usuário novo a um novo grupo (na parte de baixo)
 
-ERROR messages
+ERROR messages >> try catch
 
 Rever Controller
+
+adicionar dependencia para ldap_user

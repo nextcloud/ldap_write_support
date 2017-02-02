@@ -1,12 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2016 Bjoern Schiessle <bjoern@schiessle.org>
- * @copyright Copyright (c) 2016 Lukas Reschke <lukas@statuscode.ch>
- *
- * @author Bjoern Schiessle <bjoern@schiessle.org>
- * @author Julius Haertl <jus@bitgrid.net>
- * @author Lukas Reschke <lukas@statuscode.ch>
- * @author oparoz <owncloud@interfasys.ch>
+ * @author Alan Tygel <alan@eita.org.br>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -141,11 +135,11 @@ class LdapusermanagementController extends Controller {
 					]);
 				}
 				break;
-			case 'color':
-				if (!preg_match('/^\#([0-9a-f]{3}|[0-9a-f]{6})$/i', $value)) {
+			case 'port':
+				if (!preg_match('/^[0-9]{3,4}$/i', $value)) {
 					return new DataResponse([
 						'data' => [
-							'message' => $this->l->t('The given color is invalid'),
+							'message' => $this->l->t('The given port is invalid'),
 						],
 						'status' => 'error'
 					]);

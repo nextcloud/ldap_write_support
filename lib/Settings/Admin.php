@@ -1,8 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2016 Arthur Schiwon <blizzz@arthur-schiwon.de>
- *
- * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
+ * @author Alan Tygel <alan@eita.org.br>
  *
  * @license GNU AGPL version 3 or any later version
  *

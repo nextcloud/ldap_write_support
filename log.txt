@@ -1,3 +1,7 @@
 CreateLDAPGroup: zgroup>> success 
 DeleteNCGroup: zgroup>> deleted 
 Add User: zteste to Group: zgroup >> success /home/alan/html/server/data 
+Add User: alanz to Group: balgroup >>   
+Add User: alanz to Group: teste >>   
+Add User: alanz to Group: teste >>   
+DeleteNCGroup: teste2>> deleted 

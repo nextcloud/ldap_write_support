@@ -1,21 +1,20 @@
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Alan Tygel <alan@eita.org.br>
  *
- * @copyright Copyright (c) 2016, Bjoern Schiessle
- * @license AGPL-3.0
+ * @license GNU AGPL version 3 or any later version
  *
- * This code is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
- * License, or (at your opinion) any later version.
+ * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -30,91 +29,6 @@ function setLdapusermanagementValue(setting, value) {
 		OC.msg.finishedSaving('#ldapusermanagement_settings_msg', response);
 	});
 	preview(setting, value);
-}
-
-function calculateLuminance(rgb) {
-	var hexValue = rgb.replace(/[^0-9A-Fa-f]/, '');
-	var r,g,b;
-	if (hexValue.length === 3) {
-		hexValue = hexValue[0] + hexValue[0] + hexValue[1] + hexValue[1] + hexValue[2] + hexValue[2];
-	}
-	if (hexValue.length !== 6) {
-		return 0;
-	}
-	r = parseInt(hexValue.substring(0,2), 16);
-	g = parseInt(hexValue.substring(2,4), 16);
-	b = parseInt(hexValue.substring(4,6), 16);
-	return (0.299*r + 0.587*g + 0.114*b)/255;
-}
-
-function generateRadioButton(color) {
-	var radioButton = '<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16">' +
-		'<path d="M8 1a7 7 0 0 0-7 7 7 7 0 0 0 7 7 7 7 0 0 0 7-7 7 7 0 0 0-7-7zm0 1a6 6 0 0 1 6 6 6 6 0 0 1-6 6 6 6 0 0 1-6-6 6 6 0 0 1 6-6zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="' + color + '"/></svg>';
-	return btoa(radioButton);
-}
-
-function preview(setting, value) {
-	if (setting === 'color') {
-		var headerClass = document.getElementById('header');
-		var expandDisplayNameClass = document.getElementById('expandDisplayName');
-		var headerAppName = headerClass.getElementsByClassName('header-appname')[0];
-		var textColor, icon;
-		var luminance = calculateLuminance(value);
-		var elementColor = value;
-
-		if (luminance > 0.5) {
-			textColor = "#000000";
-			icon = 'caret-dark';
-		} else {
-			textColor = "#ffffff";
-			icon = 'caret';
-		}
-		if (luminance > 0.8) {
-			elementColor = '#555555';
-		}
-
-		headerClass.style.background = value;
-		headerClass.style.backgroundImage = '../img/logo-icon.svg';
-		expandDisplayNameClass.style.color = textColor;
-		headerAppName.style.color = textColor;
-
-		$('#previewStyles').html(
-			'#header .icon-caret { background-image: url(\'' + OC.getRootPath() + '/core/img/actions/' + icon + '.svg\') }' +
-			'input[type="checkbox"].checkbox:checked:enabled:not(.checkbox--white) + label:before {' +
-			'background-image:url(\'' + OC.getRootPath() + '/core/img/actions/checkmark-white.svg\');' +
-			'background-color: ' + elementColor + '; background-position: center center; background-size:contain;' +
-			'width:12px; height:12px; padding:0; margin:2px 6px 6px 2px; border-radius:1px;}' +
-			'input[type="radio"].radio:checked:not(.radio--white):not(:disabled) + label:before {' +
-			'background-image: url(\'data:image/svg+xml;base64,' + generateRadioButton(elementColor) + '\'); }'
-		);
-	}
-
-	var timestamp = new Date().getTime();
-	if (setting === 'logoMime') {
-		var logos = document.getElementsByClassName('logo-icon');
-		var previewImageLogo = document.getElementById('theming-preview-logo');
-		if (value !== '') {
-			logos[0].style.backgroundImage = "url('" + OC.generateUrl('/apps/ldapusermanagement/logo') + "?v" + timestamp + "')";
-			logos[0].style.backgroundSize = "contain";
-			previewImageLogo.src = OC.generateUrl('/apps/ldapusermanagement/logo') + "?v" + timestamp;
-		} else {
-			logos[0].style.backgroundImage = "url('" + OC.getRootPath() + '/core/img/logo-icon.svg?v' + timestamp + "')";
-			logos[0].style.backgroundSize = "contain";
-			previewImageLogo.src = OC.getRootPath() + '/core/img/logo-icon.svg?v' + timestamp;
-		}
-	}
-	if (setting === 'backgroundMime') {
-		var previewImage = document.getElementById('theming-preview');
-		if (value !== '') {
-			previewImage.style.backgroundImage = "url('" + OC.generateUrl('/apps/theming/loginbackground') + "?v" + timestamp + "')";
-		} else {
-			previewImage.style.backgroundImage = "url('" + OC.getRootPath() + '/core/img/background.jpg?v' + timestamp + "')";
-		}
-
-	}
-	if (setting === 'name') {
-		window.document.title = t('core', 'Admin') + " - " + value;
-	}
 }
 
 function hideUndoButton(setting, value) {
@@ -184,9 +98,6 @@ $(document).ready(function () {
 		}
 	};
 
-	$('#uploadlogo').fileupload(uploadParamsLogo);
-	$('#upload-login-background').fileupload(uploadParamsLogin);
-
 	$('#ldapusermanagement-host').change(function(e) {
 		var el = $(this);
 		$.when(el.focusout()).then(function() {
@@ -254,14 +165,8 @@ $(document).ready(function () {
 		$.post(
 			OC.generateUrl('/apps/ldapusermanagement/ajax/undoChanges'), {'setting' : setting}
 		).done(function(response) {
-			if (setting === 'color') {
-				var colorPicker = document.getElementById('theming-color');
-				colorPicker.style.backgroundColor = response.data.value;
-				colorPicker.value = response.data.value.slice(1).toUpperCase();
-			} else if (setting !== 'logoMime' && setting !== 'backgroundMime') {
-				var input = document.getElementById('ldapusermanagement-'+setting);
-				input.value = response.data.value;
-			}
+			var input = document.getElementById('ldapusermanagement-'+setting);
+			input.value = response.data.value;
 
 			preview(setting, response.data.value);
 			OC.msg.finishedSaving('#ldapusermanagement_settings_msg', response);

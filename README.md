@@ -22,3 +22,4 @@ git clone git@gitlab.com:eita/LdapUserManagement.git
 * Adding an user to a newly created group do not work; you must reload before adding user to group
 * Adding a new user to an existing group do not work; you must reload before adding user to group
 * Adding a new user to a new group do not work; you must reload before adding user to group
+* Deleting a newly create group do not work; nextcloud must reload before deleting a created group.
