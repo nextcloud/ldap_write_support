@@ -41,6 +41,8 @@ class LdapusermanagementDefaults extends \OC_Defaults {
 	private $password;
 	/** @var string */
 	private $userbase;
+	/** @var string */
+	private $groupbase;
 
 	/**
 	 * ThemingDefaults constructor.

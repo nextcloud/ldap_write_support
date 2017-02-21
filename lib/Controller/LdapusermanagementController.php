@@ -24,76 +24,57 @@ namespace OCA\Ldapusermanagement\Controller;
 use OCA\Ldapusermanagement\LdapusermanagementDefaults;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\NotFoundResponse;
-use OCP\AppFramework\Http\StreamResponse;
-use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\Files\File;
-use OCP\Files\IRootFolder;
-use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
-use OCA\Theming\Util;
-use OCP\ITempManager;
 
 /**
  * Class ThemingController
  *
  * handle ajax requests to update the theme
  *
- * @package OCA\Theming\Controller
+ * @package OCA\Ldapusermanagement\Controller
  */
 class LdapusermanagementController extends Controller {
 	/** @var ThemingDefaults */
+	private $appName;	
 	private $template;
-	/** @var Util */
-	private $util;
+	// /** @var Util */
+	// private $util;
 	/** @var ITimeFactory */
 	private $timeFactory;
 	/** @var IL10N */
 	private $l;
 	/** @var IConfig */
 	private $config;
-	/** @var IRootFolder */
-	private $rootFolder;
-	/** @var ITempManager */
-	private $tempManager;
 
 	/**
-	 * ThemingController constructor.
+	 * LdapusermanagementController constructor.
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param IConfig $config
-	 * @param ThemingDefaults $template
-	 * @param Util $util
-	 * @param ITimeFactory $timeFactory
+	 * @param LdapusermanagementDefaults $template
 	 * @param IL10N $l
-	 * @param IRootFolder $rootFolder
-	 * @param ITempManager $tempManager
 	 */
 	public function __construct(
 		$appName,
-		IRequest $request,
+		// IRequest $request,
 		IConfig $config,
 		LdapusermanagementDefaults $template,
-		Util $util,
-		ITimeFactory $timeFactory,
-		IL10N $l,
-		IRootFolder $rootFolder,
-		ITempManager $tempManager
+		// Util $util,
+		IL10N $l
+		// ITempManager $tempManager
 	) {
 		parent::__construct($appName, $request);
 
+		$this->appName = $appName;
 		$this->template = $template;
-		$this->util = $util;
-		$this->timeFactory = $timeFactory;
+		// $this->util = $util;
 		$this->l = $l;
 		$this->config = $config;
-		$this->rootFolder = $rootFolder;
-		$this->tempManager = $tempManager;
+		// $this->tempManager = $tempManager;
 	}
 
 	/**
@@ -105,31 +86,31 @@ class LdapusermanagementController extends Controller {
 	public function updateStylesheet($setting, $value) {
 		$value = trim($value);
 		switch ($setting) {
-			case 'name':
+			case 'host':
 				if (strlen($value) > 250) {
 					return new DataResponse([
 						'data' => [
-							'message' => $this->l->t('The given name is too long'),
+							'message' => $this->l->t('The host name is too long'),
 						],
 						'status' => 'error'
 					]);
 				}
 				break;
-			case 'url':
+			case 'dn':
 				if (strlen($value) > 500) {
 					return new DataResponse([
 						'data' => [
-							'message' => $this->l->t('The given web address is too long'),
+							'message' => $this->l->t('The given dn is too long'),
 						],
 						'status' => 'error'
 					]);
 				}
 				break;
-			case 'slogan':
+			case 'password':
 				if (strlen($value) > 500) {
 					return new DataResponse([
 						'data' => [
-							'message' => $this->l->t('The given slogan is too long'),
+							'message' => $this->l->t('The given password is too long'),
 						],
 						'status' => 'error'
 					]);

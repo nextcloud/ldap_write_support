@@ -1,4 +1,4 @@
-Mensagens de erro ldap manager
+	Mensagens de erro ldap manager
 
 1) criar usuário com espaço (NC muda o username)	
 2) Mensagem de erro ao apagar usuario ldap (apesar de apagar com sucesso)
@@ -12,4 +12,4 @@ ERROR messages >> try catch
 
 Rever Controller
 
-adicionar dependencia para ldap_user
+adicionar dependencia para ldap_user +/-

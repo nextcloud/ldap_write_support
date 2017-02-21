@@ -12,7 +12,7 @@ In order to use LdapUserManagement, `ldap_user` plugin must be enabled!
 Place this app in **nextcloud/apps/**. From your nextcloud root:
 ```
 cd apps/
-git clone git@gitlab.com:eita/LdapUserManagement.git
+git clone git@gitlab.com:eita/ldapusermanagement.git
 ```
 ## Configure
 
