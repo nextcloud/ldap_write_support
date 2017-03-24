@@ -28,12 +28,6 @@ Go to Admin Settings / LDAP AD Integration tab. Under the user_ldap configuratio
 ## Known issues
 
 * Usernames containing spaces do not work
-* Deleting LDAP users causes an error message, but works.
-* Deleting LDAP groups causes an error message, but works.
-* Adding an user to a newly created group do not work; you must reload before adding user to group
-* Adding a new user to an existing group do not work; you must reload before adding user to group
-* Adding a new user to a new group do not work; you must reload before adding user to group
-* Deleting a newly create group do not work; nextcloud must reload before deleting a created group.
 
 ## LDAP parameters
 

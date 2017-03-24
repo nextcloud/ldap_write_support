@@ -1,12 +1,6 @@
 	Mensagens de erro ldap manager
 
 1) criar usuário com espaço (NC muda o username)	
-2) Mensagem de erro ao apagar usuario ldap (apesar de apagar com sucesso)
-3) Mensagem de erro ao apagar grupo ldap (apesar de apagar com sucesso)
-4) Precisa de um reload antes de adicionar um usuário velho a um novo grupo
->>> só após o reload ele cria o ldap_group_mapping
-5) Precisa de um reload antes de adicionar um usuário novo a um grupo velho (na parte de baixo)
-6) Precisa de um reload antes de adicionar um usuário novo a um novo grupo (na parte de baixo)
 
 ERROR messages >> try catch
 
