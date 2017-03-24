@@ -35,6 +35,8 @@ class UserService {
      */
         $ds = LDAPConnect::bind();
 
+	$uid_number = 2010;
+
         $entry = array( 
             'o' => $uid ,
             'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
@@ -44,7 +46,7 @@ class UserService {
             'mail' => 'x@x.com',
             'sn' => $uid ,
             'uid' => $uid , // mandatory
-            'uidnumber' => 1010, // mandatory - verify is autoincrement is needed
+            'uidnumber' => $uid_number, // mandatory
             'userpassword' => $password ,
             'displayName' => $uid,
         );
@@ -53,10 +55,10 @@ class UserService {
         $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
         if (!ldap_add ( $ds , $dn , $entry)) {
-            $message = "Unable to create LDAP user " . $uid;
+            $message = "Unable to create LDAP user '$uid' ($dn)";
             \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $message = "Create LDAP user: " . $uid;
+            $message = "Create LDAP user '$uid' ($dn)";
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
         }
     }
@@ -70,8 +72,10 @@ class UserService {
             $message = "Unable to delete LDAP user " . $user->getUID();
             \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $message = "Delete LDAP user: " . $user->getUID();
+            $message = "Delete LDAP user (isDeleted): " . $user->getUID();
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+
+            \OCP\Config::setUserValue($user->getUID(), 'user_ldap', 'isDeleted', 1);
         }
     }
 

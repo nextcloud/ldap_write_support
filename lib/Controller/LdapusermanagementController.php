@@ -38,8 +38,8 @@ use OCP\IRequest;
  */
 class LdapusermanagementController extends Controller {
 	/** @var ThemingDefaults */
-	private $appName;	
-	private $template;
+	protected $appName;	
+	protected $template;
 	// /** @var Util */
 	// private $util;
 	/** @var ITimeFactory */
