@@ -36,8 +36,8 @@ class GroupHooks {
             /**
              * delete NextCloud group
              */
+
             // cancel delete LDAP hook
-            
             $this->groupManager->removeListener(null, null, ['OCA\Ldapusermanagement\GroupService', 'deleteLDAPGroup']);
 
             if (!$group->delete()){
@@ -53,11 +53,11 @@ class GroupHooks {
 
         $this->groupManager->listen('\OC\Group', 'preRemoveUser', ['OCA\Ldapusermanagement\GroupService', 'removeUserGroup']);
 
-        $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\Ldapusermanagement\GroupService', 'createLDAPGroup']);
-
         $this->groupManager->listen('\OC\Group', 'preDelete', ['OCA\Ldapusermanagement\GroupService', 'deleteLDAPGroup']);
 
-        $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
+        $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\Ldapusermanagement\GroupService', 'createLDAPGroup']);
+
+        //nope: $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
 
     }
 

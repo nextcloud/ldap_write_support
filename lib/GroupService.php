@@ -37,7 +37,7 @@ class GroupService {
      * add LDAP user to LDAP group
      */
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
+        $dn = "cn=" . $group->getGID() . ',' . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
         $entry['memberuid'] = $user->getUID();
 
         if (!ldap_mod_add ( $ds , $dn , $entry)) {
@@ -55,7 +55,7 @@ class GroupService {
      */
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
+        $dn = "cn=" . $group->getGID() . ',' . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
 
         $entry['memberuid'] = $user->getUID();
 
@@ -76,11 +76,11 @@ class GroupService {
 
         $entry = array( 
             'objectClass' => array( 'posixGroup' , 'top' ),
-            'cn' => $groupId ,
+            'cn' => $groupId,
             'gidnumber' => 500, // autoincrement needed?
         );
 
-        $dn = "cn=" . $groupId . ",ou=groups,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $groupId . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
         if ( !ldap_add ( $ds , $dn , $entry) ) {
             $message = "Unable to create LDAP Group: " . $groupId;
@@ -94,7 +94,7 @@ class GroupService {
     public static function deleteLDAPGroup(\OC\Group\Group $group){
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . ",ou=groups,dc=localhost"; //TODO: make configurable
+        $dn = "cn=" . $group->getGID() . ',' . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
         if ( !ldap_delete($ds, $dn) ) {
             $message = "Unable to delete LDAP Group: " . $group->getGID() ;
