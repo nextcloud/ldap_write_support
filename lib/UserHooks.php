@@ -32,7 +32,7 @@ class UserHooks {
 
     public function register() {
 
-        $deleteNCUser = function ($user) {            
+        $deleteNCUser = function ( $user ) {            
             /**
              * delete NextCloud user
              */
@@ -49,15 +49,18 @@ class UserHooks {
             }
         };
 
-
         $cb1 = ['OCA\Ldapusermanagement\UserService', 'createLDAPUser'];
         $this->userManager->listen('\OC\User', 'preCreateUser', $cb1);
 
         $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
         $this->userManager->listen('\OC\User', 'preDelete', $cb3);
 
-        $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
-        $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
+        $cb4 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUser'];
+        $this->userManager->listen('\OC\User', 'changeUser', $cb4);
+
+        /* disable deleting NC user in order to make email and displayName fields available for LDAP Users. However, new LDAP users shows duplicated in NC user list */
+        // $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
+        // $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
 
     }
 

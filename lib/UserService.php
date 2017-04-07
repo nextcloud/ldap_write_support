@@ -75,8 +75,27 @@ class UserService {
             $message = "Delete LDAP user (isDeleted): " . $user->getUID();
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 
-            \OCP\Config::setUserValue($user->getUID(), 'user_ldap', 'isDeleted', 1);
+            // \OCP\Config::setUserValue($user->getUID(), 'user_ldap', 'isDeleted', 1);
         }
     }
 
+
+    public static function changeLDAPUser( $user ){
+    /* this hook was supposed to get array( $user, $modified_feature, $value) as input, but only $user is comming */
+
+        $ds = LDAPConnect::bind();
+        $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+
+        $entry = NULL;
+        $entry['mail'] = $user->getEMailAddress();
+        $entry['displayName'] = $user->getDisplayName();
+
+        if (!ldap_mod_replace ( $ds , $dn , $entry)) {
+            $message = "Unable to modify user attributes " . $user->getEMailAddress( ). " and " . $user->getDisplayName();
+            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+        } else {
+            $message = "Modify user attributes " . $user->getEMailAddress( ). " and " . $user->getDisplayName();
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+        }
+    }
 }
