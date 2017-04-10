@@ -60,7 +60,7 @@ class LdapusermanagementController extends Controller {
 	 */
 	public function __construct(
 		$appName,
-		// IRequest $request,
+		IRequest $request,
 		IConfig $config,
 		LdapusermanagementDefaults $template,
 		// Util $util,
