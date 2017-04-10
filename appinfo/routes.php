@@ -11,5 +11,13 @@ return [
     'routes' => [
 	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+       ['name' => 'ldapusermanagement_api#index', 'url' => '/api/0.1/user/', 'verb' => 'GET'],
+
+	[
+		'name' => 'Ldapusermanagement#updateStylesheet',
+		'url' => '/ajax/updateStylesheet',
+		'verb' => 'POST'
+	],
+
 ]];
 
