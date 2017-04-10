@@ -100,13 +100,14 @@ class UserService {
         $entry = NULL;
         $entry['mail'] = $userData['email']['value'];
         $entry['displayName'] = $userData['displayname']['value'];
-        $entry['street'] = $userData['address']['value'];
+        if ($userData['address']['value']) 
+            $entry['street'] = $userData['address']['value'];
 
         if (!ldap_mod_replace ( $ds , $dn , $entry)) {
-            $message = "Unable to modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $entry['street'];
+            $message = "Unable to modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
             \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $entry['street'];
+            $message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
         }
     }
