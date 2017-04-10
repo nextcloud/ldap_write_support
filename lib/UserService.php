@@ -39,7 +39,7 @@ class UserService {
      */
         $ds = LDAPConnect::bind();
 
-	$uid_number = 2010;
+        $uid_number = 2010;
 
         $entry = array( 
             'o' => $uid ,
