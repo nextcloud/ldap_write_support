@@ -61,7 +61,7 @@ class LDAPConnect {
             \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
             $message = "Bind to LDAP server using credentials $dn";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
             return $ds;
         }
         // try catch!!!
