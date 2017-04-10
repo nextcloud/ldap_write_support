@@ -22,11 +22,12 @@
 namespace OCA\Ldapusermanagement;
 use OCP\IUserManager;
 
+
 class UserHooks {
 
     private $userManager;
 
-    public function __construct(IUserManager $UserManager){
+    public function __construct( IUserManager $UserManager ){
         $this->userManager = $UserManager;
     }
 
@@ -55,8 +56,14 @@ class UserHooks {
         $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
         $this->userManager->listen('\OC\User', 'preDelete', $cb3);
 
-        $cb4 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUser'];
-        $this->userManager->listen('\OC\User', 'changeUser', $cb4);
+        /* this hook listens only to email and display name changes */
+        // $cb4 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUser'];
+        // $this->userManager->listen('\OC\User', 'changeUser', $cb4);
+
+        /* this pseudo-hook listens every change in user attributes. */
+        $cb5 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUserAttributes'];
+        $eventDispatcher = \OC::$server->getEventDispatcher();
+        $eventDispatcher->addListener('OC\AccountManager::userUpdated', $cb5);
 
         /* disable deleting NC user in order to make email and displayName fields available for LDAP Users. However, new LDAP users shows duplicated in NC user list */
         // $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];

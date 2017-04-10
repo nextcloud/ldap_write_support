@@ -21,12 +21,16 @@
 
 namespace OCA\Ldapusermanagement;
 
+use OC\Accounts;
+
 class UserService {
 
     private $userManager;
+    private $accountManager;
 
-    public function __construct($userManager){
+    public function __construct($userManager , $accountManager){
         $this->userManager = $userManager;
+        $this->accountManager = $accountManager;
     }
 
     public static function createLDAPUser($uid, $password) {
@@ -49,6 +53,7 @@ class UserService {
             'uidnumber' => $uid_number, // mandatory
             'userpassword' => $password ,
             'displayName' => $uid,
+            'street' => "address",
         );
         // when LDAP user is deleted, user folder remains there
 
@@ -79,23 +84,31 @@ class UserService {
         }
     }
 
+    public static function changeLDAPUserAttributes ( \Symfony\Component\EventDispatcher\GenericEvent $event ){
 
-    public static function changeLDAPUser( $user ){
-    /* this hook was supposed to get array( $user, $modified_feature, $value) as input, but only $user is comming */
+        $user = $event->getSubject();
 
         $ds = LDAPConnect::bind();
         $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
 
+        $accountManager = new \OC\Accounts\AccountManager (                 
+                \OC::$server->getDatabaseConnection(),
+                \OC::$server->getEventDispatcher() );
+
+        $userData = $accountManager->getUser( $user );
+
         $entry = NULL;
-        $entry['mail'] = $user->getEMailAddress();
-        $entry['displayName'] = $user->getDisplayName();
+        $entry['mail'] = $userData['email']['value'];
+        $entry['displayName'] = $userData['displayname']['value'];
+        $entry['street'] = $userData['address']['value'];
 
         if (!ldap_mod_replace ( $ds , $dn , $entry)) {
-            $message = "Unable to modify user attributes " . $user->getEMailAddress( ). " and " . $user->getDisplayName();
+            $message = "Unable to modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $entry['street'];
             \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
         } else {
-            $message = "Modify user attributes " . $user->getEMailAddress( ). " and " . $user->getDisplayName();
+            $message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $entry['street'];
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
         }
     }
+
 }
