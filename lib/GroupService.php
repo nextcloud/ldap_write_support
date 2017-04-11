@@ -80,7 +80,7 @@ class GroupService {
             'gidnumber' => 500, // autoincrement needed?
         );
 
-        $dn = "cn=" . $groupId . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        $dn = "cn=" . $groupId . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
 
         if ( !ldap_add ( $ds , $dn , $entry) ) {
             $message = "Unable to create LDAP Group: " . $groupId;
