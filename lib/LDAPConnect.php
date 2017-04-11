@@ -27,9 +27,9 @@ use OCP\IConfig;
 class LDAPConnect {
 
     public static function connect() {
-        // TODO: get from LDAP plugin ?
-        $ldaphost  = \OCP\Config::getAppValue('ldapusermanagement','host','');
-        $ldapport  = \OCP\Config::getAppValue('ldapusermanagement','port','');
+
+        $ldaphost  = \OCP\Config::getAppValue('user_ldap','ldap_host','');
+        $ldapport  = \OCP\Config::getAppValue('user_ldap','ldap_port','');        
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
         $ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
@@ -52,8 +52,9 @@ class LDAPConnect {
 
         // LDAP variables
         $ds = LDAPConnect::connect();
-        $dn = \OCP\Config::getAppValue('ldapusermanagement','dn','');
-        $secret = \OCP\Config::getAppValue('ldapusermanagement','password','');
+        $dn = \OCP\Config::getAppValue('user_ldap','ldap_dn','');
+        $secret = base64_decode(\OCP\Config::getAppValue('user_ldap','ldap_agent_password',''));
+        /* shouldnt do this: modify base64_decode and set decoding method from user_ldap */
 
         // Connecting to LDAP
         if (!ldap_bind($ds,$dn,$secret)) {

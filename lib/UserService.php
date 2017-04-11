@@ -57,7 +57,8 @@ class UserService {
         );
         // when LDAP user is deleted, user folder remains there
 
-        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        // $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');        
 
         if (!ldap_add ( $ds , $dn , $entry)) {
             $message = "Unable to create LDAP user '$uid' ($dn)";
@@ -71,7 +72,7 @@ class UserService {
     public static function deleteLDAPUser($user){
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
 
         if (!ldap_delete ( $ds , $dn )) {
             $message = "Unable to delete LDAP user " . $user->getUID();
@@ -89,7 +90,7 @@ class UserService {
         $user = $event->getSubject();
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
 
         $accountManager = new \OC\Accounts\AccountManager (                 
                 \OC::$server->getDatabaseConnection(),
