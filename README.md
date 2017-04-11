@@ -16,18 +16,19 @@ git clone git@gitlab.com:eita/ldapusermanagement.git
 ```
 ## Configure
 
-Go to Admin Settings / LDAP AD Integration tab. Under the user_ldap configurations, you will find LdapUserManagement configurations. These are needed to allow the app to edit you LDAP configurations:
+For LdapUserManagement to work properly, the following configurations at user_ldap should work be correctly set :
 
 * Host (ex: localhost)
 * Port (ex: 389)
 * DN (ex: cn=admin,dc=localhost)
 * Password
-* User Base (ou=users,dc=localhost)
-* Group Base (ou=groups,dc=localhost)
+* Advanced > User Base (ou=users,dc=localhost)
+* Advanced > Group Base (ou=groups,dc=localhost)
 
 ## Known issues
 
 * Usernames containing spaces do not work
+* For this moment, each new user displays twice on user list. Solving this issue depends on a patch to user_ldap, which will be done ASAP.
 
 ## LDAP parameters
 
@@ -38,10 +39,12 @@ NextCloud interface for creating users allows only to input an username and a pa
 * cn: uid
 * gidnumber: 
 * homedirectory: 
-* mail:
+* mail: 'x@x.com'
 * sn: uid
 * uid: uid
 * uidnumber: 1010
 * userpassword: password
 * displayName: uid
+* street: 'street'
 
+Each user can edit displayName, street and mail using the personal profile editor on NextCloud.
