@@ -94,7 +94,7 @@ class GroupService {
     public static function deleteLDAPGroup(\OC\Group\Group $group){
 
         $ds = LDAPConnect::bind();
-        $dn = "cn=" . $group->getGID() . ',' . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
+        $dn = "cn=" . $group->getGID() . ',' . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
 
         if ( !ldap_delete($ds, $dn) ) {
             $message = "Unable to delete LDAP Group: " . $group->getGID() ;
