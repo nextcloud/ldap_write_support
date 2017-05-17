@@ -66,8 +66,8 @@ class UserHooks {
         $eventDispatcher->addListener('OC\AccountManager::userUpdated', $cb5);
 
         /* disable deleting NC user in order to make email and displayName fields available for LDAP Users. However, new LDAP users shows duplicated in NC user list */
-        // $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
-        // $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
+        $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
+        $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
 
     }
 

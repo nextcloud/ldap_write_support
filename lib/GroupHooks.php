@@ -57,7 +57,7 @@ class GroupHooks {
 
         $this->groupManager->listen('\OC\Group', 'preCreate', ['OCA\Ldapusermanagement\GroupService', 'createLDAPGroup']);
 
-        //nope: $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
+        $this->groupManager->listen('\OC\Group', 'postCreate', $deleteNCGroup);
 
     }
 
