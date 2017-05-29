@@ -94,7 +94,9 @@ class UserService {
 
         $accountManager = new \OC\Accounts\AccountManager (                 
                 \OC::$server->getDatabaseConnection(),
-                \OC::$server->getEventDispatcher() );
+                \OC::$server->getEventDispatcher(),
+                \OC::$server->getJobList()
+                 );
 
         $userData = $accountManager->getUser( $user );
 
@@ -113,15 +115,16 @@ class UserService {
         }
     }
 
-    public static function changeLDAPUser ( \OC\User\User $user, string $feature, string $value ){
+/*
+    public static function changeLDAPUser ( \OC\User\User $user, string $feature, string $value , string $oldvalue ){
 
         $ds = LDAPConnect::bind();
         $dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
 
-            $message = "Unable to modify user attributes " . $feature . " and " . $value ;
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+        $message = "Unable to modify user attributes " . $feature . " and " . $value ;
+        \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 
-/*
+
         $entry = NULL;
         $entry['mail'] = $userData['email']['value'];
         $entry['displayName'] = $userData['displayname']['value'];
@@ -135,6 +138,6 @@ class UserService {
             $message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
             \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
         }
-*/
     }
+*/    
 }
