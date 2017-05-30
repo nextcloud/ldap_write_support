@@ -4,6 +4,34 @@
 use OCP\AppFramework\App;
 use OCP\AppFramework\OCS\OCSException;
 
+$helper = new \OCA\User_LDAP\Helper(\OC::$server->getConfig());
+$configPrefixes = $helper->getServerConfigurationPrefixes(true);
+if(count($configPrefixes) > 0) {
+	$ldapWrapper = new OCA\User_LDAP\LDAP();
+	$ocConfig = \OC::$server->getConfig();
+	$notificationManager = \OC::$server->getNotificationManager();
+	$notificationManager->registerNotifier(function() {
+		return new \OCA\User_LDAP\Notification\Notifier(
+			\OC::$server->getL10NFactory()
+		);
+	}, function() {
+		$l = \OC::$server->getL10N('user_ldap');
+		return [
+			'id' => 'user_ldap',
+			'name' => $l->t('LDAP user and group backend'),
+		];
+	});
+
+	$userBackend  = new OCA\ldapusermanagement\lib\User_Proxy_Edit(
+		$configPrefixes, $ldapWrapper, $ocConfig, $notificationManager
+	);
+	// register user backend
+	OC_User::useBackend($userBackend);
+}
+
+
+
+
 if (\OCP\App::isEnabled('user_ldap')) {
 
 	$app = new App('ldapusermanagement');
