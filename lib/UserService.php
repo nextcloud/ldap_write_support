@@ -45,7 +45,7 @@ class UserService {
             'o' => $uid ,
             'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
             'cn' => $uid ,
-            'gidnumber' => 500,
+            'gidnumber' => 501,
             'homedirectory' => 'x', // ignored by nextcloud
             'mail' => 'x@x.com',
             'sn' => $uid ,
