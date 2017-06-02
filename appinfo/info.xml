@@ -7,9 +7,12 @@
     <description><![CDATA[This app modifies the way NC creates a new user. Instead of creating it on the NC database, this app creates the user on the LDAP base, allowing you to manage your LDAP users using the NC interface.]]></description>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <namespace>Ldapusermanagement</namespace>
     <category>auth</category>
+    <types>
+        <authentication/>
+    </types>
     <bugs>https://gitlab.com/eita/ldapusermanagement/issues</bugs>
     <dependencies>
         <user_ldap />
