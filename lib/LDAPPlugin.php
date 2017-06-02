@@ -124,8 +124,6 @@ class LDAPPlugin implements ILDAPPlugin {
 		/** @var LDAPProvider $provider */
 		$provider = $this->container->query('LDAPProvider');
 
-		$userDN = $provider->getUserDN($uid);
-
 		$connection = $provider->getLDAPConnection($uid);
 
 		$displayNameField = $provider->getLDAPUserDisplayName($uid);
@@ -136,7 +134,7 @@ class LDAPPlugin implements ILDAPPlugin {
 			return false;
 		}
 		try {
-			return ldap_mod_replace($connection,$userDN, array($displayNameField => $displayName));
+			return $provider->modReplace($uid, array($displayNameField => $displayName));
 		} catch(ConstraintViolationException $e) {
 			throw new HintException('DisplayName change rejected.', \OC::$server->getL10N('user_ldap')->t('DisplayName change rejected. Hint: ').$e->getMessage(), $e->getCode());
 		}
