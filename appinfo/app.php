@@ -16,10 +16,7 @@ if (\OCP\App::isEnabled('user_ldap')) {
 	$ldapUserManager = new LDAPUserManager($container);
 
 	// register hooks
-	$container->query('OCA\Ldapusermanagement\UserHooks')->register($ldapUserManager);
 	$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
-
-	\OCP\Util::connectHook('\OCA\User_LDAP\User\User','postLDAPBackendAdded', $ldapUserManager, "postLDAPBackendAdded");
 
 	PluginManager::register($ldapUserManager);
 

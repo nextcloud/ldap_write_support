@@ -16,12 +16,6 @@ class Application extends App {
 
         $container = $this->getContainer();
 
-        $container->registerService('UserHooks', function($c) {
-            return new UserHooks(
-                $c->query('ServerContainer')->getUserManager()
-            );
-        });
-
         $container->registerService('GroupHooks', function($c) {
             return new GroupHooks(
                 $c->query('ServerContainer')->getGroupManager()

@@ -35,6 +35,7 @@ use OCP\IConfig;
 use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserSession;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 
 class LDAPUserManager implements ILDAPPlugin {
@@ -45,8 +46,17 @@ class LDAPUserManager implements ILDAPPlugin {
 
 	public function __construct($container) {
 		$this->container = $container;
-		$backends = \OC::$server->getUserManager()->getBackends();
-		$t=1;
+
+		#hook to listen to LDAP backend addition
+		\OCP\Util::connectHook('\OCA\User_LDAP\User\User','postLDAPBackendAdded', $this, "postLDAPBackendAdded");
+
+		$userManager = $this->container->query('UserManager');
+
+		$userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
+
+		//$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
+		$eventDispatcher = \OC::$server->getEventDispatcher();
+		$eventDispatcher->addListener('OC\AccountManager::userUpdated', array($this, 'changeUserAttributesHook'));
 	}
 
 
@@ -65,116 +75,7 @@ class LDAPUserManager implements ILDAPPlugin {
 			   Backend::CREATE_USER;
 	}
 
-	/**
-	 * Provides LDAP Provider. Cannot be established in constructor
-	 *
-	 * @return LDAPProvider
-	 */
-	public function getLDAPProvider() {
-		if (!$this->provider) {
-			$this->provider = $this->container->query('LDAPProvider');
-		}
-		return $this->provider;
-	}
 
-	/**
-	 * Create a new user in LDAP Backend
-	 *
-	 * @param string $username The username of the user to create
-	 * @param string $password The password of the new user
-	 * @return bool|\OCP\IUser the created user of false
-	 *
-	 */
-	public function createUser($username, $password) {
-
-		/** @var IUserSession $session */
-		$session = $this->container->query("UserSession");
-
-		$currentUser = $session->getUser();
-
-		// If the NC user is an LDAP user, she will be allowed to create new users in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
-		$provider = $this->getLDAPProvider();
-
-		$newUserEntry = $this->buildNewUserEntry($username, $password);
-		$connection = $provider->getLDAPConnection($currentUserID);
-		$newUserDN = "cn=$username,".$provider->getLDAPBaseUsers($currentUserID);
-
-		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
-			$message = "Create LDAP user '$username' ($newUserDN)";
-			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
-		} else {
-			$message = "Unable to create LDAP user '$username' ($newUserDN)";
-			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
-		}
-		return $ret;
-	}
-
-	public function buildNewUserEntry($username, $password) {
-		$entry = array(
-			'o' => $username ,
-			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
-			'cn' => $username ,
-			'gidnumber' => 500, // TODO: Why this????
-			'homedirectory' => 'x', // ignored by nextcloud
-			'mail' => 'x@x.com',
-			'sn' => $username ,
-			'uid' => $username , // mandatory
-			'uidnumber' => 2010, // mandatory // TODO: Why this????
-			'userpassword' => $password ,
-			'displayName' => $username,
-			'street' => "address",
-		);
-		return $entry;
-	}
-
-	/**
-	 * Set password
-	 *
-	 * @param string $uid The username
-	 * @param string $password The new password
-	 * @return bool
-	 *
-	 * Change the password of a user
-	 */
-	public function setPassword($uid, $password) {
-		// TODO: Implement setPassword() method.
-	}
-
-	/**
-	 * Check if the password is correct
-	 *
-	 * @param string $uid The username
-	 * @param string $password The password
-	 * @return bool
-	 *
-	 * Check if the password is correct without logging in the user
-	 */
-	public function checkPassword($uid, $password) {
-		$i = 1;
-		// TODO: Implement checkPassword() method.
-	}
-
-	/**
-	 * get the user's home directory
-	 *
-	 * @param string $uid the username
-	 * @return boolean
-	 */
-	public function getHome($uid) {
-		// TODO: Implement getHome() method.
-	}
-
-	/**
-	 * get display name of the user
-	 *
-	 * @param string $uid user ID of the user
-	 * @return string display name
-	 */
-	public function getDisplayName($uid) {
-		// TODO: Implement getDisplayName() method.
-	}
 
 	/**
 	 * set display name of the user
@@ -191,7 +92,7 @@ class LDAPUserManager implements ILDAPPlugin {
 
 		$connection = $provider->getLDAPConnection($uid);
 
-		$displayNameField = $provider->getLDAPUserDisplayName($uid);
+		$displayNameField = $provider->getLDAPDisplayNameField($uid);
 
 		if (!is_resource($connection)) {
 			//LDAP not available
@@ -204,7 +105,6 @@ class LDAPUserManager implements ILDAPPlugin {
 			throw new HintException('DisplayName change rejected.', \OC::$server->getL10N('user_ldap')->t('DisplayName change rejected. Hint: ').$e->getMessage(), $e->getCode());
 		}
 	}
-
 
 	/**
 	 * checks whether the user is allowed to change his avatar in Nextcloud
@@ -239,29 +139,80 @@ class LDAPUserManager implements ILDAPPlugin {
 		}
 	}
 
-
+	/**
+	 * Saves NC user email to LDAP
+	 *
+	 * @param IUser $user
+	 */
+	public function changeEmail($user, $newEmail) {
+		$userDN = $this->getLdapProvider()->getUserDN($user->getUID());
+		if ($userDN) {
+			$provider = $this->getLDAPProvider();
+			$emailField = $provider->getLDAPEmailField($user->getUID());
+			$connection = $provider->getLDAPConnection($user->getUID());
+			ldap_mod_replace($connection, $userDN, array($emailField => $newEmail));
+		} else {
+			// TODO: log that this NC user is not a ldap user
+		}
+	}
 
 	/**
-	 * Count the number of users
+	 * Create a new user in LDAP Backend
 	 *
-	 * @return int|bool
+	 * @param string $username The username of the user to create
+	 * @param string $password The password of the new user
+	 * @return bool|\OCP\IUser the created user of false
+	 *
 	 */
-	public function countUsers() {
-		// TODO: Implement countUsers() method.
-	}
+	public function createUser($username, $password) {
 
+		/** @var IUserSession $session */
+		$session = $this->container->query("UserSession");
 
-	public function add($link, $userDN, $params) {
-		return $this->invokeLDAPMethod('add', $link, $userDN, $params);
-	}
+		$currentUser = $session->getUser();
 
-	public function postLDAPBackendAdded() {
-		$userManager =  \OC::$server->getUserManager();
-		$backends = $userManager->getBackends();
-		$userManager->clearBackends();
-		for ($i = count($backends)-1; $i >= 0; $i--) {
-			\OC_User::useBackend($backends[$i]);
+		// If the NC user is an LDAP user, she will be allowed to create new users in the corresponding LDAP database
+		$currentUserID = $currentUser->getUID();
+
+		$provider = $this->getLDAPProvider();
+
+		$newUserEntry = $this->buildNewUserEntry($username, $password);
+		try {
+			$connection = $provider->getLDAPConnection($currentUserID);
+		} catch (\Exception $exception) {
+			if ($exception->getMessage() == "User id not found in LDAP") {
+				throw new \Exception("You cannot add a new LDAP User because you are not a LDAP User.");
+			}
+			throw $exception;
 		}
+		$newUserDN = "cn=$username,".$provider->getLDAPBaseUsers($currentUserID);
+
+		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
+			$message = "Create LDAP user '$username' ($newUserDN)";
+			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+		} else {
+			$message = "Unable to create LDAP user '$username' ($newUserDN)";
+			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+		}
+		return $ret;
+	}
+
+	public function buildNewUserEntry($username, $password) {
+		$entry = array(
+			'o' => $username ,
+			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
+			'cn' => $username ,
+			'gidnumber' => 500, // TODO: Why this????
+			'homedirectory' => 'x', // ignored by nextcloud
+			'mail' => 'x@x.com',
+			'sn' => $username ,
+			'uid' => $username , // mandatory
+			'uidnumber' => 2010, // mandatory // TODO: Why this????
+			'userpassword' => $password ,
+			'displayName' => $username,
+			'street' => "address",
+		);
+		return $entry;
 	}
 
 	public function deleteUser($uid) {
@@ -281,5 +232,135 @@ class LDAPUserManager implements ILDAPPlugin {
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
 		return $res;
+	}
+
+	/**
+	 * Set password
+	 *
+	 * @param string $uid The username
+	 * @param string $password The new password
+	 * @return bool
+	 *
+	 * Change the password of a user
+	 */
+	public function setPassword($uid, $password) {
+		// Not implemented
+		return false;
+	}
+
+	/**
+	 * Check if the password is correct
+	 *
+	 * @param string $uid The username
+	 * @param string $password The password
+	 * @return bool
+	 *
+	 * Check if the password is correct without logging in the user
+	 */
+	public function checkPassword($uid, $password) {
+		// Not implemented
+		return false;
+	}
+
+	/**
+	 * get the user's home directory
+	 *
+	 * @param string $uid the username
+	 * @return boolean
+	 */
+	public function getHome($uid) {
+		// Not implemented
+		return false;
+	}
+
+	/**
+	 * get display name of the user
+	 *
+	 * @param string $uid user ID of the user
+	 * @return string display name
+	 */
+	public function getDisplayName($uid) {
+		// Not implemented
+		return false;
+	}
+
+	/**
+	 * Count the number of users
+	 *
+	 * @return int|bool
+	 */
+	public function countUsers() {
+		// Not implemented
+		return false;
+	}
+
+	public function postLDAPBackendAdded() {
+		$userManager =  \OC::$server->getUserManager();
+		$backends = $userManager->getBackends();
+		$userManager->clearBackends();
+		for ($i = count($backends)-1; $i >= 0; $i--) {
+			\OC_User::useBackend($backends[$i]);
+		}
+	}
+
+	/**
+	 * @param GenericEvent $event
+	 */
+	public static function changeUserAttributesHook ( GenericEvent $event ){
+		return false;
+
+		$user = $event->getSubject();
+
+		$ds = LDAPConnect::bind();
+		$dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
+
+		$accountManager = new \OC\Accounts\AccountManager (
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getEventDispatcher(),
+			\OC::$server->getJobList()
+		);
+
+		$userData = $accountManager->getUser( $user );
+
+		$entry = NULL;
+		$entry['mail'] = $userData['email']['value'];
+		$entry['displayName'] = $userData['displayname']['value'];
+		if ($userData['address']['value'])
+			$entry['street'] = $userData['address']['value'];
+
+		if (!ldap_mod_replace ( $ds , $dn , $entry)) {
+			$message = "Unable to modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
+			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+		} else {
+			$message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
+			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+		}
+	}
+
+	/**
+	 * Provides LDAP Provider. Cannot be established in constructor
+	 *
+	 * @return LDAPProvider
+	 */
+	private function getLDAPProvider() {
+		if (!$this->provider) {
+			$this->provider = $this->container->query('LDAPProvider');
+		}
+		return $this->provider;
+	}
+
+	public function changeUserHook($user, $feature, $attr1, $attr2) {
+		$i = 1;
+		switch ($feature) {
+			case 'avatar':
+				$this->changeAvatar($user);
+				break;
+			case 'eMailAddress':
+				//attr1 = new email ; attr2 = old email
+				$this->changeEmail($user, $attr1);
+
+				break;
+
+		}
 	}
 }
