@@ -262,6 +262,24 @@ class LDAPUserManager implements ILDAPPlugin {
 		for ($i = count($backends)-1; $i >= 0; $i--) {
 			\OC_User::useBackend($backends[$i]);
 		}
-		$backends = $userManager->getBackends();
+	}
+
+	public function deleteUser($uid) {
+		$provider = $this->getLDAPProvider();
+
+		$connection = $provider->getLDAPConnection($uid);
+
+		$userDN = $provider->getUserDN($uid);
+
+		if ($res = ldap_delete($connection, $userDN)) {
+			$message = "Delete LDAP user (isDeleted): " . $user->getUID();
+			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+
+			\OCP\Config::setUserValue($user->getUID(), 'user_ldap', 'isDeleted', 1);
+		} else {
+			$message = "Unable to delete LDAP user " . $user->getUID();
+			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+		}
+		return $res;
 	}
 }
