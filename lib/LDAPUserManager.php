@@ -32,6 +32,7 @@ use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
 use OCP\AppFramework\IAppContainer;
 use OCP\IConfig;
+use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserSession;
 
@@ -226,7 +227,12 @@ class LDAPUserManager implements ILDAPPlugin {
 			/** @var IImage $avatar */
 			$avatar = $user->getAvatarImage(-1);
 			if ($avatar) {
+				$data = $avatar->data();
 
+				$provider = $this->getLDAPProvider();
+
+				$connection = $provider->getLDAPConnection($user->getUID());
+				ldap_mod_replace($connection, $userDN, array('jpegphoto' => $data));
 			}
 		} else {
 			// TODO: log that this NC user is not a ldap user
