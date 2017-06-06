@@ -23,10 +23,11 @@ namespace OCA\Ldapusermanagement;
 
 use OC\Accounts;
 
-class UserService {
+class LDAPUserManagerDeprecated {
 
     private $userManager;
     private $accountManager;
+    private $provider;
 
     public function __construct($userManager , $accountManager){
         $this->userManager = $userManager;
@@ -60,13 +61,14 @@ class UserService {
         // $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('ldapusermanagement','userbase','');
         $dn = "cn=" . $uid . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');        
 
-        if (!ldap_add ( $ds , $dn , $entry)) {
-            $message = "Unable to create LDAP user '$uid' ($dn)";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
-        } else {
-            $message = "Create LDAP user '$uid' ($dn)";
-            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
-        }
+        if ($ret = ldap_add($ds, $dn, $entry)) {
+			$message = "Create LDAP user '$uid' ($dn)";
+			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+		} else {
+			$message = "Unable to create LDAP user '$uid' ($dn)";
+			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+		}
+		return $ret;
     }
 
     public static function deleteLDAPUser($user){

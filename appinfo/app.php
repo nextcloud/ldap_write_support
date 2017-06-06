@@ -1,22 +1,27 @@
 <?php
 
 
-use OCA\Ldapusermanagement\LDAPPlugin;
+use OCA\Ldapusermanagement\LDAPUserManager;
 use OCA\User_LDAP\PluginManager;
 use OCP\AppFramework\App;
-use OCP\AppFramework\OCS\OCSException;
-
 
 
 if (\OCP\App::isEnabled('user_ldap')) {
 
 	$app = new App('ldapusermanagement');
 	$container = $app->getContainer();
+
+	$backends = \OC::$server->getUserManager()->getBackends();
+
+	$ldapUserManager = new LDAPUserManager($container);
+
 	// register hooks
-	$container->query('OCA\Ldapusermanagement\UserHooks')->register();
+	$container->query('OCA\Ldapusermanagement\UserHooks')->register($ldapUserManager);
 	$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
 
-	PluginManager::register(new LDAPPlugin($container));
+	\OCP\Util::connectHook('\OCA\User_LDAP\User\User','postLDAPBackendAdded', $ldapUserManager, "postLDAPBackendAdded");
+
+	PluginManager::register($ldapUserManager);
 
 } 
 // else {

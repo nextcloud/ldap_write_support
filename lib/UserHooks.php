@@ -20,25 +20,30 @@
  */
 
 namespace OCA\Ldapusermanagement;
+use OCA\User_LDAP\LDAPProvider;
+use OCP\AppFramework\IAppContainer;
+use OCP\IImage;
 use OCP\IUserManager;
 
 
 class UserHooks {
 
     private $userManager;
+    private $ldapUserManager;
 
-    public function __construct( IUserManager $UserManager ){
+    public function __construct( IUserManager $UserManager ) {
         $this->userManager = $UserManager;
     }
 
-    public function register() {
+    public function register($ldapUserManager) {
+    	$this->ldapUserManager = $ldapUserManager;
 
         $deleteNCUser = function ( $user ) {            
             /**
              * delete NextCloud user
              */
             // cancel delete LDAP hook
-            $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
+            $cb3 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'deleteLDAPUser'];
             $this->userManager->removeListener(null, null, $cb3);
 
             if (!$user->delete()){
@@ -50,25 +55,35 @@ class UserHooks {
             }
         };
 
-        $cb1 = ['OCA\Ldapusermanagement\UserService', 'createLDAPUser'];
-        $this->userManager->listen('\OC\User', 'preCreateUser', $cb1);
+        //$cb1 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'createLDAPUser'];
+        //$this->userManager->listen('\OC\User', 'preCreateUser', $cb1);
 
-        $cb3 = ['OCA\Ldapusermanagement\UserService', 'deleteLDAPUser'];
-        $this->userManager->listen('\OC\User', 'preDelete', $cb3);
+        //$cb3 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'deleteLDAPUser'];
+        //$this->userManager->listen('\OC\User', 'preDelete', $cb3);
 
         /* this hook listens only to email and display name changes */
         // $cb4 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUser'];
         // $this->userManager->listen('\OC\User', 'changeUser', $cb4);
 
         /* this pseudo-hook listens every change in user attributes. */
-        $cb5 = ['OCA\Ldapusermanagement\UserService', 'changeLDAPUserAttributes'];
-        $eventDispatcher = \OC::$server->getEventDispatcher();
-        $eventDispatcher->addListener('OC\AccountManager::userUpdated', $cb5);
+        //$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
+        //$eventDispatcher = \OC::$server->getEventDispatcher();
+        //$eventDispatcher->addListener('OC\AccountManager::userUpdated', $cb5);
 
         /* disable deleting NC user in order to make email and displayName fields available for LDAP Users. However, new LDAP users shows duplicated in NC user list */
-        $cb2 = ['OCA\Ldapusermanagement\UserService', 'deleteNCUser'];
-        $this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
+        //$cb2 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'deleteNCUser'];
+        //$this->userManager->listen('\OC\User', 'postCreateUser', $deleteNCUser);
 
+		/* listen to avatar change */
+
+		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
     }
+
+	public function changeUserHook($user, $feature) {
+		if ($feature == 'avatar') {
+			$this->ldapUserManager->changeAvatar($user);
+		}
+	}
+
 
 }
