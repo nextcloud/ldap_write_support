@@ -1,6 +1,7 @@
 <?php
 namespace OCA\Ldapusermanagement\AppInfo;
 
+use OCA\Ldapusermanagement\LDAPUserManager;
 use \OCP\AppFramework\App;
 
 // use \OCA\LdapUserManagement\Service\UserService;
@@ -21,7 +22,5 @@ class Application extends App {
                 $c->query('ServerContainer')->getGroupManager()
             );
         });
-
-
-    }
+	}
 }

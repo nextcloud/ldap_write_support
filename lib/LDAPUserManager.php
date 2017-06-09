@@ -2,6 +2,7 @@
 /**
  * @copyright Copyright (c) 2017 EITA Cooperative (eita.org.br)
  *
+ * @author Alan Tygel <alan@eita.org.br>
  * @author Vinicius Brand <vinicius@eita.org.br>
  * @author Daniel Tygel <dtygel@eita.org.br>
  *
@@ -28,7 +29,6 @@ use OC\HintException;
 use OC\User\Backend;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPPlugin;
-use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
 use OCP\AppFramework\IAppContainer;
 use OCP\IConfig;
