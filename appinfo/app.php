@@ -8,7 +8,7 @@ use OCP\AppFramework\App;
 
 if (\OCP\App::isEnabled('user_ldap')) {
 
-	$app = new App('ldapusermanagement');
+	$app = new App('user_ldap_extended');
 	$container = $app->getContainer();
 
 	$backends = \OC::$server->getUserManager()->getBackends();
