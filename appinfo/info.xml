@@ -10,9 +10,6 @@
     <version>0.0.4</version>
     <namespace>Ldapusermanagement</namespace>
     <category>auth</category>
-    <types>
-        <authentication/>
-    </types>
     <bugs>https://gitlab.com/eita/ldapusermanagement/issues</bugs>
     <dependencies>
         <user_ldap />

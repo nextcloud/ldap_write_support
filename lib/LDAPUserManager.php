@@ -29,7 +29,9 @@ use OC\HintException;
 use OC\User\Backend;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPPlugin;
+use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
+use OCA\User_LDAP\User_Proxy;
 use OCP\AppFramework\IAppContainer;
 use OCP\IConfig;
 use OCP\IImage;
@@ -47,9 +49,6 @@ class LDAPUserManager implements ILDAPPlugin {
 	public function __construct($container) {
 		$this->container = $container;
 
-		#hook to listen to LDAP backend addition
-		\OCP\Util::connectHook('\OCA\User_LDAP\User\User','postLDAPBackendAdded', $this, "postLDAPBackendAdded");
-
 		$userManager = $this->container->query('UserManager');
 
 		$userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
@@ -57,6 +56,8 @@ class LDAPUserManager implements ILDAPPlugin {
 		//$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
 		$eventDispatcher = \OC::$server->getEventDispatcher();
 		$eventDispatcher->addListener('OC\AccountManager::userUpdated', array($this, 'changeUserAttributesHook'));
+
+		$this->makeLdapBackendFirst();
 	}
 
 
@@ -294,10 +295,18 @@ class LDAPUserManager implements ILDAPPlugin {
 		return false;
 	}
 
-	public function postLDAPBackendAdded() {
+	public function makeLdapBackendFirst() {
 		$userManager =  \OC::$server->getUserManager();
 		$backends = $userManager->getBackends();
 		$userManager->clearBackends();
+		for ($i = count($backends)-1; $i >= 0; $i--) {
+			if ($backends[$i] instanceof IUserLDAP) {
+				$backend_arr = array_slice($backends,$i,1);
+				\OC_User::useBackend($backend_arr[0]);
+			}
+		}
+
+		#insert other backends: database, etc
 		for ($i = count($backends)-1; $i >= 0; $i--) {
 			\OC_User::useBackend($backends[$i]);
 		}
