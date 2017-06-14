@@ -35,8 +35,10 @@ use OCA\User_LDAP\LDAPProvider;
 use OCA\User_LDAP\User_Proxy;
 use OCP\AppFramework\IAppContainer;
 use OCP\IConfig;
+use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IUser;
+use OCP\IUserManager;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -47,12 +49,21 @@ class LDAPUserManager implements ILDAPPlugin {
 	private $container;
 	private $provider;
 
+	/** @var IGroupManager */
+	private $groupManager;
+
+	/** @var IUserManager */
+	private $userManager;
+
 	public function __construct($container) {
 		$this->container = $container;
 
-		$userManager = $this->container->query('UserManager');
+		$this->userManager = $this->container->query('UserManager');
 
-		$userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
+		$this->groupManager = $this->container->query('GroupManager');
+
+
+		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
 
 		//$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
 		$eventDispatcher = \OC::$server->getEventDispatcher();
@@ -225,6 +236,13 @@ class LDAPUserManager implements ILDAPPlugin {
 
 		$userDN = $provider->getUserDN($uid);
 
+		//Remove user from all groups before deleting...
+		$user = $this->userManager->get($uid);
+		$userGroups = $this->groupManager->getUserGroups($user);
+		foreach ($userGroups as $userGroup) {
+			$userGroup->removeUser($user);
+		}
+		
 		if ($res = ldap_delete($connection, $userDN)) {
 			/** @var IUserSession $session */
 			$session = $this->container->query("UserSession");
@@ -303,9 +321,8 @@ class LDAPUserManager implements ILDAPPlugin {
 	}
 
 	public function makeLdapBackendFirst() {
-		$userManager =  \OC::$server->getUserManager();
-		$backends = $userManager->getBackends();
-		$userManager->clearBackends();
+		$backends = $this->userManager->getBackends();
+		$this->userManager->clearBackends();
 		for ($i = count($backends)-1; $i >= 0; $i--) {
 			if ($backends[$i] instanceof IUserLDAP) {
 				$backend_arr = array_slice($backends,$i,1);
