@@ -27,6 +27,7 @@ namespace OCA\Ldapusermanagement;
 
 use OC\HintException;
 use OC\User\Backend;
+use OCA\User_LDAP\Connection;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPPlugin;
 use OCA\User_LDAP\IUserLDAP;
@@ -189,6 +190,7 @@ class LDAPUserManager implements ILDAPPlugin {
 		$newUserDN = "cn=$username,".$provider->getLDAPBaseUsers($currentUserID);
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
+			$provider->clearCache($currentUserID);
 			$message = "Create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		} else {
@@ -224,12 +226,17 @@ class LDAPUserManager implements ILDAPPlugin {
 		$userDN = $provider->getUserDN($uid);
 
 		if ($res = ldap_delete($connection, $userDN)) {
-			$message = "Delete LDAP user (isDeleted): " . $user->getUID();
+			/** @var IUserSession $session */
+			$session = $this->container->query("UserSession");
+			$currentUser = $session->getUser();
+			$provider->clearCache($currentUser->getUID());
+
+			$message = "Delete LDAP user (isDeleted): " . $uid;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 
-			\OCP\Config::setUserValue($user->getUID(), 'user_ldap', 'isDeleted', 1);
+			\OCP\Config::setUserValue($uid, 'user_ldap', 'isDeleted', 1);
 		} else {
-			$message = "Unable to delete LDAP user " . $user->getUID();
+			$message = "Unable to delete LDAP user " . $uid;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
 		return $res;
