@@ -70,8 +70,11 @@ class LDAPUserManager implements ILDAPPlugin {
 		$eventDispatcher->addListener('OC\AccountManager::userUpdated', array($this, 'changeUserAttributesHook'));
 
 		$this->makeLdapBackendFirst();
-	}
 
+		#this must be used if the plugin app is loaded before user_ldap app.
+		# The order is defined by the app name.
+		#\OC::$server->getEventDispatcher()->addListener('OCA\\User_LDAP\\User\\User::postLDAPBackendAdded',[$this, 'makeLdapBackendFirst']);
+	}
 
 	/**
 	 * Check if plugin implements actions
@@ -242,7 +245,7 @@ class LDAPUserManager implements ILDAPPlugin {
 		foreach ($userGroups as $userGroup) {
 			$userGroup->removeUser($user);
 		}
-		
+
 		if ($res = ldap_delete($connection, $userDN)) {
 			/** @var IUserSession $session */
 			$session = $this->container->query("UserSession");
