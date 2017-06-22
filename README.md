@@ -1,34 +1,28 @@
-# LdapUserManagement
+# user_ldap_extended
 This is an experimental app. Use at your own risk!
 
-LdapUserManagement App enables your NextCloud instance to fully work over an LDAP user base. LdapUserManagement modifies NextCloud functions of create/delete user, create/delete groups and add/remove users from groups to edit directly an LDAP user base on your desired server.
+user_ldap_extended App enables your NextCloud instance to fully work over an LDAP user base. user_ldap_extended hooks NextCloud functions of create/delete user, create/delete groups and add/remove users from groups to edit directly an LDAP user base on your desired server.
 
 ## Dependencies
 
 In order to use LdapUserManagement, `ldap_user` plugin must be enabled!
+Currently, user_ldap_extended works based uppon a patch done to user_ldap. This patch is available here: https://gitlab.com/eita/rios/rios-cloud-server/tree/rios-vivos
 
 ## Install
 
 Place this app in **nextcloud/apps/**. From your nextcloud root:
 ```
 cd apps/
-git clone git@gitlab.com:eita/ldapusermanagement.git
+git clone git@gitlab.com:eita/user_ldap_extended.git
 ```
 ## Configure
 
-For LdapUserManagement to work properly, the following configurations at user_ldap should work be correctly set :
+For user_ldap_extended to work properly, user_ldap plugin should correctly configured.
 
-* Host (ex: localhost)
-* Port (ex: 389)
-* DN (ex: cn=admin,dc=localhost)
-* Password
-* Advanced > User Base (ou=users,dc=localhost)
-* Advanced > Group Base (ou=groups,dc=localhost)
 
 ## Known issues
 
 * Usernames containing spaces do not work
-* For this moment, each new user displays twice on user list. Solving this issue depends on a patch to user_ldap, which will be done ASAP.
 
 ## LDAP parameters
 
@@ -47,4 +41,4 @@ NextCloud interface for creating users allows only to input an username and a pa
 * displayName: uid
 * street: 'street'
 
-Each user can edit displayName, street and mail using the personal profile editor on NextCloud.
+Each user can edit displayName, avatar, street and mail using the personal profile editor on NextCloud.
