@@ -216,7 +216,7 @@ class LDAPUserManager implements ILDAPPlugin {
 			'o' => $username ,
 			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
 			'cn' => $username ,
-			'gidnumber' => 500, // TODO: Why this????
+			'gidnumber' => 1, // TODO: Why this????
 			'homedirectory' => 'x', // ignored by nextcloud
 			'mail' => 'x@x.com',
 			'sn' => $username ,
