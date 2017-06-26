@@ -81,7 +81,7 @@ class GroupService {
         $entry = array( 
             'objectClass' => array( 'posixGroup' , 'top' ),
             'cn' => $groupId,
-            'gidnumber' => 500, // autoincrement needed?
+            'gidnumber' => 5000, // autoincrement needed?
         );
 
         // $dn = "cn=" . $groupId . "," . \OCP\Config::getAppValue('ldapusermanagement','groupbase','');
