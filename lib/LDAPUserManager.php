@@ -27,14 +27,10 @@ namespace OCA\Ldapusermanagement;
 
 use OC\HintException;
 use OC\User\Backend;
-use OCA\User_LDAP\Connection;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
-use OCA\User_LDAP\ILDAPPlugin;
+use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
-use OCA\User_LDAP\User_Proxy;
-use OCP\AppFramework\IAppContainer;
-use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IUser;
@@ -43,11 +39,10 @@ use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 
-class LDAPUserManager implements ILDAPPlugin {
+class LDAPUserManager implements ILDAPUserPlugin {
 
-	/** @var  IAppContainer */
-	private $container;
-	private $provider;
+	private $ldapProvider;
+	private $userSession;
 
 	/** @var IGroupManager */
 	private $groupManager;
@@ -55,19 +50,18 @@ class LDAPUserManager implements ILDAPPlugin {
 	/** @var IUserManager */
 	private $userManager;
 
-	public function __construct($container) {
-		$this->container = $container;
-
-		$this->userManager = $this->container->query('UserManager');
-
-		$this->groupManager = $this->container->query('GroupManager');
-
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession) {
+		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
+		$this->userSession = $userSession;
 
 		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
 
 		//$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
 		$eventDispatcher = \OC::$server->getEventDispatcher();
 		$eventDispatcher->addListener('OC\AccountManager::userUpdated', array($this, 'changeUserAttributesHook'));
+
+		#$eventDispatcher->addListener('OC\User::changeUser', array($this, 'changeUserHook'));
 
 		$this->makeLdapBackendFirst();
 
@@ -138,21 +132,23 @@ class LDAPUserManager implements ILDAPPlugin {
 	 * @param IUser $user
 	 */
 	public function changeAvatar($user) {
-		$userDN = $this->getLdapProvider()->getUserDN($user->getUID());
-		if ($userDN) {
-			/** @var IImage $avatar */
-			$avatar = $user->getAvatarImage(-1);
-			if ($avatar) {
-				$data = $avatar->data();
-
-				$provider = $this->getLDAPProvider();
-
-				$connection = $provider->getLDAPConnection($user->getUID());
-				ldap_mod_replace($connection, $userDN, array('jpegphoto' => $data));
-			}
-		} else {
-			// TODO: log that this NC user is not a ldap user
+		try {
+			$userDN = $this->getLDAPProvider()->getUserDN($user->getUID());
+		} catch (\Exception $e) {
+			return;
 		}
+
+		/** @var IImage $avatar */
+		$avatar = $user->getAvatarImage(-1);
+		if ($avatar) {
+			$data = $avatar->data();
+
+			$provider = $this->getLDAPProvider();
+
+			$connection = $provider->getLDAPConnection($user->getUID());
+			ldap_mod_replace($connection, $userDN, array('jpegphoto' => $data));
+		}
+
 	}
 
 	/**
@@ -161,15 +157,16 @@ class LDAPUserManager implements ILDAPPlugin {
 	 * @param IUser $user
 	 */
 	public function changeEmail($user, $newEmail) {
-		$userDN = $this->getLdapProvider()->getUserDN($user->getUID());
-		if ($userDN) {
-			$provider = $this->getLDAPProvider();
-			$emailField = $provider->getLDAPEmailField($user->getUID());
-			$connection = $provider->getLDAPConnection($user->getUID());
-			ldap_mod_replace($connection, $userDN, array($emailField => $newEmail));
-		} else {
-			// TODO: log that this NC user is not a ldap user
+		try {
+			$userDN = $this->getLDAPProvider()->getUserDN($user->getUID());
+		} catch (\Exception $e) {
+			return;
 		}
+
+		$provider = $this->getLDAPProvider();
+		$emailField = $provider->getLDAPEmailField($user->getUID());
+		$connection = $provider->getLDAPConnection($user->getUID());
+		ldap_mod_replace($connection, $userDN, array($emailField => $newEmail));
 	}
 
 	/**
@@ -182,17 +179,14 @@ class LDAPUserManager implements ILDAPPlugin {
 	 */
 	public function createUser($username, $password) {
 
-		/** @var IUserSession $session */
-		$session = $this->container->query("UserSession");
-
-		$currentUser = $session->getUser();
+		$currentUser = $this->userSession->getUser();
 
 		// If the NC user is an LDAP user, she will be allowed to create new users in the corresponding LDAP database
 		$currentUserID = $currentUser->getUID();
 
 		$provider = $this->getLDAPProvider();
 
-		$newUserEntry = $this->buildNewUserEntry($username, $password);
+		$newUserEntry = $this->buildNewEntry($username, $password);
 		try {
 			$connection = $provider->getLDAPConnection($currentUserID);
 		} catch (\Exception $exception) {
@@ -214,7 +208,7 @@ class LDAPUserManager implements ILDAPPlugin {
 		return $ret;
 	}
 
-	public function buildNewUserEntry($username, $password) {
+	public function buildNewEntry($username, $password) {
 		$entry = array(
 			'o' => $username ,
 			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
@@ -247,9 +241,7 @@ class LDAPUserManager implements ILDAPPlugin {
 		}
 
 		if ($res = ldap_delete($connection, $userDN)) {
-			/** @var IUserSession $session */
-			$session = $this->container->query("UserSession");
-			$currentUser = $session->getUser();
+			$currentUser = $this->userSession->getUser();
 			$provider->clearCache($currentUser->getUID());
 
 			$message = "Delete LDAP user (isDeleted): " . $uid;
@@ -343,6 +335,7 @@ class LDAPUserManager implements ILDAPPlugin {
 	 * @param GenericEvent $event
 	 */
 	public static function changeUserAttributesHook ( GenericEvent $event ){
+		$i = 1;
 		return false;
 
 		$user = $event->getSubject();
@@ -379,10 +372,10 @@ class LDAPUserManager implements ILDAPPlugin {
 	 * @return LDAPProvider
 	 */
 	private function getLDAPProvider() {
-		if (!$this->provider) {
-			$this->provider = $this->container->query('LDAPProvider');
+		if (!$this->ldapProvider) {
+			$this->ldapProvider = \OC::$server->query('LDAPProvider');
 		}
-		return $this->provider;
+		return $this->ldapProvider;
 	}
 
 	public function changeUserHook($user, $feature, $attr1, $attr2) {
@@ -394,7 +387,6 @@ class LDAPUserManager implements ILDAPPlugin {
 			case 'eMailAddress':
 				//attr1 = new email ; attr2 = old email
 				$this->changeEmail($user, $attr1);
-
 				break;
 
 		}
