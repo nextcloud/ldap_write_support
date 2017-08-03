@@ -161,10 +161,18 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 		$groupDN = $provider->getGroupDN($gid);
 
-		switch (strtolower($connection->ldapGroupMemberAssocAttr)) {
-
+		$entry = array();
+		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+			case 'memberUid':
+				$entry['memberuid'] = $uid;
+				break;
+			case 'uniqueMember':
+				#TODO
+			case 'member':
+				#TODO
+			case 'gidNumber':
+				#TODO
 		}
-		$entry['memberuid'] = $uid;
 
 		if (!ldap_mod_add ( $connection , $groupDN , $entry)) {
 			$message = "Unable to add user " . $uid. " to group " . $gid;
@@ -203,7 +211,18 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 		$groupDN = $provider->getGroupDN($gid);
 
-		$entry['memberuid'] = $uid;
+		$entry = array();
+		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+			case 'memberUid':
+				$entry['memberuid'] = $uid;
+				break;
+			case 'uniqueMember':
+				#TODO
+			case 'member':
+				#TODO
+			case 'gidNumber':
+				#TODO
+		}
 
 		if ( !ldap_mod_del ( $connection , $groupDN , $entry) ) {
 			$message = "Unable to remove user: " . $uid. " from group: " . $gid;
