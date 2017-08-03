@@ -26,8 +26,10 @@ namespace OCA\Ldapusermanagement;
 
 
 use OC\Group\Backend;
+use OCA\User_LDAP\Group_Proxy;
 use OCA\User_LDAP\ILDAPGroupPlugin;
 use OCA\User_LDAP\LDAPProvider;
+use OCP\IGroupManager;
 use OCP\IUserSession;
 
 
@@ -36,9 +38,13 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	private $ldapProvider;
 	private $userSession;
+	private $groupManager;
 
-	public function __construct(IUserSession $userSession) {
+	public function __construct(IGroupManager $groupManager, IUserSession $userSession) {
 		$this->userSession = $userSession;
+		$this->groupManager = $groupManager;
+
+		$this->makeLdapBackendFirst();
 	}
 
 	/**
@@ -59,7 +65,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	/**
 	 * @param string $gid
-	 * @return \OCP\IGroup
+	 * @return bool
 	 */
 	public function createGroup($gid) {
 		$currentUser = $this->userSession->getUser();
@@ -79,7 +85,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 			}
 			throw $exception;
 		}
-		$newGroupDN = "cn=$gid,".$provider->getLDAPBaseUsers($currentUserID);
+		$newGroupDN = "cn=$gid,".$provider->getLDAPBaseGroups($currentUserID);
 
 		if ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry)) {
 			$provider->clearCache($currentUserID);
@@ -238,6 +244,24 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	public function getUserGroups($uid) {
 
+	}
+
+	public function makeLdapBackendFirst() {
+		$backends = $this->groupManager->getBackends();
+		$otherBackends = array();
+		$this->groupManager->clearBackends();
+		foreach ($backends as $backend) {
+			if ($backend instanceof Group_Proxy) {
+				$this->groupManager->addBackend($backend);
+			} else {
+				$otherBackends[] = $backend;
+			}
+		}
+
+		#insert other backends: database, etc
+		foreach ($otherBackends as $backend) {
+			$this->groupManager->addBackend($backend);
+		}
 	}
 
 }

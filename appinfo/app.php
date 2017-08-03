@@ -19,13 +19,16 @@ if (\OCP\App::isEnabled('user_ldap')) {
 
 	$ldapUserManager = new LDAPUserManager($userManager,$groupManager, $userSession);
 
+	$ldapGroupManager = new \OCA\Ldapusermanagement\LDAPGroupManager($groupManager, $userSession);
+
 	// register hooks
-	$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
+	#$container->query('OCA\Ldapusermanagement\GroupHooks')->register();
 
 	$userPluginManager = \OC::$server->query('LDAPUserPluginManager');
 	$groupPluginManager = \OC::$server->query('LDAPGroupPluginManager');
 
 	$userPluginManager->register($ldapUserManager);
+	$groupPluginManager->register($ldapGroupManager);
 
 
 	#UserPluginManager::register($ldapUserManager);

@@ -317,17 +317,19 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	public function makeLdapBackendFirst() {
 		$backends = $this->userManager->getBackends();
+		$otherBackends = array();
 		$this->userManager->clearBackends();
-		for ($i = count($backends)-1; $i >= 0; $i--) {
-			if ($backends[$i] instanceof IUserLDAP) {
-				$backend_arr = array_slice($backends,$i,1);
-				\OC_User::useBackend($backend_arr[0]);
+		foreach ($backends as $backend) {
+			if ($backend instanceof IUserLDAP) {
+				\OC_User::useBackend($backend);
+			} else {
+				$otherBackends[] = $backend;
 			}
 		}
 
 		#insert other backends: database, etc
-		for ($i = count($backends)-1; $i >= 0; $i--) {
-			\OC_User::useBackend($backends[$i]);
+		foreach ($otherBackends as $backend) {
+			\OC_User::useBackend($backend);
 		}
 	}
 
