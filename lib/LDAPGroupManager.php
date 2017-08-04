@@ -123,14 +123,14 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 		$groupDN = $provider->getGroupDN($gid);
 
-		if ( !ldap_delete($connection, $groupDN) ) {
+		if ( ! $ret = ldap_delete($connection, $groupDN) ) {
 			$message = "Unable to delete LDAP Group: " . $gid ;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		} else {
 			$message = "Delete LDAP Group: " . $gid ;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		}
-
+		return $ret;
 	}
 
 	/**
