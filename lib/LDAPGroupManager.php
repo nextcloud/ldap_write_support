@@ -174,13 +174,14 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				#TODO
 		}
 
-		if (!ldap_mod_add ( $connection , $groupDN , $entry)) {
+		if (!$ret = ldap_mod_add ( $connection , $groupDN , $entry)) {
 			$message = "Unable to add user " . $uid. " to group " . $gid;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		} else {
 			$message = "Add user: " . $uid. " to group: " . $gid;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		}
+		return $ret;
 	}
 
 	/**
@@ -224,13 +225,14 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				#TODO
 		}
 
-		if ( !ldap_mod_del ( $connection , $groupDN , $entry) ) {
+		if ( !$ret = ldap_mod_del ( $connection , $groupDN , $entry) ) {
 			$message = "Unable to remove user: " . $uid. " from group: " . $gid;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		} else {
 			$message = "Remove user: " . $uid. " from group: " . $gid;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		}
+		return $ret;
 	}
 
 	public function countUsersInGroup($gid, $search = '') {
