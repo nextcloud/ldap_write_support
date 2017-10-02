@@ -215,7 +215,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			'cn' => $username ,
 			'gidnumber' => 1, // TODO: Why this????
 			'homedirectory' => 'x', // ignored by nextcloud
-			'mail' => 'x@x.com',
+			'mail' => $username . '@rios.org.br',
 			'sn' => $username ,
 			'uid' => $username , // mandatory
 			'uidnumber' => 2010, // mandatory // TODO: Why this????
