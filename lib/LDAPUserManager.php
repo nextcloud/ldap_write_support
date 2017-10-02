@@ -31,6 +31,7 @@ use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
+use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IUser;
@@ -57,17 +58,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
 
-		//$cb5 = ['OCA\Ldapusermanagement\LDAPUserManagerDeprecated', 'changeLDAPUserAttributes'];
-		$eventDispatcher = \OC::$server->getEventDispatcher();
-		$eventDispatcher->addListener('OC\AccountManager::userUpdated', array($this, 'changeUserAttributesHook'));
-
-		#$eventDispatcher->addListener('OC\User::changeUser', array($this, 'changeUserHook'));
-
 		$this->makeLdapBackendFirst();
-
-		#this must be used if the plugin app is loaded before user_ldap app.
-		# The order is defined by the app name.
-		#\OC::$server->getEventDispatcher()->addListener('OCA\\User_LDAP\\User\\User::postLDAPBackendAdded',[$this, 'makeLdapBackendFirst']);
 	}
 
 	/**
@@ -84,8 +75,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		       Backend::PROVIDE_AVATAR |
 			   Backend::CREATE_USER;
 	}
-
-
 
 	/**
 	 * set display name of the user
@@ -179,32 +168,21 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 */
 	public function createUser($username, $password) {
 
-		$currentUser = $this->userSession->getUser();
-
-		// If the NC user is an LDAP user, she will be allowed to create new users in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
-		$provider = $this->getLDAPProvider();
+		# FIXME could not create user using LDAPProvider, because its methods rely
+		# on passing an already inserted uid, which we do not have at this point
 
 		$newUserEntry = $this->buildNewEntry($username, $password);
-		try {
-			$connection = $provider->getLDAPConnection($currentUserID);
-		} catch (\Exception $exception) {
-			if ($exception->getMessage() == "User id not found in LDAP") {
-				throw new \Exception("You cannot add a new LDAP User because you are not a LDAP User.");
-			}
-			throw $exception;
-		}
-		$newUserDN = "cn=$username,".$provider->getLDAPBaseUsers($currentUserID);
+		$connection = LDAPConnect::getLDAPConnection();
+		$newUserDN = "cn=$username,".LDAPConnect::getLDAPBaseUsers();
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
-			$provider->clearCache($currentUserID);
 			$message = "Create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		} else {
 			$message = "Unable to create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
+		ldap_close($connection);
 		return $ret;
 	}
 
@@ -213,12 +191,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			'o' => $username ,
 			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
 			'cn' => $username ,
-			'gidnumber' => 1, // TODO: Why this????
+			'gidnumber' => 1, // FIXME: Why this????
 			'homedirectory' => 'x', // ignored by nextcloud
 			'mail' => $username . '@rios.org.br',
 			'sn' => $username ,
 			'uid' => $username , // mandatory
-			'uidnumber' => 2010, // mandatory // TODO: Why this????
+			'uidnumber' => 2010, // mandatory // FIXME: Why this????
 			'userpassword' => $password ,
 			'displayName' => $username,
 			'street' => "address",
@@ -235,15 +213,14 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		//Remove user from all groups before deleting...
 		$user = $this->userManager->get($uid);
+
+		/** @var IGroup[] $userGroups */
 		$userGroups = $this->groupManager->getUserGroups($user);
 		foreach ($userGroups as $userGroup) {
 			$userGroup->removeUser($user);
 		}
 
 		if ($res = ldap_delete($connection, $userDN)) {
-			$currentUser = $this->userSession->getUser();
-			$provider->clearCache($currentUser->getUID());
-
 			$message = "Delete LDAP user (isDeleted): " . $uid;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 
@@ -252,6 +229,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$message = "Unable to delete LDAP user " . $uid;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
+		ldap_close($connection);
 		return $res;
 	}
 
@@ -265,20 +243,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * Change the password of a user
 	 */
 	public function setPassword($uid, $password) {
-		// Not implemented
-		return false;
-	}
-
-	/**
-	 * Check if the password is correct
-	 *
-	 * @param string $uid The username
-	 * @param string $password The password
-	 * @return bool
-	 *
-	 * Check if the password is correct without logging in the user
-	 */
-	public function checkPassword($uid, $password) {
 		// Not implemented
 		return false;
 	}
@@ -334,41 +298,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	/**
-	 * @param GenericEvent $event
-	 */
-	public static function changeUserAttributesHook ( GenericEvent $event ){
-		$i = 1;
-		return false;
-
-		$user = $event->getSubject();
-
-		$ds = LDAPConnect::bind();
-		$dn = "cn=" . $user->getUID() . "," . \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
-
-		$accountManager = new \OC\Accounts\AccountManager (
-			\OC::$server->getDatabaseConnection(),
-			\OC::$server->getEventDispatcher(),
-			\OC::$server->getJobList()
-		);
-
-		$userData = $accountManager->getUser( $user );
-
-		$entry = NULL;
-		$entry['mail'] = $userData['email']['value'];
-		$entry['displayName'] = $userData['displayname']['value'];
-		if ($userData['address']['value'])
-			$entry['street'] = $userData['address']['value'];
-
-		if (!ldap_mod_replace ( $ds , $dn , $entry)) {
-			$message = "Unable to modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
-			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
-		} else {
-			$message = "Modify user attributes " . $entry['mail'] . " and " . $entry['displayName'] . " and " . $userData['address']['value'];
-			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
-		}
-	}
-
-	/**
 	 * Provides LDAP Provider. Cannot be established in constructor
 	 *
 	 * @return LDAPProvider
@@ -381,7 +310,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	public function changeUserHook($user, $feature, $attr1, $attr2) {
-		$i = 1;
 		switch ($feature) {
 			case 'avatar':
 				$this->changeAvatar($user);

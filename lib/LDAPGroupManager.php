@@ -68,27 +68,15 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @return bool
 	 */
 	public function createGroup($gid) {
-		$currentUser = $this->userSession->getUser();
 
-		// If the NC user is an LDAP user, s/he will be allowed to create new groups in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
-		$provider = $this->getLDAPProvider();
+		# FIXME could not create group using LDAPProvider, because its methods rely
+		# on passing an already inserted [ug]id, which we do not have at this point
 
 		$newGroupEntry = $this->buildNewEntry($gid);
-
-		try {
-			$connection = $provider->getLDAPConnection($currentUserID);
-		} catch (\Exception $exception) {
-			if ($exception->getMessage() == "User id not found in LDAP") {
-				throw new \Exception("You cannot add a new LDAP Group because you are not a LDAP User.");
-			}
-			throw $exception;
-		}
-		$newGroupDN = "cn=$gid,".$provider->getLDAPBaseGroups($currentUserID);
+		$connection = LDAPConnect::getLDAPConnection();
+		$newGroupDN = "cn=$gid,".LDAPConnect::getLDAPBaseGroups();
 
 		if ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry)) {
-			$provider->clearCache($currentUserID);
 			$message = "Create LDAP group '$gid' ($newGroupDN)";
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 		} else {
@@ -105,22 +93,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @return bool
 	 */
 	public function deleteGroup($gid) {
-		$currentUser = $this->userSession->getUser();
-
-		// If the NC user is an LDAP user, s/he will be allowed to create new groups in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
 		$provider = $this->getLDAPProvider();
-
-		try {
-			$connection = $provider->getLDAPConnection($currentUserID);
-		} catch (\Exception $exception) {
-			if ($exception->getMessage() == "User id not found in LDAP") {
-				throw new \Exception("You cannot add a new LDAP Group because you are not a LDAP User.");
-			}
-			throw $exception;
-		}
-
+		$connection = $provider->getGroupLDAPConnection($gid);
 		$groupDN = $provider->getGroupDN($gid);
 
 		if ( ! $ret = ldap_delete($connection, $groupDN) ) {
@@ -143,22 +117,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * Adds a LDAP user to a LDAP group.
 	 */
 	public function addToGroup($uid, $gid) {
-		$currentUser = $this->userSession->getUser();
-
-		// If the NC user is an LDAP user, s/he will be allowed to create new groups in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
 		$provider = $this->getLDAPProvider();
-
-		try {
-			$connection = $provider->getLDAPConnection($currentUserID);
-		} catch (\Exception $exception) {
-			if ($exception->getMessage() == "User id not found in LDAP") {
-				throw new \Exception("You cannot add an user to a LDAP Group because you are not a LDAP User.");
-			}
-			throw $exception;
-		}
-
+		$connection = $provider->getGroupLDAPConnection($gid);
 		$groupDN = $provider->getGroupDN($gid);
 
 		$entry = array();
@@ -194,22 +154,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * removes the user from a group.
 	 */
 	public function removeFromGroup($uid, $gid) {
-		$currentUser = $this->userSession->getUser();
-
-		// If the NC user is an LDAP user, s/he will be allowed to create new groups in the corresponding LDAP database
-		$currentUserID = $currentUser->getUID();
-
 		$provider = $this->getLDAPProvider();
-
-		try {
-			$connection = $provider->getLDAPConnection($currentUserID);
-		} catch (\Exception $exception) {
-			if ($exception->getMessage() == "User id not found in LDAP") {
-				throw new \Exception("You cannot remove an user from a LDAP Group because you are not a LDAP User.");
-			}
-			throw $exception;
-		}
-
+		$connection = $provider->getGroupLDAPConnection($gid);
 		$groupDN = $provider->getGroupDN($gid);
 
 		$entry = array();
@@ -259,12 +205,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		return array(
 			'objectClass' => array( 'posixGroup' , 'top' ),
 			'cn' => $gid,
-			'gidnumber' => 5000, // autoincrement needed?
+			'gidnumber' => 5000, // FIXME autoincrement needed?
 		);
-	}
-
-	public function getUserGroups($uid) {
-
 	}
 
 	public function makeLdapBackendFirst() {

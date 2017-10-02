@@ -68,6 +68,18 @@ class LDAPConnect {
         // try catch!!!
     }
 
+    public static function getLDAPConnection() {
+    	return self::bind();
+	}
+
+	public static function getLDAPBaseUsers() {
+		return \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
+	}
+
+	public static function getLDAPBaseGroups() {
+		return \OCP\Config::getAppValue('user_ldap','ldap_base_groups','');
+	}
+
     public static function disconnect($ds) {
         return ldap_unbind($ds);
 
