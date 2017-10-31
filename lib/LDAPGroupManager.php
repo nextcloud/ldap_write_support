@@ -65,7 +65,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	/**
 	 * @param string $gid
-	 * @return bool
+	 * @return string|null
 	 */
 	public function createGroup($gid) {
 
@@ -83,7 +83,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 			$message = "Unable to create LDAP group '$gid' ($newGroupDN)";
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
-		return $ret;
+		return $ret ? $newGroupDN : null;
 	}
 
 	/**
