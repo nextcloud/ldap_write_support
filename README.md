@@ -5,19 +5,19 @@ user_ldap_extended App enables your NextCloud instance to fully work over an LDA
 
 ## Dependencies
 
-In order to use LdapUserManagement, `ldap_user` plugin must be enabled!
-Currently, user_ldap_extended works based uppon a patch done to user_ldap. This patch is available here: https://gitlab.com/eita/rios/rios-cloud-server/tree/rios-vivos
+In order to use `user_ldap_extended`, `user_ldap` plugin must be enabled!
+user_ldap_extended will work in NC13. We at EITA Cooperative are using in a patch done to NC12, the patch is available here:  https://gitlab.com/eita/rios/rios-cloud-server/tree/rios-vivos
 
 ## Install
 
 Place this app in **nextcloud/apps/**. From your nextcloud root:
 ```
 cd apps/
-git clone git@gitlab.com:eita/user_ldap_extended.git
+git clone git@gitlab.com:eita/rios/user_ldap_extended.git
 ```
 ## Configure
 
-For user_ldap_extended to work properly, user_ldap plugin should correctly configured.
+For `user_ldap_extended` to work properly, `user_ldap` plugin should correctly configured.
 
 
 ## Known issues
