@@ -69,8 +69,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 */
 	public function createGroup($gid) {
 
-		# FIXME could not create group using LDAPProvider, because its methods rely
-		# on passing an already inserted [ug]id, which we do not have at this point
+		/**
+		 * FIXME could not create group using LDAPProvider, because its methods rely
+		 * on passing an already inserted [ug]id, which we do not have at this point.
+		 */
 
 		$newGroupEntry = $this->buildNewEntry($gid);
 		$connection = LDAPConnect::getLDAPConnection();
@@ -127,11 +129,11 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				#TODO
+				//TODO
 			case 'member':
-				#TODO
+				//TODO
 			case 'gidNumber':
-				#TODO
+				//TODO
 		}
 
 		if (!$ret = ldap_mod_add ( $connection , $groupDN , $entry)) {
@@ -164,11 +166,11 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				#TODO
+				//TODO
 			case 'member':
-				#TODO
+				//TODO
 			case 'gidNumber':
-				#TODO
+				//TODO
 		}
 
 		if ( !$ret = ldap_mod_del ( $connection , $groupDN , $entry) ) {
@@ -205,7 +207,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		return array(
 			'objectClass' => array( 'posixGroup' , 'top' ),
 			'cn' => $gid,
-			'gidnumber' => 5000, // FIXME autoincrement needed?
+			'gidnumber' => 5000, // FIXME this cannot be hardcoded. Autoincrement needed?
 		);
 	}
 
