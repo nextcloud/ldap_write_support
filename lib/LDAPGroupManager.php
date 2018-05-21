@@ -136,10 +136,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 		if (!$ret = ldap_mod_add ( $connection , $groupDN , $entry)) {
 			$message = "Unable to add user " . $uid. " to group " . $gid;
-			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+			\OC::$server->getLogger()->error($message, array('app' => 'user_ldap_extended'));
 		} else {
 			$message = "Add user: " . $uid. " to group: " . $gid;
-			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+			\OC::$server->getLogger()->notice($message, array('app' => 'user_ldap_extended'));
 		}
 		return $ret;
 	}

@@ -168,6 +168,13 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 */
 	public function createUser($username, $password) {
 
+		// Check the name for bad characters
+		// NOT allowed in user_ldap: uppercase letters or underscore
+		if (preg_match('/[A-Z_]/', $username)) {
+			$l = \OC::$server->getL10N('user_ldap_extended');
+			throw new \InvalidArgumentException($l->t('Uppercase letters and underscore (_) are not allowed in usernames.'));
+		}
+
 		# FIXME could not create user using LDAPProvider, because its methods rely
 		# on passing an already inserted uid, which we do not have at this point
 
