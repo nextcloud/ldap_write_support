@@ -7,14 +7,14 @@
     <description><![CDATA[This app implements the following actions to an LDAP backend: create/delete user, modify display name, avatar and e-mail.]]></description>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <namespace>Ldapusermanagement</namespace>
     <category>auth</category>
     <bugs>https://gitlab.com/eita/ldapusermanagement/issues</bugs>
     <dependencies>
         <user_ldap />
         <owncloud min-version="9.1" max-version="9.1"/>
-        <nextcloud min-version="10" max-version="13"/>
+        <nextcloud min-version="10" max-version="14"/>
     </dependencies>
     <install>
         <step>OCA\Ldapusermanagement\Validate</step>
