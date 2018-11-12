@@ -51,10 +51,14 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var IUserManager */
 	private $userManager;
 
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession) {
+	/** @var LDAPConnect */
+	private $ldapConnect;
+
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->ldapConnect = $ldapConnect;
 
 		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
 
@@ -179,8 +183,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		# on passing an already inserted uid, which we do not have at this point
 
 		$newUserEntry = $this->buildNewEntry($username, $password);
-		$connection = LDAPConnect::getLDAPConnection();
-		$newUserDN = "cn=$username,".LDAPConnect::getLDAPBaseUsers();
+		$connection = $this->ldapConnect->getLDAPConnection();
+		$newUserDN = "cn=$username,".$this->ldapConnect->getLDAPBaseUsers();
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";

@@ -26,10 +26,16 @@ use OCP\IConfig;
 
 class LDAPConnect {
 
-    public static function connect() {
+	private $config;
 
-        $ldaphost  = \OCP\Config::getAppValue('user_ldap','ldap_host','');
-        $ldapport  = \OCP\Config::getAppValue('user_ldap','ldap_port','');        
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
+
+    public function connect() {
+
+        $ldaphost  = $this->config->getAppValue('user_ldap','ldap_host','');
+        $ldapport  = $this->config->getAppValue('user_ldap','ldap_port','');
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
         $ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
@@ -48,12 +54,12 @@ class LDAPConnect {
         }
     }
 
-    public static function bind() {
+    public function bind() {
 
         // LDAP variables
-        $ds = LDAPConnect::connect();
-        $dn = \OCP\Config::getAppValue('user_ldap','ldap_dn','');
-        $secret = base64_decode(\OCP\Config::getAppValue('user_ldap','ldap_agent_password',''));
+        $ds = $this->connect();
+        $dn = $this->config->getAppValue('user_ldap','ldap_dn','');
+        $secret = base64_decode($this->config->getAppValue('user_ldap','ldap_agent_password',''));
         /* shouldnt do this: modify base64_decode and set decoding method from user_ldap */
 
         // Connecting to LDAP
@@ -68,19 +74,19 @@ class LDAPConnect {
         // try catch!!!
     }
 
-    public static function getLDAPConnection() {
-    	return self::bind();
+    public function getLDAPConnection() {
+    	return $this->bind();
 	}
 
-	public static function getLDAPBaseUsers() {
-		return \OCP\Config::getAppValue('user_ldap','ldap_base_users','');
+	public function getLDAPBaseUsers() {
+		return $this->config->getAppValue('user_ldap','ldap_base_users','');
 	}
 
-	public static function getLDAPBaseGroups() {
-		return \OCP\Config::getAppValue('user_ldap','ldap_base_groups','');
+	public function getLDAPBaseGroups() {
+		return $this->config->getAppValue('user_ldap','ldap_base_groups','');
 	}
 
-    public static function disconnect($ds) {
+    public function disconnect($ds) {
         return ldap_unbind($ds);
 
     }

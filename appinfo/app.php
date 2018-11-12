@@ -17,9 +17,11 @@ if (\OCP\App::isEnabled('user_ldap')) {
 	$groupManager = $container->query('GroupManager');
 	$userSession = $container->query("UserSession");
 
-	$ldapUserManager = new LDAPUserManager($userManager,$groupManager, $userSession);
+	$ldapConnect = $container->query(\OCA\Ldapusermanagement\LDAPConnect::class);
 
-	$ldapGroupManager = new \OCA\Ldapusermanagement\LDAPGroupManager($groupManager, $userSession);
+	$ldapUserManager = new LDAPUserManager($userManager,$groupManager, $userSession, $ldapConnect);
+
+	$ldapGroupManager = new \OCA\Ldapusermanagement\LDAPGroupManager($groupManager, $userSession, $ldapConnect);
 
 	// register hooks
 	#$container->query('OCA\Ldapusermanagement\GroupHooks')->register();

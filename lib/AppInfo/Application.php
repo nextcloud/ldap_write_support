@@ -1,6 +1,7 @@
 <?php
 namespace OCA\Ldapusermanagement\AppInfo;
 
+use OCA\Ldapusermanagement\LDAPConnect;
 use OCA\Ldapusermanagement\LDAPUserManager;
 use \OCP\AppFramework\App;
 
@@ -22,5 +23,9 @@ class Application extends App {
                 $c->query('ServerContainer')->getGroupManager()
             );
         });
+        /*
+        $container->registerService(\OCA\Ldapusermanagement\LDAPConnect::class, function($c) {
+        	return new LDAPConnect();
+		}) */
 	}
 }

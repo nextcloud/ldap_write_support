@@ -40,9 +40,13 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	private $userSession;
 	private $groupManager;
 
-	public function __construct(IGroupManager $groupManager, IUserSession $userSession) {
+	/** @var LDAPConnect */
+	private $ldapConnect;
+
+	public function __construct(IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect) {
 		$this->userSession = $userSession;
 		$this->groupManager = $groupManager;
+		$this->ldapConnect = $ldapConnect;
 
 		$this->makeLdapBackendFirst();
 	}
@@ -75,8 +79,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		 */
 
 		$newGroupEntry = $this->buildNewEntry($gid);
-		$connection = LDAPConnect::getLDAPConnection();
-		$newGroupDN = "cn=$gid,".LDAPConnect::getLDAPBaseGroups();
+		$connection = $this->ldapConnect->getLDAPConnection();
+		$newGroupDN = "cn=$gid,".$this->ldapConnect->getLDAPBaseGroups();
 
 		if ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry)) {
 			$message = "Create LDAP group '$gid' ($newGroupDN)";
