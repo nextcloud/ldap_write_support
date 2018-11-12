@@ -37,7 +37,6 @@ use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {
@@ -91,7 +90,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		/** @var LDAPProvider $provider */
 		$provider = $this->getLDAPProvider();
 
-		$userDN = $provider->getUserDN($uid);
+		$userDN = $this->getUserDN($uid);
 
 		$connection = $provider->getLDAPConnection($uid);
 
@@ -126,7 +125,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 */
 	public function changeAvatar($user) {
 		try {
-			$userDN = $this->getLDAPProvider()->getUserDN($user->getUID());
+			$userDN = $this->getUserDN($user->getUID());
 		} catch (\Exception $e) {
 			return;
 		}
@@ -151,7 +150,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 */
 	public function changeEmail($user, $newEmail) {
 		try {
-			$userDN = $this->getLDAPProvider()->getUserDN($user->getUID());
+			$userDN = $this->getUserDN($user->getUID());
 		} catch (\Exception $e) {
 			return;
 		}
@@ -220,7 +219,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		$connection = $provider->getLDAPConnection($uid);
 
-		$userDN = $provider->getUserDN($uid);
+		$userDN = $this->getUserDN($uid);
 
 		//Remove user from all groups before deleting...
 		$user = $this->userManager->get($uid);
@@ -331,5 +330,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				break;
 
 		}
+	}
+
+	private function getUserDN($uid) {
+		return "cn=$uid,".$this->ldapConnect->getLDAPBaseUsers();
 	}
 }
