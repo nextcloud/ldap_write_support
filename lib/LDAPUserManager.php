@@ -195,15 +195,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
-
-
-
 		} else {
 			$message = "Unable to create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
 		}
 		ldap_close($connection);
-		return $ret;
+		return $ret ? $newUserDN : null;
 	}
 
 	public function buildNewEntry($username, $password) {
