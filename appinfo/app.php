@@ -16,10 +16,11 @@ if (\OCP\App::isEnabled('user_ldap')) {
 	$userManager = $container->query('UserManager');
 	$groupManager = $container->query('GroupManager');
 	$userSession = $container->query("UserSession");
+	$ocConfig = $container->query(\OCP\IConfig::class);
 
 	$ldapConnect = $container->query(\OCA\Ldapusermanagement\LDAPConnect::class);
 
-	$ldapUserManager = new LDAPUserManager($userManager,$groupManager, $userSession, $ldapConnect);
+	$ldapUserManager = new LDAPUserManager($userManager,$groupManager, $userSession, $ldapConnect, $ocConfig);
 
 	$ldapGroupManager = new \OCA\Ldapusermanagement\LDAPGroupManager($groupManager, $userSession, $ldapConnect);
 

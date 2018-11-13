@@ -31,12 +31,15 @@ use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
+use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\PreConditionNotMetException;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {
@@ -53,11 +56,15 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var LDAPConnect */
 	private $ldapConnect;
 
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect) {
+	/** @var IConfig */
+	private $ocConfig;
+
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
+		$this->ocConfig = $ocConfig;
 
 		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
 
@@ -188,6 +195,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+
+
+
 		} else {
 			$message = "Unable to create LDAP user '$username' ($newUserDN)";
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
@@ -234,7 +244,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$message = "Delete LDAP user (isDeleted): " . $uid;
 			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
 
-			\OCP\Config::setUserValue($uid, 'user_ldap', 'isDeleted', 1);
+			$this->ocConfig->setUserValue($uid, 'user_ldap', 'isDeleted', 1);
 		} else {
 			$message = "Unable to delete LDAP user " . $uid;
 			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
@@ -333,6 +343,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	private function getUserDN($uid) {
-		return "cn=$uid,".$this->ldapConnect->getLDAPBaseUsers();
+		return $this->getLDAPProvider()->getUserDN($uid);
+		//return "cn=$uid,".$this->ldapConnect->getLDAPBaseUsers();
 	}
 }
