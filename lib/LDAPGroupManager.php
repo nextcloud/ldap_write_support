@@ -135,7 +135,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 			case 'uniqueMember':
 				//TODO
 			case 'member':
-				//TODO
+				$entry['member'] = $provider->getUserDN($uid);
 			case 'gidNumber':
 				//TODO
 		}
@@ -172,7 +172,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 			case 'uniqueMember':
 				//TODO
 			case 'member':
-				//TODO
+				$entry['member'] = $provider->getUserDN($uid);
 			case 'gidNumber':
 				//TODO
 		}
