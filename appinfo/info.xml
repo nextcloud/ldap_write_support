@@ -7,8 +7,11 @@
     <description><![CDATA[This app implements the following actions to an LDAP backend: create/delete user, modify display name, avatar and e-mail.]]></description>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <namespace>Ldapusermanagement</namespace>
+    <types>
+        <authentication/>
+    </types>
     <category>auth</category>
     <bugs>https://gitlab.com/eita/ldapusermanagement/issues</bugs>
     <dependencies>

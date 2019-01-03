@@ -133,11 +133,12 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				//TODO
+				break; //TODO
 			case 'member':
 				$entry['member'] = $provider->getUserDN($uid);
+				break;
 			case 'gidNumber':
-				//TODO
+				break; //TODO
 		}
 
 		if (!$ret = ldap_mod_add ( $connection , $groupDN , $entry)) {
@@ -170,11 +171,12 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				//TODO
+				break; //TODO
 			case 'member':
 				$entry['member'] = $provider->getUserDN($uid);
+				break;
 			case 'gidNumber':
-				//TODO
+				break; //TODO
 		}
 
 		if ( !$ret = ldap_mod_del ( $connection , $groupDN , $entry) ) {
@@ -187,12 +189,94 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		return $ret;
 	}
 
+	/**
+	 * Add a LDAP user to a LDAP group
+	 *
+	 * @param string $uid Name of the user to add to group
+	 * @param string $gid Name of the group in which add the user
+	 * @return bool
+	 *
+	 * Adds a LDAP user to a LDAP group.
+	 */
+	public function addOwnerToGroup($uid, $gid) {
+		$provider = $this->getLDAPProvider();
+		$connection = $provider->getGroupLDAPConnection($gid);
+		$groupDN = $provider->getGroupDN($gid);
+
+		$entry = array();
+		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+			case 'memberUid':
+				break; //TODO
+			case 'uniqueMember':
+				break; //TODO
+			case 'member':
+				$entry['owner'] = $provider->getUserDN($uid);
+			case 'gidNumber':
+				break; //TODO
+		}
+
+		if (!$ret = ldap_mod_add ( $connection , $groupDN , $entry)) {
+			$message = "Unable to add user " . $uid. " to group " . $gid;
+			\OC::$server->getLogger()->error($message, array('app' => 'user_ldap_extended'));
+		} else {
+			$message = "Add user: " . $uid. " to group: " . $gid;
+			\OC::$server->getLogger()->notice($message, array('app' => 'user_ldap_extended'));
+		}
+		return $ret;
+	}
+
+	/**
+	 * Removes a LDAP user from a LDAP group
+	 *
+	 * @param string $uid Name of the user to remove from group
+	 * @param string $gid Name of the group from which remove the user
+	 * @return bool
+	 *
+	 * removes the user from a group.
+	 */
+	public function removeOwnerFromGroup($uid, $gid) {
+		$provider = $this->getLDAPProvider();
+		$connection = $provider->getGroupLDAPConnection($gid);
+		$groupDN = $provider->getGroupDN($gid);
+
+		$entry = array();
+		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+			case 'memberUid':
+				break; //TODO
+			case 'uniqueMember':
+				break; //TODO
+			case 'member':
+				$entry['owner'] = $provider->getUserDN($uid);
+				break;
+			case 'gidNumber':
+				break; //TODO
+		}
+
+		if ( !$ret = ldap_mod_del ( $connection , $groupDN , $entry) ) {
+			$message = "Unable to remove user: " . $uid. " from group: " . $gid;
+			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+		} else {
+			$message = "Remove user: " . $uid. " from group: " . $gid;
+			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+		}
+		return $ret;
+	}
+
+
 	public function countUsersInGroup($gid, $search = '') {
 		return false;
 	}
 
 	public function getGroupDetails($gid) {
 		return false;
+	}
+
+	public function isLDAPGroup($gid) {
+		try {
+			return !empty($this->getLDAPProvider()->getGroupDN($gid));
+		} catch (\Exception $e) {
+			return false;
+		}
 	}
 
 	/**
