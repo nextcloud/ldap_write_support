@@ -159,12 +159,12 @@ class GroupAdminsToLdap extends Command {
 					$entry = array(
 						'owner' => $userDN
 					);
-				}
-				if ($this->verbose) {
-					$output->writeln("ADD: UID=$uid ($userDN) into GID=$gid ($groupDN)");
-				}
-				if (!$this->simulate) {
-					ldap_mod_add($conn->getConnectionResource(), $groupDN, $entry);
+					if ($this->verbose) {
+						$output->writeln("ADD: UID=$uid ($userDN) into GID=$gid ($groupDN)");
+					}
+					if (!$this->simulate) {
+						ldap_mod_add($conn->getConnectionResource(), $groupDN, $entry);
+					}
 				}
 			}
 
@@ -175,12 +175,12 @@ class GroupAdminsToLdap extends Command {
 					$entry = array(
 						'owner' => $userDN
 					);
-				}
-				if ($this->verbose) {
-					$output->writeln("DEL: UID=$uid ($userDN) into GID=$gid ($groupDN)");
-				}
-				if (!$this->simulate) {
-					ldap_mod_del($conn->getConnectionResource(), $groupDN, $entry);
+					if ($this->verbose) {
+						$output->writeln("DEL: UID=$uid ($userDN) into GID=$gid ($groupDN)");
+					}
+					if (!$this->simulate) {
+						ldap_mod_del($conn->getConnectionResource(), $groupDN, $entry);
+					}
 				}
 			}
 
