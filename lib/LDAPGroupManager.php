@@ -293,9 +293,9 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	private function buildNewEntry($gid) {
 		return array(
-			'objectClass' => array( 'posixGroup' , 'top' ),
+			'objectClass' => array( 'groupOfNames' , 'top' ),
 			'cn' => $gid,
-			'gidnumber' => 5000, // FIXME this cannot be hardcoded. Autoincrement needed?
+			'member' => ['']
 		);
 	}
 

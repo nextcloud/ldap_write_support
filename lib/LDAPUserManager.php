@@ -243,8 +243,15 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 			$this->ocConfig->setUserValue($uid, 'user_ldap', 'isDeleted', 1);
 		} else {
-			$message = "Unable to delete LDAP user " . $uid;
-			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+			$errno = ldap_errno($connection);
+			if ($errno ==  0x20) { #LDAP_NO_SUCH_OBJECT
+				$message = "Delete LDAP user (" . $uid. "): object not found. Is already deleted? Assuming YES";
+				\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+				$res = true;
+			} else {
+				$message = "Unable to delete LDAP user " . $uid;
+				\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+			}
 		}
 		ldap_close($connection);
 		return $res;
