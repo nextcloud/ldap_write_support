@@ -22,7 +22,7 @@
  *
  */
 
-namespace OCA\Ldapusermanagement;
+namespace OCA\LdapWriteSupport;
 
 
 use OC\Group\Backend;

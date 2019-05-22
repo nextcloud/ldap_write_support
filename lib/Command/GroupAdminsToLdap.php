@@ -22,7 +22,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OCA\Ldapusermanagement\Command;
+namespace OCA\LdapWriteSupport\Command;
 
 use OC\SubAdmin;
 use OCA\User_LDAP\Group_Proxy;

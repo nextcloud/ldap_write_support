@@ -19,9 +19,8 @@
  *
  */
 
-namespace OCA\Ldapusermanagement;
+namespace OCA\Ldap_Write_Support;
 
-use OCA\Ldapusermanagement;
 use OCP\IConfig;
 
 class LDAPConnect {
