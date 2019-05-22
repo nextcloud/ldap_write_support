@@ -21,9 +21,7 @@
     <dependencies>
         <nextcloud min-version="16" max-version="17"/>
     </dependencies>
-    <repair-steps>
-        <install>
-            <step>OCA\LdapWriteSupport\Validate</step>
-        </install>
-    </repair-steps>
+    <commands>
+        <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
+    </commands>
 </info>
