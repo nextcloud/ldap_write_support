@@ -20,7 +20,7 @@
  */
 
 
-namespace OCA\Ldapusermanagement;
+namespace OCA\LdapWriteSupport;
 
 use OCP\IConfig;
 use OCP\IL10N;

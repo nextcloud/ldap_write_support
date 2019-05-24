@@ -32,14 +32,12 @@ use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCA\User_LDAP\LDAPProvider;
 use OCP\IConfig;
-use OCP\IDBConnection;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use OCP\PreConditionNotMetException;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {

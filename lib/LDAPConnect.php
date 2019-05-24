@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\Ldap_Write_Support;
+namespace OCA\LdapWriteSupport;
 
 use OCP\IConfig;
 
