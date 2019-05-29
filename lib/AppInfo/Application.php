@@ -7,6 +7,7 @@ namespace OCA\LdapWriteSupport\AppInfo;
 use OC;
 use OC\Group\Group;
 use OC\User\User;
+use OCA\LdapWriteSupport\LDAPConnect;
 use OCA\LdapWriteSupport\LDAPUserManager;
 use OCA\LdapWriteSupport\LDAPGroupManager;
 use OCA\User_LDAP\GroupPluginManager;
@@ -33,11 +34,29 @@ class Application extends App {
 			return;
 		}
 
-		$this->ldapUserManager = OC::$server->query(LDAPUserManager::class);
-		$this->ldapGroupManager = OC::$server->query(LDAPGroupManager::class);
+		\OC_App::loadApp('user_ldap');
+		$c = $this->getContainer();
+		$s = $this->getContainer()->getServer();
+		$p = $s->getLDAPProvider();
 
-		$userPluginManager = OC::$server->query(UserPluginManager::class);
-		$groupPluginManager = OC::$server->query(GroupPluginManager::class);
+		// resolving LDAP provider fails indeed
+
+		$this->ldapUserManager = new LDAPUserManager(
+			$s->getUserManager(),
+			$s->getGroupManager(),
+			$s->getUserSession(),
+			new LDAPConnect($s->getConfig()),
+			$s->getConfig(),
+			$p
+		);
+
+//		$this->ldapUserManager = $c->query(LDAPUserManager::class);
+		$this->ldapGroupManager = $c->query(LDAPGroupManager::class);
+
+		/** @var UserPluginManager $userPluginManager */
+		$userPluginManager = OC::$server->query('LDAPUserPluginManager');
+		/** @var GroupPluginManager $groupPluginManager */
+		$groupPluginManager = OC::$server->query('LDAPGroupPluginManager');
 
 		$userPluginManager->register($this->ldapUserManager);
 		$groupPluginManager->register($this->ldapGroupManager);

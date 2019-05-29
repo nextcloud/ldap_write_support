@@ -10,9 +10,6 @@
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
     <author mail="blizzz@arthur-schiwon.de" homepage="https://arthur-schiwon.de">Arthur Schiwon</author>
     <namespace>LdapWriteSupport</namespace>
-    <types>
-        <authentication/>
-    </types>
     <category>integration</category>
     <category>organization</category>
     <category>tools</category>

@@ -5,6 +5,7 @@
  * @author Alan Tygel <alan@eita.org.br>
  * @author Vinicius Brand <vinicius@eita.org.br>
  * @author Daniel Tygel <dtygel@eita.org.br>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  *
  * @license AGPL-3.0
  *
@@ -25,12 +26,12 @@
 namespace OCA\LdapWriteSupport;
 
 
+use InvalidArgumentException;
 use OC\HintException;
 use OC\User\Backend;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
-use OCA\User_LDAP\LDAPProvider;
 use OCP\IConfig;
 use OCP\IGroup;
 use OCP\IGroupManager;
@@ -38,11 +39,14 @@ use OCP\IImage;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\LDAP\ILDAPProvider;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {
-
+	/** @var ILDAPProvider */
 	private $ldapProvider;
+
+	/** @var IUserSession */
 	private $userSession;
 
 	/** @var IGroupManager */
@@ -57,16 +61,17 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var IConfig */
 	private $ocConfig;
 
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig, ILDAPProvider $ldapProvider) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
 		$this->ocConfig = $ocConfig;
 
-		$this->userManager->listen('\OC\User', 'changeUser', array($this, 'changeUserHook'));
+		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
 
 		$this->makeLdapBackendFirst();
+		$this->ldapProvider = $ldapProvider;
 	}
 
 	/**
@@ -92,14 +97,11 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @return bool
 	 */
 	public function setDisplayName($uid, $displayName) {
-		/** @var LDAPProvider $provider */
-		$provider = $this->getLDAPProvider();
-
 		$userDN = $this->getUserDN($uid);
 
-		$connection = $provider->getLDAPConnection($uid);
+		$connection = $this->ldapProvider->getLDAPConnection($uid);
 
-		$displayNameField = $provider->getLDAPDisplayNameField($uid);
+		$displayNameField = $this->ldapProvider->getLDAPDisplayNameField($uid);
 
 		if (!is_resource($connection)) {
 			//LDAP not available
@@ -107,7 +109,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			return false;
 		}
 		try {
-			return ldap_mod_replace($connection,$userDN, array($displayNameField => $displayName));
+			return ldap_mod_replace($connection,$userDN, [$displayNameField => $displayName]);
 		} catch(ConstraintViolationException $e) {
 			throw new HintException('DisplayName change rejected.', \OC::$server->getL10N('user_ldap')->t('DisplayName change rejected. Hint: ').$e->getMessage(), $e->getCode());
 		}
@@ -140,10 +142,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		if ($avatar) {
 			$data = $avatar->data();
 
-			$provider = $this->getLDAPProvider();
-
-			$connection = $provider->getLDAPConnection($user->getUID());
-			ldap_mod_replace($connection, $userDN, array('jpegphoto' => $data));
+			$connection = $this->ldapProvider->getLDAPConnection($user->getUID());
+			ldap_mod_replace($connection, $userDN, ['jpegphoto' => $data]);
 		}
 
 	}
@@ -160,10 +160,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			return;
 		}
 
-		$provider = $this->getLDAPProvider();
-		$emailField = $provider->getLDAPEmailField($user->getUID());
-		$connection = $provider->getLDAPConnection($user->getUID());
-		ldap_mod_replace($connection, $userDN, array($emailField => $newEmail));
+		$emailField = $this->ldapProvider->getLDAPEmailField($user->getUID());
+		$connection = $this->ldapProvider->getLDAPConnection($user->getUID());
+		ldap_mod_replace($connection, $userDN, [$emailField => $newEmail]);
 	}
 
 	/**
@@ -180,7 +179,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		// NOT allowed in user_ldap: uppercase letters or underscore
 		if (preg_match('/[A-Z_]/', $username)) {
 			$l = \OC::$server->getL10N('user_ldap_extended');
-			throw new \InvalidArgumentException($l->t('Uppercase letters and underscore (_) are not allowed in usernames.'));
+			throw new InvalidArgumentException($l->t('Uppercase letters and underscore (_) are not allowed in usernames.'));
 		}
 
 		# FIXME could not create user using LDAPProvider, because its methods rely
@@ -192,19 +191,19 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";
-			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+			\OC::$server->getLogger()->notice($message, ['app' => 'ldap_write_support']);
 		} else {
 			$message = "Unable to create LDAP user '$username' ($newUserDN)";
-			\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+			\OC::$server->getLogger()->error($message, ['app' => 'ldap_write_support']);
 		}
 		ldap_close($connection);
 		return $ret ? $newUserDN : null;
 	}
 
 	public function buildNewEntry($username, $password) {
-		$entry = array(
+		$entry = [
 			'o' => $username ,
-			'objectClass' => array( 'inetOrgPerson', 'posixAccount', 'top'),
+			'objectClass' => ['inetOrgPerson', 'posixAccount', 'top'],
 			'cn' => $username ,
 			'gidnumber' => 1, // FIXME: Why this????
 			'homedirectory' => 'x', // ignored by nextcloud
@@ -215,14 +214,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			'userpassword' => $password ,
 			'displayName' => $username,
 			'street' => "address",
-		);
+		];
 		return $entry;
 	}
 
 	public function deleteUser($uid) {
-		$provider = $this->getLDAPProvider();
-
-		$connection = $provider->getLDAPConnection($uid);
+		$connection = $this->ldapProvider->getLDAPConnection($uid);
 
 		$userDN = $this->getUserDN($uid);
 
@@ -237,18 +234,18 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		if ($res = ldap_delete($connection, $userDN)) {
 			$message = "Delete LDAP user (isDeleted): " . $uid;
-			\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+			\OC::$server->getLogger()->notice($message, ['app' => 'ldapusermanagement']);
 
 			$this->ocConfig->setUserValue($uid, 'user_ldap', 'isDeleted', 1);
 		} else {
 			$errno = ldap_errno($connection);
 			if ($errno ==  0x20) { #LDAP_NO_SUCH_OBJECT
 				$message = "Delete LDAP user (" . $uid. "): object not found. Is already deleted? Assuming YES";
-				\OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+				\OC::$server->getLogger()->notice($message, ['app' => 'ldapusermanagement']);
 				$res = true;
 			} else {
 				$message = "Unable to delete LDAP user " . $uid;
-				\OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+				\OC::$server->getLogger()->error($message, ['app' => 'ldapusermanagement']);
 			}
 		}
 		ldap_close($connection);
@@ -303,7 +300,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	public function makeLdapBackendFirst() {
 		$backends = $this->userManager->getBackends();
-		$otherBackends = array();
+		$otherBackends = [];
 		$this->userManager->clearBackends();
 		foreach ($backends as $backend) {
 			if ($backend instanceof IUserLDAP) {
@@ -317,18 +314,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		foreach ($otherBackends as $backend) {
 			\OC_User::useBackend($backend);
 		}
-	}
-
-	/**
-	 * Provides LDAP Provider. Cannot be established in constructor
-	 *
-	 * @return LDAPProvider
-	 */
-	private function getLDAPProvider() {
-		if (!$this->ldapProvider) {
-			$this->ldapProvider = \OC::$server->query('LDAPProvider');
-		}
-		return $this->ldapProvider;
 	}
 
 	public function changeUserHook($user, $feature, $attr1, $attr2) {
@@ -345,7 +330,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	private function getUserDN($uid) {
-		return $this->getLDAPProvider()->getUserDN($uid);
-		//return "cn=$uid,".$this->ldapConnect->getLDAPBaseUsers();
+		return $this->ldapProvider->getUserDN($uid);
 	}
 }
