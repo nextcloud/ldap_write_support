@@ -33,8 +33,8 @@ class LDAPConnect {
 
     public function connect() {
 
-        $ldaphost  = $this->config->getAppValue('user_ldap','ldap_host','');
-        $ldapport  = $this->config->getAppValue('user_ldap','ldap_port','');
+        $ldaphost  = $this->config->getAppValue('user_ldap','s01ldap_host','');
+        $ldapport  = $this->config->getAppValue('user_ldap','s01ldap_port','');
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
         $ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
@@ -57,8 +57,8 @@ class LDAPConnect {
 
         // LDAP variables
         $ds = $this->connect();
-        $dn = $this->config->getAppValue('user_ldap','ldap_dn','');
-        $secret = base64_decode($this->config->getAppValue('user_ldap','ldap_agent_password',''));
+        $dn = $this->config->getAppValue('user_ldap','s01ldap_dn','');
+        $secret = base64_decode($this->config->getAppValue('user_ldap','s01ldap_agent_password',''));
         /* shouldnt do this: modify base64_decode and set decoding method from user_ldap */
 
         // Connecting to LDAP
@@ -78,11 +78,11 @@ class LDAPConnect {
 	}
 
 	public function getLDAPBaseUsers() {
-		return $this->config->getAppValue('user_ldap','ldap_base_users','');
+		return $this->config->getAppValue('user_ldap','s01ldap_base_users','');
 	}
 
 	public function getLDAPBaseGroups() {
-		return $this->config->getAppValue('user_ldap','ldap_base_groups','');
+		return $this->config->getAppValue('user_ldap','s01ldap_base_groups','');
 	}
 
     public function disconnect($ds) {
