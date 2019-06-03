@@ -181,6 +181,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 		try {
 			$connection = $this->ldapProvider->getLDAPConnection($adminUser->getUID());
+			// TODO: what about multiple bases?
+			$base = $this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
 		} catch (\Exception $e) {
 			if($requireActorFromLDAP) {
 				if((bool)$this->ocConfig->getAppValue('ldap_write_support', 'create.preventLocalFallback', '1')) {
@@ -189,11 +191,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				return false;
 			}
 			$connection = $this->ldapConnect->getLDAPConnection();
+			$base = $this->ldapConnect->getLDAPBaseUsers();
 		}
 
-		$newUserEntry = $this->buildNewEntry($username, $password);
-		// TODO: what about multiple bases?
-		$newUserDN = "cn=$username,".$this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
+		list($newUserDN, $newUserEntry) = $this->buildNewEntry($username, $password, $base);
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";
@@ -206,22 +207,41 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		return $ret ? $newUserDN : null;
 	}
 
-	public function buildNewEntry($username, $password) {
-		$entry = [
-			'o' => $username ,
-			'objectClass' => ['inetOrgPerson', 'posixAccount', 'top'],
-			'cn' => $username ,
-			'gidnumber' => 1, // FIXME: Why this????
-			'homedirectory' => 'x', // ignored by nextcloud
-			'mail' => $username . '@rios.org.br',
-			'sn' => $username ,
-			'uid' => $username , // mandatory
-			'uidnumber' => 2010, // mandatory // FIXME: Why this????
-			'userpassword' => $password ,
-			'displayName' => $username,
-			'street' => "address",
-		];
-		return $entry;
+	public function buildNewEntry($username, $password, $base) {
+		$ldif = $this->ocConfig->getAppValue('ldap_write_support', 'create.userTemplate',
+			'dn: uid={RND_UID},{BASE}' . PHP_EOL .
+			'objectClass: inetOrgPerson' . PHP_EOL .
+			'objectClass: person' . PHP_EOL .
+			'uid: {RND_UID}' . PHP_EOL .
+			'cn: {UID}' . PHP_EOL .
+			'sn: {UID}' . PHP_EOL .
+			'userPassword: {PWD}'
+		);
+
+		$rndUid = bin2hex(random_bytes(5));
+		$ldif = str_replace('{RND_UID}', $rndUid, $ldif);
+		$ldif = str_replace('{UID}', $username, $ldif);
+		$ldif = str_replace('{PWD}', $password, $ldif);
+		$ldif = str_replace('{BASE}', $base, $ldif);
+
+		$entry = [];
+		$lines = explode(PHP_EOL, $ldif);
+		foreach ($lines as $line) {
+			$split = explode(':', $line);
+			$key = trim($split[0]);
+			$value = trim($split[1]);
+			if(!isset($entry[$key])) {
+				$entry[$key] = $value;
+			} else if(is_array($entry[$key])) {
+				$entry[$key][] = $value;
+			} else {
+				$entry[$key] = [$entry[$key], $value];
+			}
+		}
+		$dn = $entry['dn'];
+		unset($entry['dn']);
+
+		return [$dn, $entry];
 	}
 
 	public function deleteUser($uid) {
