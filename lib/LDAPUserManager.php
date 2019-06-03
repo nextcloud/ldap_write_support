@@ -174,20 +174,26 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 */
 	public function createUser($username, $password) {
-
-		// Check the name for bad characters
-		// NOT allowed in user_ldap: uppercase letters or underscore
-		if (preg_match('/[A-Z_]/', $username)) {
-			$l = \OC::$server->getL10N('user_ldap_extended');
-			throw new InvalidArgumentException($l->t('Uppercase letters and underscore (_) are not allowed in usernames.'));
+		$requireActorFromLDAP = (bool)$this->ocConfig->getAppValue('ldap_write_support', 'create.requireActorFromLDAP', '1');
+		$adminUser = $this->userSession->getUser();
+		if($requireActorFromLDAP && !$adminUser instanceof IUser) {
+			throw new \Exception('Acting user is not a user');
+		}
+		try {
+			$connection = $this->ldapProvider->getLDAPConnection($adminUser->getUID());
+		} catch (\Exception $e) {
+			if($requireActorFromLDAP) {
+				if((bool)$this->ocConfig->getAppValue('ldap_write_support', 'create.preventLocalFallback', '1')) {
+					throw $e;
+				}
+				return false;
+			}
+			$connection = $this->ldapConnect->getLDAPConnection();
 		}
 
-		# FIXME could not create user using LDAPProvider, because its methods rely
-		# on passing an already inserted uid, which we do not have at this point
-
 		$newUserEntry = $this->buildNewEntry($username, $password);
-		$connection = $this->ldapConnect->getLDAPConnection();
-		$newUserDN = "cn=$username,".$this->ldapConnect->getLDAPBaseUsers();
+		// TODO: what about multiple bases?
+		$newUserDN = "cn=$username,".$this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
 
 		if ($ret = ldap_add($connection, $newUserDN, $newUserEntry)) {
 			$message = "Create LDAP user '$username' ($newUserDN)";
