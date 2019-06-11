@@ -29,6 +29,7 @@ namespace OCA\LdapWriteSupport;
 use InvalidArgumentException;
 use OC\HintException;
 use OC\User\Backend;
+use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
@@ -60,8 +61,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	/** @var IConfig */
 	private $ocConfig;
+	/** @var Configuration */
+	private $configuration;
 
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig, ILDAPProvider $ldapProvider) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig, ILDAPProvider $ldapProvider, Configuration $configuration) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -72,6 +75,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		$this->makeLdapBackendFirst();
 		$this->ldapProvider = $ldapProvider;
+		$this->configuration = $configuration;
 	}
 
 	/**
@@ -208,15 +212,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	public function buildNewEntry($username, $password, $base) {
-		$ldif = $this->ocConfig->getAppValue('ldap_write_support', 'create.userTemplate',
-			'dn: uid={RND_UID},{BASE}' . PHP_EOL .
-			'objectClass: inetOrgPerson' . PHP_EOL .
-			'objectClass: person' . PHP_EOL .
-			'uid: {RND_UID}' . PHP_EOL .
-			'cn: {UID}' . PHP_EOL .
-			'sn: {UID}' . PHP_EOL .
-			'userPassword: {PWD}'
-		);
+		$ldif = $this->configuration->getUserTemplate();
 
 		$rndUid = bin2hex(random_bytes(5));
 		$ldif = str_replace('{RND_UID}', $rndUid, $ldif);

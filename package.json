@@ -1,0 +1,36 @@
+{
+  "name": "ldap_write_suppport",
+  "version": "1.0.0",
+  "description": "Adds write support to the LDAP backend",
+  "private": true,
+  "scripts": {
+    "build": "webpack --progress --config src/webpack.prod.js",
+    "dev": "webpack --progress --watch --config src/webpack.dev.js"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "author": "Arthur Schiwon",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@vue/babel-preset-app": "^3.8.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^2.1.1",
+    "file-loader": "^4.0.0",
+    "url-loader": "^2.0.0",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3",
+    "webpack-merge": "^4.2.1"
+  },
+  "scripts": {
+    "build": "webpack --progress --config src/webpack.prod.js",
+    "dev": "webpack --progress --watch --config src/webpack.dev.js"
+  }
+}

@@ -10,6 +10,7 @@ use OC\User\User;
 use OCA\LdapWriteSupport\LDAPConnect;
 use OCA\LdapWriteSupport\LDAPUserManager;
 use OCA\LdapWriteSupport\LDAPGroupManager;
+use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\GroupPluginManager;
 use OCA\User_LDAP\UserPluginManager;
 use OCP\AppFramework\App;
@@ -24,8 +25,10 @@ class Application extends App {
 	/** @var bool */
 	protected $ldapEnabled = false;
 
+	public const APP_ID = 'ldap_write_support';
+
 	public function __construct(array $urlParams = []) {
-		parent::__construct('ldap_write_support', $urlParams);
+		parent::__construct(self::APP_ID, $urlParams);
 		$this->ldapEnabled = OC::$server->getAppManager()->isEnabledForUser('user_ldap');
 	}
 
@@ -47,7 +50,8 @@ class Application extends App {
 			$s->getUserSession(),
 			new LDAPConnect($s->getConfig()),
 			$s->getConfig(),
-			$p
+			$p,
+			$c->query(Configuration::class)
 		);
 
 //		$this->ldapUserManager = $c->query(LDAPUserManager::class);

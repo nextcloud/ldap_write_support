@@ -21,4 +21,7 @@
     <commands>
         <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
     </commands>
+    <settings>
+        <admin>OCA\LdapWriteSupport\Settings\Admin</admin>
+    </settings>
 </info>
