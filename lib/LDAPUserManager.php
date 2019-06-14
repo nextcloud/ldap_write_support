@@ -26,7 +26,6 @@
 namespace OCA\LdapWriteSupport;
 
 
-use InvalidArgumentException;
 use OC\HintException;
 use OC\User\Backend;
 use OCA\LdapWriteSupport\Service\Configuration;

@@ -74,13 +74,13 @@ class Application extends App {
 		$subAdmin = OC::$server->getGroupManager()->getSubAdmin();
 
 		$subAdmin->listen('\OC\SubAdmin', 'postCreateSubAdmin', function (User $user, Group $group) {
-			if ($user->getBackendClassName() == "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
+			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
 				$this->ldapGroupManager->addOwnerToGroup($user->getUID(), $group->getGID());
 			}
 		});
 
 		$subAdmin->listen('\OC\SubAdmin', 'postDeleteSubAdmin', function (User $user, Group $group) {
-			if ($user->getBackendClassName() == "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
+			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
 				$this->ldapGroupManager->removeOwnerFromGroup($user->getUID(), $group->getGID());
 			}
 		});
