@@ -50,6 +50,7 @@ class Configuration {
 			'objectClass: inetOrgPerson' . PHP_EOL .
 			'objectClass: person' . PHP_EOL .
 			'uid: {RND_UID}' . PHP_EOL .
+			'displayName: {UID}' . PHP_EOL .
 			'cn: {UID}' . PHP_EOL .
 			'sn: {UID}' . PHP_EOL .
 			'userPassword: {PWD}'
