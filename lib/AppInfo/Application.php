@@ -51,7 +51,9 @@ class Application extends App {
 			new LDAPConnect($s->getConfig()),
 			$s->getConfig(),
 			$p,
-			$c->query(Configuration::class)
+			$c->query(Configuration::class),
+			$s->getL10N(self::APP_ID),
+			$s->getLogger()
 		);
 
 //		$this->ldapUserManager = $c->query(LDAPUserManager::class);

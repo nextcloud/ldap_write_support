@@ -27,6 +27,7 @@ namespace OCA\LdapWriteSupport;
 
 
 use OC\HintException;
+use OC\ServerNotAvailableException;
 use OC\User\Backend;
 use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
@@ -36,6 +37,8 @@ use OCP\IConfig;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IImage;
+use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
@@ -62,8 +65,25 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	private $ocConfig;
 	/** @var Configuration */
 	private $configuration;
+	/** @var IL10N */
+	private $l10n;
+	/** @var ILogger */
+	private $logger;
 
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig, ILDAPProvider $ldapProvider, Configuration $configuration) {
+	/**
+	 * LDAPUserManager constructor.
+	 *
+	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
+	 * @param IUserSession $userSession
+	 * @param LDAPConnect $ldapConnect
+	 * @param IConfig $ocConfig
+	 * @param ILDAPProvider $ldapProvider
+	 * @param Configuration $configuration
+	 * @param IL10N $l10n
+	 * @param ILogger $logger
+	 */
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ocConfig, ILDAPProvider $ldapProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -75,6 +95,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$this->makeLdapBackendFirst();
 		$this->ldapProvider = $ldapProvider;
 		$this->configuration = $configuration;
+		$this->l10n = $l10n;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -93,28 +115,44 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	/**
-	 * set display name of the user
 	 *
 	 * @param string $uid user ID of the user
 	 * @param string $displayName new user's display name
-	 * @return bool
+	 * @return string
+	 * @throws HintException
+	 * @throws ServerNotAvailableException
 	 */
 	public function setDisplayName($uid, $displayName) {
 		$userDN = $this->getUserDN($uid);
 
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 
-		$displayNameField = $this->ldapProvider->getLDAPDisplayNameField($uid);
+		try {
+			$displayNameField = $this->ldapProvider->getLDAPDisplayNameField($uid);
+			// The LDAP backend supports a second display name field, but it is
+			// not exposed at this time. So it is just ignored for now.
+		} catch (\Exception $e) {
+			throw new HintException(
+				'Corresponding LDAP User not found',
+				$this->l10n->t('Could not find related LDAP entry')
+			);
+		}
 
 		if (!is_resource($connection)) {
-			//LDAP not available
-			\OCP\Util::writeLog('user_ldap', 'LDAP resource not available.', \OCP\Util::DEBUG);
-			return false;
+			$this->logger->debug('LDAP resource not available', ['app' => 'ldap_write_support']);
+			throw new ServerNotAvailableException('LDAP server is not available');
 		}
 		try {
-			return ldap_mod_replace($connection,$userDN, [$displayNameField => $displayName]);
-		} catch(ConstraintViolationException $e) {
-			throw new HintException('DisplayName change rejected.', \OC::$server->getL10N('user_ldap')->t('DisplayName change rejected. Hint: ').$e->getMessage(), $e->getCode());
+			if (ldap_mod_replace($connection, $userDN, [$displayNameField => $displayName])) {
+				return $displayName;
+			}
+			throw new HintException('Failed to set display name');
+		} catch (ConstraintViolationException $e) {
+			throw new HintException(
+				$e->getMessage(),
+				$this->l10n->t('DisplayName change rejected'),
+				$e->getCode()
+			);
 		}
 	}
 
@@ -180,7 +218,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$requireActorFromLDAP = (bool)$this->ocConfig->getAppValue('ldap_write_support', 'create.requireActorFromLDAP', '1');
 		$adminUser = $this->userSession->getUser();
 		if($requireActorFromLDAP && !$adminUser instanceof IUser) {
-			throw new \Exception('Acting user is not a user');
+			throw new \Exception('Acting user is not from LDAP');
 		}
 		try {
 			$connection = $this->ldapProvider->getLDAPConnection($adminUser->getUID());
