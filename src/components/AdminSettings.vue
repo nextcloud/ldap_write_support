@@ -40,6 +40,10 @@
 							@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'settings')">
 				{{ t('ldap_write_support', 'An LDAP user must have an email address set.')}}
 			</ActionCheckbox>
+			<ActionCheckbox :checked="switches.hasAvatarPermission"
+							@change.stop.prevent="toggleSwitch('hasAvatarPermission', !switches.hasAvatarPermission)">
+				{{ t('ldap_write_support', 'Allow users to set their avatar')}}
+			</ActionCheckbox>
 		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>
@@ -67,6 +71,7 @@
 			switches: {
 				createRequireActorFromLdap: Boolean,
 				createPreventFallback: Boolean,
+				hasAvatarPermission: Boolean,
 				newUserGenerateUserID: Boolean,
 				newUserRequireEmail: Boolean,
 			}

@@ -44,6 +44,10 @@ class Configuration {
 		return $this->config->getAppValue('ldap_write_support', 'createPreventFallback', '1') === '1';
 	}
 
+	public function hasAvatarPermission(): bool {
+		return $this->config->getAppValue('ldap_write_support', 'hasAvatarPermission', '1') === '1';
+	}
+
 	public function getUserTemplate() {
 		return $this->config->getAppValue(
 			Application::APP_ID,

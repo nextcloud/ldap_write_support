@@ -153,7 +153,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @return boolean either the user can or cannot
 	 */
 	public function canChangeAvatar($uid) {
-		return true;
+		return $this->configuration->hasAvatarPermission();
 	}
 
 	/**

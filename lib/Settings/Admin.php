@@ -62,6 +62,7 @@ class Admin implements ISettings {
 			[
 				'createRequireActorFromLdap' => $this->config->isLdapActorRequired(),
 				'createPreventFallback' => $this->config->isPreventFallback(),
+				'hasAvatarPermission' => $this->config->hasAvatarPermission(),
 				'newUserRequireEmail' => $this->config->isRequireEmail(),
 				'newUserGenerateUserID' => $this->config->isGenerateUserId(),
 			]
