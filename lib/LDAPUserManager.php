@@ -41,6 +41,7 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\LDAP\IDeletionFlagSupport;
 use OCP\LDAP\ILDAPProvider;
 use OCP\PreConditionNotMetException;
 
@@ -291,10 +292,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$message = "Delete LDAP user (isDeleted): " . $uid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
 
-			// set the deletion flag, so the LDAP Backend will be willing to remove the user
-			$this->ocConfig->setUserValue($uid, 'user_ldap', 'isDeleted', 1);
 			$user = $this->userManager->get($uid);
-			if ($user instanceof IUser) {
+			if (
+				$this->ldapProvider instanceof IDeletionFlagSupport
+				&& $user instanceof IUser
+			) {
+				$this->ldapProvider->flagRecord($uid);
 				$user->delete();
 			} else {
 				$this->logger->warning(
