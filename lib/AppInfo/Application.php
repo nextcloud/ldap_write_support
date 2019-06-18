@@ -48,7 +48,6 @@ class Application extends App {
 			$s->getUserManager(),
 			$s->getUserSession(),
 			new LDAPConnect($s->getConfig()),
-			$s->getConfig(),
 			$p,
 			$c->query(Configuration::class),
 			$s->getL10N(self::APP_ID),

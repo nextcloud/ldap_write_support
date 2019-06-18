@@ -35,7 +35,6 @@ use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
-use OCP\IConfig;
 use OCP\IImage;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -59,8 +58,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var LDAPConnect */
 	private $ldapConnect;
 
-	/** @var IConfig */
-	private $ncConfig;
 	/** @var Configuration */
 	private $configuration;
 	/** @var IL10N */
@@ -74,17 +71,15 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
 	 * @param LDAPConnect $ldapConnect
-	 * @param IConfig $ncConfig
 	 * @param ILDAPProvider $ldapProvider
 	 * @param Configuration $configuration
 	 * @param IL10N $l10n
 	 * @param ILogger $logger
 	 */
-	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, IConfig $ncConfig, ILDAPProvider $ldapProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
+	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $ldapProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
-		$this->ncConfig = $ncConfig;
 		$this->ldapProvider = $ldapProvider;
 		$this->configuration = $configuration;
 		$this->l10n = $l10n;
@@ -211,8 +206,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @throws Exception
 	 */
 	public function createUser($username, $password) {
-		$requireActorFromLDAP = (bool)$this->ncConfig->getAppValue('ldap_write_support', 'create.requireActorFromLDAP', '1');
 		$adminUser = $this->userSession->getUser();
+		$requireActorFromLDAP = $this->configuration->isLdapActorRequired();
 		if ($requireActorFromLDAP && !$adminUser instanceof IUser) {
 			throw new Exception('Acting user is not from LDAP');
 		}
@@ -222,7 +217,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$base = $this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
 		} catch (Exception $e) {
 			if ($requireActorFromLDAP) {
-				if ((bool)$this->ncConfig->getAppValue('ldap_write_support', 'create.preventLocalFallback', '1')) {
+				if ($this->configuration->isPreventFallback()) {
 					throw $e;
 				}
 				return false;
