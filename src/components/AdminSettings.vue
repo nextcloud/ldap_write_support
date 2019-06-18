@@ -93,12 +93,10 @@
 				OCP.AppConfig.setValue('ldap_write_support', 'template.user', this.templates.user);
 			},
 			toggleSwitch(prefKey, state, appId = 'ldap_write_support') {
-				console.log(state);
 				this.switches[prefKey] = state;
 				if(appId === 'settings') {
 					// the database key has a slighlty different style, need to transform
 					prefKey = 'newUser.' + prefKey.charAt(7).toLowerCase() + prefKey.slice(8);
-					console.log(prefKey);
 				}
 				OCP.AppConfig.setValue(appId, prefKey, (state | 0).toString());
 			}
