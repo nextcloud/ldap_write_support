@@ -46,7 +46,6 @@ class Application extends App {
 
 		$this->ldapUserManager = new LDAPUserManager(
 			$s->getUserManager(),
-			$s->getGroupManager(),
 			$s->getUserSession(),
 			new LDAPConnect($s->getConfig()),
 			$s->getConfig(),
