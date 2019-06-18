@@ -193,8 +193,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * Saves NC user email to LDAP
 	 *
 	 * @param IUser $user
+	 * @throws \Exception
 	 */
-	public function changeEmail($user, $newEmail) {
+	public function changeEmail(IUser $user, string $newEmail): void {
 		try {
 			$userDN = $this->getUserDN($user->getUID());
 		} catch (\Exception $e) {
@@ -379,7 +380,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 	}
 
-	public function changeUserHook($user, $feature, $attr1, $attr2) {
+	/**
+	 * @throws \Exception
+	 */
+	public function changeUserHook(IUser $user, string $feature, $attr1, $attr2): void {
 		switch ($feature) {
 			case 'avatar':
 				$this->changeAvatar($user);
