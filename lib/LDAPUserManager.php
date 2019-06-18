@@ -256,8 +256,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	public function buildNewEntry($username, $password, $base) {
 		$ldif = $this->configuration->getUserTemplate();
 
-		$rndUid = bin2hex(random_bytes(5));
-		$ldif = str_replace('{RND_UID}', $rndUid, $ldif);
 		$ldif = str_replace('{UID}', $username, $ldif);
 		$ldif = str_replace('{PWD}', $password, $ldif);
 		$ldif = str_replace('{BASE}', $base, $ldif);
