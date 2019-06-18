@@ -212,8 +212,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $username The username of the user to create
 	 * @param string $password The password of the new user
-	 * @return bool|\OCP\IUser the created user of false
-	 *
+	 * @return bool|IUser the created user of false
+	 * @throws \Exception
 	 */
 	public function createUser($username, $password) {
 		$requireActorFromLDAP = (bool)$this->ocConfig->getAppValue('ldap_write_support', 'create.requireActorFromLDAP', '1');
