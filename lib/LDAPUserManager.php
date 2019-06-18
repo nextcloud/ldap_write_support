@@ -25,16 +25,15 @@
 
 namespace OCA\LdapWriteSupport;
 
-
 use OC\HintException;
 use OC\ServerNotAvailableException;
 use OC\User\Backend;
+use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCP\IConfig;
-use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IImage;
 use OCP\IL10N;
@@ -43,6 +42,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\LDAP\ILDAPProvider;
+use OCP\PreConditionNotMetException;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {
@@ -277,35 +277,39 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		return [$dn, $entry];
 	}
 
+	/**
+	 * @param $uid
+	 * @return bool
+	 * @throws PreConditionNotMetException
+	 */
 	public function deleteUser($uid) {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
-
 		$userDN = $this->getUserDN($uid);
-
-		//Remove user from all groups before deleting...
-		$user = $this->userManager->get($uid);
-
-		/** @var IGroup[] $userGroups */
-		$userGroups = $this->groupManager->getUserGroups($user);
-		foreach ($userGroups as $userGroup) {
-			$userGroup->removeUser($user);
-		}
 
 		if ($res = ldap_delete($connection, $userDN)) {
 			$message = "Delete LDAP user (isDeleted): " . $uid;
-			\OC::$server->getLogger()->notice($message, ['app' => 'ldapusermanagement']);
+			$this->logger->notice($message, ['app' => Application::APP_ID]);
 
+			// set the deletion flag, so the LDAP Backend will be willing to remove the user
 			$this->ocConfig->setUserValue($uid, 'user_ldap', 'isDeleted', 1);
+			$user = $this->userManager->get($uid);
+			if ($user instanceof IUser) {
+				$user->delete();
+			} else {
+				$this->logger->warning(
+					'Could not run delete process on {uid}',
+					['app' => Application::APP_ID, 'uid' => $uid]
+				);
+			}
 		} else {
 			$errno = ldap_errno($connection);
-			if ($errno ==  0x20) { #LDAP_NO_SUCH_OBJECT
-				$message = "Delete LDAP user (" . $uid. "): object not found. Is already deleted? Assuming YES";
-				\OC::$server->getLogger()->notice($message, ['app' => 'ldapusermanagement']);
+			if ($errno == 0x20) { #LDAP_NO_SUCH_OBJECT
+				$message = "Delete LDAP user {uid}: object not found. Is already deleted? Assuming YES";
 				$res = true;
 			} else {
-				$message = "Unable to delete LDAP user " . $uid;
-				\OC::$server->getLogger()->error($message, ['app' => 'ldapusermanagement']);
+				$message = "Unable to delete LDAP user {uid}";
 			}
+			$this->logger->notice($message, ['app' => Application::APP_ID, 'uid' => $uid]);
 		}
 		ldap_close($connection);
 		return $res;
