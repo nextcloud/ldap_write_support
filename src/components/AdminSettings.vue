@@ -32,6 +32,14 @@
 							@change.stop.prevent="toggleSwitch('createRequireActorFromLdap', !switches.createRequireActorFromLdap)">
 				{{ t('ldap_write_support', 'To create users, the acting (sub)admin has to be provided by LDAP.')}}
 			</ActionCheckbox>
+			<ActionCheckbox :checked="switches.newUserGenerateUserID"
+							@change.stop.prevent="toggleSwitch('newUserGenerateUserID', !switches.newUserGenerateUserID, 'settings')">
+				{{ t('ldap_write_support', 'A random user ID has to be generated, i.e. not being provided by the (sub)admin.')}}
+			</ActionCheckbox>
+			<ActionCheckbox :checked="switches.newUserRequireEmail"
+							@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'settings')">
+				{{ t('ldap_write_support', 'An LDAP user must have an email address set.')}}
+			</ActionCheckbox>
 		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>
@@ -57,7 +65,10 @@
 				userDefault: Object,
 			},
 			switches: {
-				createRequireActorFromLdap: Boolean
+				createRequireActorFromLdap: Boolean,
+				createPreventFallback: Boolean,
+				newUserGenerateUserID: Boolean,
+				newUserRequireEmail: Boolean,
 			}
 		},
 		components: {
@@ -76,10 +87,15 @@
 				}
 				OCP.AppConfig.setValue('ldap_write_support', 'template.user', this.templates.user);
 			},
-			toggleSwitch(prefKey, state) {
+			toggleSwitch(prefKey, state, appId = 'ldap_write_support') {
 				console.log(state);
 				this.switches[prefKey] = state;
-				OCP.AppConfig.setValue('ldap_write_support', prefKey, (state | 0).toString());
+				if(appId === 'settings') {
+					// the database key has a slighlty different style, need to transform
+					prefKey = 'newUser.' + prefKey.charAt(7).toLowerCase() + prefKey.slice(8);
+					console.log(prefKey);
+				}
+				OCP.AppConfig.setValue(appId, prefKey, (state | 0).toString());
 			}
 		}
 	}

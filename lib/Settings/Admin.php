@@ -62,6 +62,8 @@ class Admin implements ISettings {
 			[
 				'createRequireActorFromLdap' => $this->config->isLdapActorRequired(),
 				'createPreventFallback' => $this->config->isPreventFallback(),
+				'newUserRequireEmail' => $this->config->isRequireEmail(),
+				'newUserGenerateUserID' => $this->config->isGenerateUserId(),
 			]
 		);
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');

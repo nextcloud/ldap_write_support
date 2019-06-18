@@ -37,11 +37,11 @@ class Configuration {
 	}
 
 	public function isLdapActorRequired(): bool {
-		return (bool)$this->config->getAppValue('ldap_write_support', 'createRequireActorFromLdap', '1');
+		return $this->config->getAppValue('ldap_write_support', 'createRequireActorFromLdap', '0') === '1';
 	}
 
 	public function isPreventFallback(): bool {
-		return (bool)$this->config->getAppValue('ldap_write_support', 'createPreventFallback', '1');
+		return $this->config->getAppValue('ldap_write_support', 'createPreventFallback', '1') === '1';
 	}
 
 	public function getUserTemplate() {
@@ -61,7 +61,16 @@ class Configuration {
 			'displayName: {UID}' . PHP_EOL .
 			'cn: {UID}' . PHP_EOL .
 			'sn: {UID}' . PHP_EOL .
-			'userPassword: {PWD}'
-		;
+			'userPassword: {PWD}';
+	}
+
+	public function isRequireEmail(): bool {
+		// this core settings flag is not exposed anywhere else
+		return $this->config->getAppValue('settings', 'newUser.requireEmail', '0') === '1';
+	}
+
+	public function isGenerateUserId(): bool {
+		// this core settings flag is not exposed anywhere else
+		return $this->config->getAppValue('settings', 'newUser.generateUserID', '0') === '1';
 	}
 }
