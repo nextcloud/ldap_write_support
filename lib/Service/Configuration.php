@@ -37,11 +37,11 @@ class Configuration {
 	}
 
 	public function isLdapActorRequired(): bool {
-		return (bool)$this->config->getAppValue('ldap_write_support', 'create.requireActorFromLDAP', '1');
+		return (bool)$this->config->getAppValue('ldap_write_support', 'createRequireActorFromLdap', '1');
 	}
 
 	public function isPreventFallback(): bool {
-		return (bool)$this->config->getAppValue('ldap_write_support', 'create.preventFallback', '1');
+		return (bool)$this->config->getAppValue('ldap_write_support', 'createPreventFallback', '1');
 	}
 
 	public function getUserTemplate() {

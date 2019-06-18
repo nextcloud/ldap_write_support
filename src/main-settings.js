@@ -30,6 +30,7 @@ const View = Vue.extend(AdminSettings);
 const AppID = 'ldap_write_support';
 new View({
 	propsData: {
-		templates: OCP.InitialState.loadState(AppID, 'templates')
+		templates: OCP.InitialState.loadState(AppID, 'templates'),
+		switches: OCP.InitialState.loadState(AppID, 'switches')
 	}
 }).$mount('#ldap-write-support-admin-settings');

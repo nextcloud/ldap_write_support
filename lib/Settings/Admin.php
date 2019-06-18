@@ -56,6 +56,14 @@ class Admin implements ISettings {
 				'userDefault' => $this->config->getUserTemplateDefault(),
 			]
 		);
+		$this->initialStateService->provideInitialState(
+			Application::APP_ID,
+			'switches',
+			[
+				'createRequireActorFromLdap' => $this->config->isLdapActorRequired(),
+				'createPreventFallback' => $this->config->isPreventFallback(),
+			]
+		);
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
 

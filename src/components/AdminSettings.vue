@@ -22,9 +22,20 @@
 <template>
 	<div id="ldap-write-support-admin-settings" class="section">
 		<h2>{{ t('ldap_write_support', 'Writing') }}</h2>
+		<h3>{{ t('ldap_write_support', 'Switches')}}</h3>
+		<ul>
+			<ActionCheckbox :checked="switches.createPreventFallback"
+							@change.stop.prevent="toggleSwitch('createPreventFallback', !switches.createPreventFallback)">
+				{{ t('ldap_write_support', 'Prevent fallback to other backends when creating users or groups.')}}
+			</ActionCheckbox>
+			<ActionCheckbox :checked="switches.createRequireActorFromLdap"
+							@change.stop.prevent="toggleSwitch('createRequireActorFromLdap', !switches.createRequireActorFromLdap)">
+				{{ t('ldap_write_support', 'To create users, the acting (sub)admin has to be provided by LDAP.')}}
+			</ActionCheckbox>
+		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>
-		<ul>
+		<ul class="disc">
 			<li><span class="mono">{UID}</span> – {{ t('ldap_write_support', 'the user id provided by the (sub)admin') }}</li>
 			<li><span class="mono">{PWD}</span> – {{ t('ldap_write_support', 'the password provided by the (sub)admin') }}</li>
 			<li><span class="mono">{BASE}</span> – {{ t('ldap_write_support', 'the LDAP node of the acting (sub)admin or the configured user base') }}</li>
@@ -34,6 +45,10 @@
 </template>
 
 <script>
+	import {
+		ActionCheckbox,
+	} from 'nextcloud-vue';
+
 	export default {
 		name: 'AdminSettings',
 		props: {
@@ -41,8 +56,12 @@
 				user: Object,
 				userDefault: Object,
 			},
+			switches: {
+				createRequireActorFromLdap: Boolean
+			}
 		},
 		components: {
+			ActionCheckbox
 		},
 		methods: {
 			setUserTemplate() {
@@ -56,6 +75,11 @@
 					return;
 				}
 				OCP.AppConfig.setValue('ldap_write_support', 'template.user', this.templates.user);
+			},
+			toggleSwitch(prefKey, state) {
+				console.log(state);
+				this.switches[prefKey] = state;
+				OCP.AppConfig.setValue('ldap_write_support', prefKey, (state | 0).toString());
 			}
 		}
 	}
