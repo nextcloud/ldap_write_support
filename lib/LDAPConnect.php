@@ -21,6 +21,7 @@
 
 namespace OCA\LdapWriteSupport;
 
+use OCA\LdapWriteSupport\AppInfo\Application;
 use OCP\IConfig;
 
 class LDAPConnect {
@@ -44,11 +45,11 @@ class LDAPConnect {
             // set LDAP config to work with version 3
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
             $message = "Connected to LDAP host $ldaphost:$ldapport";
-            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+            \OC::$server->getLogger()->notice($message, ['app' => Application::APP_ID]);
             return $ds;
         } else {
             $message = "Unable to connect to LDAP host $ldaphost:$ldapport";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+            \OC::$server->getLogger()->error($message, ['app' => Application::APP_ID]);
             return False;
         }
     }
@@ -64,10 +65,10 @@ class LDAPConnect {
         // Connecting to LDAP
         if (!ldap_bind($ds,$dn,$secret)) {
             $message = "Unable to bind to LDAP server using credentials $dn > $secret";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+            \OC::$server->getLogger()->error($message, ['app' => Application::APP_ID]);
         } else {
             $message = "Bind to LDAP server using credentials $dn";
-            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+            \OC::$server->getLogger()->notice($message, ['app' => Application::APP_ID]);
             return $ds;
         }
         // try catch!!!

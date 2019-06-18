@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OCA\LdapWriteSupport\AppInfo;
 
+use Exception;
 use OC;
 use OC\Group\Group;
 use OC\User\User;
@@ -14,6 +15,7 @@ use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\GroupPluginManager;
 use OCA\User_LDAP\UserPluginManager;
 use OCP\AppFramework\App;
+use OCP\AppFramework\QueryException;
 
 class Application extends App {
 	/** @var LDAPUserManager */
@@ -32,6 +34,10 @@ class Application extends App {
 		$this->ldapEnabled = OC::$server->getAppManager()->isEnabledForUser('user_ldap');
 	}
 
+	/**
+	 * @throws QueryException
+	 * @throws Exception
+	 */
 	public function registerLDAPPlugins(): void {
 		if(!$this->ldapEnabled) {
 			return;
@@ -40,21 +46,19 @@ class Application extends App {
 		\OC_App::loadApp('user_ldap');
 		$c = $this->getContainer();
 		$s = $this->getContainer()->getServer();
-		$p = $s->getLDAPProvider();
+		$provider = $s->getLDAPProvider();
 
 		// resolving LDAP provider fails indeed
-
 		$this->ldapUserManager = new LDAPUserManager(
 			$s->getUserManager(),
 			$s->getUserSession(),
 			new LDAPConnect($s->getConfig()),
-			$p,
+			$provider,
 			$c->query(Configuration::class),
 			$s->getL10N(self::APP_ID),
 			$s->getLogger()
 		);
 
-//		$this->ldapUserManager = $c->query(LDAPUserManager::class);
 		$this->ldapGroupManager = $c->query(LDAPGroupManager::class);
 
 		/** @var UserPluginManager $userPluginManager */
@@ -75,13 +79,13 @@ class Application extends App {
 
 		$subAdmin->listen('\OC\SubAdmin', 'postCreateSubAdmin', function (User $user, Group $group) {
 			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
-				$this->ldapGroupManager->addOwnerToGroup($user->getUID(), $group->getGID());
+				$this->ldapGroupManager->addToGroup($user->getUID(), $group->getGID());
 			}
 		});
 
 		$subAdmin->listen('\OC\SubAdmin', 'postDeleteSubAdmin', function (User $user, Group $group) {
 			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
-				$this->ldapGroupManager->removeOwnerFromGroup($user->getUID(), $group->getGID());
+				$this->ldapGroupManager->removeFromGroup($user->getUID(), $group->getGID());
 			}
 		});
 	}

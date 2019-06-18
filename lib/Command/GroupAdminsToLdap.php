@@ -1,7 +1,5 @@
 <?php
 /**
- * Matrix.org chat integration
- *
  * @copyright 2019 Cooperativa EITA (eita.org.br)
  *
  * @author Vinicius Cubas Brand <vinicius@eita.org.br>
