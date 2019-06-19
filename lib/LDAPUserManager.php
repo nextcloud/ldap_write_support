@@ -215,6 +215,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$connection = $this->ldapProvider->getLDAPConnection($adminUser->getUID());
 			// TODO: what about multiple bases?
 			$base = $this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
+			$displayNameAttribute = $this->ldapProvider->getLDAPDisplayNameField($adminUser->getUID());
 		} catch (Exception $e) {
 			if ($requireActorFromLDAP) {
 				if ($this->configuration->isPreventFallback()) {
@@ -224,10 +225,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			}
 			$connection = $this->ldapConnect->getLDAPConnection();
 			$base = $this->ldapConnect->getLDAPBaseUsers();
+			$displayNameAttribute = $this->ldapConnect->getDisplayNameAttribute();
 		}
 
 		list($newUserDN, $newUserEntry) = $this->buildNewEntry($username, $password, $base);
 		$newUserDN = $this->ldapProvider->sanitizeDN([$newUserDN])[0];
+		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $username);
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
 		$message = $ret
@@ -240,6 +243,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		]);
 		ldap_close($connection);
 		return $ret ? $newUserDN : false;
+	}
+
+	public function ensureAttribute(array &$ldif, string $attribute, string $fallbackValue) {
+		if(!isset($ldif[$attribute])) {
+			$ldif[$attribute] = $fallbackValue;
+		}
 	}
 
 	public function buildNewEntry($username, $password, $base) {

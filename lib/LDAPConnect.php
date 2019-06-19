@@ -113,4 +113,8 @@ class LDAPConnect {
 	public function getLDAPBaseGroups() {
 		return $this->ldapConfig->ldapBaseGroups;
 	}
+
+	public function getDisplayNameAttribute() {
+		return $this->ldapConfig->ldapUserDisplayName;
+	}
 }
