@@ -305,7 +305,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			}
 		} else {
 			$errno = ldap_errno($connection);
-			if ($errno == 0x20) { #LDAP_NO_SUCH_OBJECT
+			if ($errno === 0x20) { #LDAP_NO_SUCH_OBJECT
 				$message = "Delete LDAP user {uid}: object not found. Is already deleted? Assuming YES";
 				$res = true;
 			} else {

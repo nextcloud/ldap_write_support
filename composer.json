@@ -1,0 +1,15 @@
+{
+    "name": "nextcloud/ldap_write_support",
+    "type": "project",
+    "require-dev": {
+        "jakub-onderka/php-parallel-lint": "^1.0"
+    },
+    "license": "AGPLv3",
+    "authors": [
+        {
+            "name": "Arthur Schiwon",
+            "email": "blizzz@arthur-schiwon.de"
+        }
+    ],
+    "require": {}
+}
