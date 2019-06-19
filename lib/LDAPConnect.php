@@ -26,12 +26,16 @@ use OC\ServerNotAvailableException;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Configuration;
 use OCA\User_LDAP\Helper;
+use OCP\ILogger;
 
 class LDAPConnect {
 	/** @var Configuration */
 	private $ldapConfig;
+	/** @var ILogger */
+	private $logger;
 
-	public function __construct(Helper $ldapBackendHelper) {
+	public function __construct(Helper $ldapBackendHelper, ILogger $logger) {
+		$this->logger = $logger;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
 		$prefix = array_shift($ldapConfigPrefixes);
 		$this->ldapConfig = new Configuration($prefix);
@@ -51,38 +55,54 @@ class LDAPConnect {
 			throw new ServerNotAvailableException('LDAP server not available');
 		}
 
-        if ($cr) {
-            ldap_set_option($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
-            $message = "Connected to LDAP host $ldapHost:$ldapPort";
-            \OC::$server->getLogger()->notice($message, ['app' => Application::APP_ID]);
-            return $cr;
-        } else {
-            $message = "Unable to connect to LDAP host $ldapHost:$ldapPort";
-            \OC::$server->getLogger()->error($message, ['app' => Application::APP_ID]);
-            return False;
-        }
+		if ($cr) {
+			ldap_set_option($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
+			$this->logger->debug('Connected to LDAP host {ldapHost}:{ldapPort}',
+				[
+					'app' => Application::APP_ID,
+					'ldapHost' => $ldapHost,
+					'ldapPort' => $ldapPort,
+				]);
+			return $cr;
+		} else {
+			$this->logger->error('Unable to connect to LDAP host {ldapHost}:{ldapPort}',
+				[
+					'app' => Application::APP_ID,
+					'ldapHost' => $ldapHost,
+					'ldapPort' => $ldapPort,
+				]);
+			return false;
+		}
     }
 
-    public function bind() {
-
-        // LDAP variables
+	/**
+	 * @return bool|resource
+	 * @throws ServerNotAvailableException
+	 */
+	public function bind() {
         $ds = $this->connect();
         $dn = $this->ldapConfig->ldapAgentName;
         $secret = $this->ldapConfig->ldapAgentPassword;
 
-        // Connecting to LDAP
         if (!ldap_bind($ds,$dn,$secret)) {
-            $message = "Unable to bind to LDAP server using credentials $dn > $secret";
-            \OC::$server->getLogger()->error($message, ['app' => Application::APP_ID]);
+			$this->logger->error('Unable to bind to LDAP server',
+				['app' => Application::APP_ID]
+			);
+			return false;
         } else {
-            $message = "Bind to LDAP server using credentials $dn";
-            \OC::$server->getLogger()->notice($message, ['app' => Application::APP_ID]);
+			$this->logger->debug('Bound to LDAP server using credentials for {dn}', [
+				'app' => Application::APP_ID,
+				'dn' => $dn,
+			]);
             return $ds;
         }
-        // try catch!!!
     }
 
-    public function getLDAPConnection() {
+	/**
+	 * @return bool|resource
+	 * @throws ServerNotAvailableException
+	 */
+	public function getLDAPConnection() {
     	return $this->bind();
 	}
 

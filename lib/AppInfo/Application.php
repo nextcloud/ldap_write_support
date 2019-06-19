@@ -13,6 +13,7 @@ use OCA\LdapWriteSupport\LDAPUserManager;
 use OCA\LdapWriteSupport\LDAPGroupManager;
 use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\GroupPluginManager;
+use OCA\User_LDAP\Helper;
 use OCA\User_LDAP\UserPluginManager;
 use OCP\AppFramework\App;
 use OCP\AppFramework\QueryException;
@@ -52,7 +53,7 @@ class Application extends App {
 		$this->ldapUserManager = new LDAPUserManager(
 			$s->getUserManager(),
 			$s->getUserSession(),
-			new LDAPConnect($s->getConfig()),
+			new LDAPConnect($s->query(Helper::class), $s->getLogger()),
 			$provider,
 			$c->query(Configuration::class),
 			$s->getL10N(self::APP_ID),
