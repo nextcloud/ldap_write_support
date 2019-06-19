@@ -202,7 +202,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $username The username of the user to create
 	 * @param string $password The password of the new user
-	 * @return bool|IUser the created user of false
+	 * @return bool|string the created user of false
 	 * @throws Exception
 	 */
 	public function createUser($username, $password) {
@@ -227,6 +227,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 
 		list($newUserDN, $newUserEntry) = $this->buildNewEntry($username, $password, $base);
+		$newUserDN = $this->ldapProvider->sanitizeDN([$newUserDN])[0];
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
 		$message = $ret
@@ -238,7 +239,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			'dn' => $newUserDN,
 		]);
 		ldap_close($connection);
-		return $ret ? $newUserDN : null;
+		return $ret ? $newUserDN : false;
 	}
 
 	public function buildNewEntry($username, $password, $base) {
