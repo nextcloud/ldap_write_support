@@ -6,6 +6,8 @@ Feature: user
 
   Scenario: create a new user
     Given As an "admin"
+    And modify LDAP configuration
+      | ldapBaseUsers  | ou=PagingTest,dc=nextcloud,dc=ci |
     And user "brand-new-user" does not exist
     When sending "POST" to "/cloud/users" with
       | userid | brand-new-user |
