@@ -47,7 +47,18 @@ class Application extends App {
 		\OC_App::loadApp('user_ldap');
 		$c = $this->getContainer();
 		$s = $this->getContainer()->getServer();
-		$provider = $s->getLDAPProvider();
+		try {
+			$provider = $s->getLDAPProvider();
+		} catch (\Exception $e) {
+			if(strpos($e->getMessage(), 'user_ldap app must be enabled') !== false) {
+				$s->getLogger()->info (
+					'Not registering plugins, because there are no active LDAP configs',
+					['app' => self::APP_ID]
+				);
+				return;
+			}
+			throw $e;
+		}
 
 		// resolving LDAP provider fails indeed
 		$this->ldapUserManager = new LDAPUserManager(
@@ -72,7 +83,7 @@ class Application extends App {
 	}
 
 	public function registerHooks(): void {
-		if(!$this->ldapEnabled) {
+		if(!$this->ldapEnabled || $this->ldapUserManager === null) {
 			return;
 		}
 
