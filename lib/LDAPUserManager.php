@@ -224,7 +224,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				return false;
 			}
 			$connection = $this->ldapConnect->getLDAPConnection();
-			$base = $this->ldapConnect->getLDAPBaseUsers();
+			$base = $this->ldapConnect->getLDAPBaseUsers()[0];
 			$displayNameAttribute = $this->ldapConnect->getDisplayNameAttribute();
 		}
 
