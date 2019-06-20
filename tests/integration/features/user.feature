@@ -12,7 +12,7 @@ Feature: user
     When sending "POST" to "/cloud/users" with
       | userid | brand-new-user |
       | password | 123456 |
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" exists
     And invoking occ with "user:info brand-new-user"
