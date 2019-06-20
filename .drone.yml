@@ -82,7 +82,7 @@ steps:
       - php occ app:enable $APP_NAME
       - cd apps/$APP_NAME
       - cd tests/integration
-      - ./run.sh || true
+      - ./run.sh
 
 services:
   - name: cache

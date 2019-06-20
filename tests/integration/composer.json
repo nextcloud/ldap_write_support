@@ -8,9 +8,10 @@
   },
   "autoload": {
     "files": [
-      "../../../../build/integration/features/bootstrap/BasicStructure.php",
-      "../../../../build/integration/features/bootstrap/Provisioning.php",
+      "../../../../build/integration/features/bootstrap/AppConfiguration.php",
       "../../../../build/integration/features/bootstrap/CommandLine.php",
+      "../../../../build/integration/features/bootstrap/Provisioning.php",
+      "../../../../build/integration/features/bootstrap/Sharing.php",
       "../../../../build/integration/features/bootstrap/LDAPContext.php"
     ],
     "psr-0": {
