@@ -28,7 +28,7 @@ class Application extends App {
 	/** @var bool */
 	protected $ldapEnabled = false;
 
-	public const APP_ID = 'ldap_write_support';
+	const APP_ID = 'ldap_write_support';
 
 	public function __construct(array $urlParams = []) {
 		parent::__construct(self::APP_ID, $urlParams);
