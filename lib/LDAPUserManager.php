@@ -246,7 +246,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	public function ensureAttribute(array &$ldif, string $attribute, string $fallbackValue) {
-		if(!isset($ldif[$attribute])) {
+		$lowerCasedLDIF = array_change_key_case($ldif, CASE_LOWER);
+		if(!isset($lowerCasedLDIF[strtolower($attribute)])) {
 			$ldif[$attribute] = $fallbackValue;
 		}
 	}
