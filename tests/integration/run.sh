@@ -12,10 +12,7 @@ HIDE_OC_LOGS=$2
 )
 INSTALLED=$($OCC status | grep installed: | cut -d " " -f 5)
 
-if [ "$INSTALLED" == "true" ]; then
-    $OCC app:enable user_ldap
-    $OCC app:enable ldap_write_support
-else
+if [ "$INSTALLED" != "true" ]; then
     echo "Nextcloud instance needs to be installed" >&2
     exit 1
 fi

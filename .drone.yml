@@ -79,6 +79,7 @@ steps:
       - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.local
       - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.distributed
       - php occ app:enable user_ldap
+      - php occ app:enable testing
       - php occ app:enable $APP_NAME
       - cd apps/$APP_NAME
       - cd tests/integration
