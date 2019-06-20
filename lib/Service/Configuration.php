@@ -58,10 +58,10 @@ class Configuration {
 
 	public function getUserTemplateDefault() {
 		return
-			'dn: uid={RND_UID},{BASE}' . PHP_EOL .
+			'dn: uid={UID},{BASE}' . PHP_EOL .
 			'objectClass: inetOrgPerson' . PHP_EOL .
 			'objectClass: person' . PHP_EOL .
-			'uid: {RND_UID}' . PHP_EOL .
+			'uid: {UID}' . PHP_EOL .
 			'displayName: {UID}' . PHP_EOL .
 			'cn: {UID}' . PHP_EOL .
 			'sn: {UID}' . PHP_EOL .
