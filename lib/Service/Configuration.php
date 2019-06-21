@@ -69,11 +69,11 @@ class Configuration {
 
 	public function isRequireEmail(): bool {
 		// this core settings flag is not exposed anywhere else
-		return $this->config->getAppValue('settings', 'newUser.requireEmail', '0') === '1';
+		return $this->config->getAppValue('core', 'newUser.requireEmail', 'no') === 'yes';
 	}
 
 	public function isGenerateUserId(): bool {
 		// this core settings flag is not exposed anywhere else
-		return $this->config->getAppValue('settings', 'newUser.generateUserID', '0') === '1';
+		return $this->config->getAppValue('core', 'newUser.generateUserID', 'no') === 'yes';
 	}
 }
