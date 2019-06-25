@@ -51,9 +51,8 @@ Feature: user
       | userid |  |
       | password | 123456 |
       | email    | foo@bar.foobar |
-    Then the OCS status code should be "101"
+    Then the OCS status code should be "109"
     And the HTTP status code should be "400"
-    # this is how we end up when the welcome email cannot be sent - wrong OCS code is a server thing
 
   # requires NC 17
   Scenario: create a new user with dynamic user id, forgot email

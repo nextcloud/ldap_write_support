@@ -79,7 +79,6 @@ steps:
       - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.local
       - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.distributed
       - php occ app:enable user_ldap
-      - php occ app:enable testing
       - php occ app:enable $APP_NAME
       - cd apps/$APP_NAME
       - cd tests/integration
@@ -88,6 +87,44 @@ steps:
 services:
   - name: cache
     image: redis
+  - name: openldap
+    image: nextcloudci/openldap:openldap-7
+    environment:
+      SLAPD_DOMAIN: nextcloud.ci
+      SLAPD_ORGANIZATION: Nextcloud
+      SLAPD_PASSWORD: admin
+      SLAPD_ADDITIONAL_MODULES: memberof
+
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
+name: integration-master-nocache
+steps:
+  - name: integration
+    image: nextcloudci/php7.1:php7.1-16
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: master
+      DB: sqlite
+    commands:
+      # Pre-setup steps
+      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+      - cd ../server/
+      - php occ app:enable user_ldap
+      - php occ app:enable $APP_NAME
+      - cd apps/$APP_NAME
+      - cd tests/integration
+      - ./run.sh
+
+services:
   - name: openldap
     image: nextcloudci/openldap:openldap-7
     environment:
