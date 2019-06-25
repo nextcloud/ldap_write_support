@@ -91,6 +91,10 @@ trait BasicStructure {
 		}
 	}
 
+	public function getResponse() {
+		return $this->response;
+	}
+
 	/**
 	 * @Given /^using api version "(\d+)"$/
 	 * @param string $version

@@ -23,19 +23,43 @@ declare(strict_types=1);
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 class FeatureContext extends LDAPContext implements Context {
 
+	private $userIdsToCleanUp = [];
+
 	/**
-	 * @BeforeScenario
+	 * @AfterScenario
 	 */
-	public function ensureNoBrandNewUser() {
-		$this->deleteUser('brand-new-user');
+	public function deleteCreatedUsers() {
+		while($uid = array_shift($this->userIdsToCleanUp)) {
+			$this->deleteUser($uid);
+		}
 	}
 
 	public function resetAppConfigs() {
-		error_log("RESET APP CFG");
 		$this->modifyServerConfig('core','newUser.generateUserID', 'no');
 		$this->modifyServerConfig('core','newUser.requireEmail', 'no');
+	}
+
+	/**
+	 * @Then /^it yields "([^"]*)" result$/
+	 */
+	public function itYieldsResult($count) {
+		$users = simplexml_load_string($this->getResponse()->getBody()->getContents())->data->users;
+		Assert::assertSame((int)$count, $users->children()->count());
+	}
+
+	/**
+	 * @When /^creating a user with$/
+	 */
+	public function creatingAUserWith(TableNode $args) {
+		$this->sendingToWith('POST', '/cloud/users', $args);
+		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
+		if($xml->data && $xml->data->id) {
+			$this->userIdsToCleanUp[] = $xml->data->id;
+		}
 	}
 }
