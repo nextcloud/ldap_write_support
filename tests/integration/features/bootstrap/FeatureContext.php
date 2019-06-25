@@ -25,4 +25,17 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 
 class FeatureContext extends LDAPContext implements Context {
+
+	/**
+	 * @BeforeScenario
+	 */
+	public function ensureNoBrandNewUser() {
+		$this->deleteUser('brand-new-user');
+	}
+
+	public function resetAppConfigs() {
+		error_log("RESET APP CFG");
+		$this->modifyServerConfig('core','newUser.generateUserID', 'no');
+		$this->modifyServerConfig('core','newUser.requireEmail', 'no');
+	}
 }

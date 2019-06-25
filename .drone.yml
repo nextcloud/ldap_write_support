@@ -60,13 +60,13 @@ trigger:
     - push
 ---
 kind: pipeline
-name: integration-stable16
+name: integration-master
 steps:
   - name: integration
     image: nextcloudci/php7.1:php7.1-16
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: master
       DB: sqlite
     commands:
       # Pre-setup steps
