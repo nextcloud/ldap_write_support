@@ -35,7 +35,7 @@ class FeatureContext extends LDAPContext implements Context {
 	 */
 	public function deleteCreatedUsers() {
 		while($uid = array_shift($this->userIdsToCleanUp)) {
-			$this->deleteUser($uid);
+			$this->deletingTheUser($uid);
 		}
 	}
 
@@ -59,7 +59,7 @@ class FeatureContext extends LDAPContext implements Context {
 		$this->sendingToWith('POST', '/cloud/users', $args);
 		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
 		if($xml->data && $xml->data->id) {
-			$this->userIdsToCleanUp[] = $xml->data->id;
+			$this->userIdsToCleanUp[(string)$xml->data->id] = (string)$xml->data->id;
 		}
 	}
 }
