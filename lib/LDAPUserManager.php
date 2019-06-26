@@ -241,7 +241,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			'username' => $username,
 			'dn' => $newUserDN,
 		]);
-		ldap_close($connection);
+		if (!$ret && $this->configuration->isPreventFallback()) {
+			throw new \Exception('Cannot create user: ' . ldap_error($connection), ldap_errno($connection));
+		}
 		return $ret ? $newUserDN : false;
 	}
 
@@ -286,18 +288,15 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	public function deleteUser($uid) {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 		$userDN = $this->getUserDN($uid);
-
+		$user = $this->userManager->get($uid);
 		if ($res = ldap_delete($connection, $userDN)) {
 			$message = "Delete LDAP user (isDeleted): " . $uid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
-
-			$user = $this->userManager->get($uid);
 			if (
 				$this->ldapProvider instanceof IDeletionFlagSupport
 				&& $user instanceof IUser
 			) {
 				$this->ldapProvider->flagRecord($uid);
-				$user->delete();
 			} else {
 				$this->logger->warning(
 					'Could not run delete process on {uid}',
