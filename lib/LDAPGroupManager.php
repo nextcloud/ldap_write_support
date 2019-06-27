@@ -49,12 +49,13 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	/** @var ILogger */
 	private $logger;
 
-	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger) {
+	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $ldapProvider) {
 		$this->groupManager = $groupManager;
 		$this->ldapConnect = $ldapConnect;
 
 		$this->makeLdapBackendFirst();
 		$this->logger = $logger;
+		$this->ldapProvider = $ldapProvider;
 	}
 
 	/**
@@ -86,7 +87,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 		$newGroupEntry = $this->buildNewEntry($gid);
 		$connection = $this->ldapConnect->getLDAPConnection();
-		$newGroupDN = "cn=$gid," . $this->ldapConnect->getLDAPBaseGroups();
+		$newGroupDN = "cn=$gid," . $this->ldapConnect->getLDAPBaseGroups()[0];
+		$newGroupDN = $this->ldapProvider->sanitizeDN([$newGroupDN])[0];
 
 		if ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry)) {
 			$message = "Create LDAP group '$gid' ($newGroupDN)";
@@ -106,9 +108,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @throws Exception
 	 */
 	public function deleteGroup($gid) {
-		$provider = $this->getLDAPProvider();
-		$connection = $provider->getGroupLDAPConnection($gid);
-		$groupDN = $provider->getGroupDN($gid);
+		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
+		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		if (!$ret = ldap_delete($connection, $groupDN)) {
 			$message = "Unable to delete LDAP Group: " . $gid;
@@ -131,20 +132,19 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @throws Exception
 	 */
 	public function addToGroup($uid, $gid) {
-		$provider = $this->getLDAPProvider();
-		$connection = $provider->getGroupLDAPConnection($gid);
-		$groupDN = $provider->getGroupDN($gid);
+		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
+		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
 			case 'memberUid':
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				$entry['uniquemember'] = $provider->getUserDN($uid);
+				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'member':
-				$entry['member'] = $provider->getUserDN($uid);
+				$entry['member'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'gidNumber':
 				throw new Exception('Cannot add to group when gidNumber is used as relation');
@@ -172,20 +172,19 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @throws Exception
 	 */
 	public function removeFromGroup($uid, $gid) {
-		$provider = $this->getLDAPProvider();
-		$connection = $provider->getGroupLDAPConnection($gid);
-		$groupDN = $provider->getGroupDN($gid);
+		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
+		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($provider->getLDAPGroupMemberAssoc($gid)) {
+		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
 			case 'memberUid':
 				$entry['memberuid'] = $uid;
 				break;
 			case 'uniqueMember':
-				$entry['uniquemember'] = $provider->getUserDN($uid);
+				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'member':
-				$entry['member'] = $provider->getUserDN($uid);
+				$entry['member'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'gidNumber':
 				throw new Exception('Cannot remove from group when gidNumber is used as relation');
@@ -213,23 +212,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	public function isLDAPGroup($gid) {
 		try {
-			return !empty($this->getLDAPProvider()->getGroupDN($gid));
+			return !empty($this->ldapProvider->getGroupDN($gid));
 		} catch (Exception $e) {
 			return false;
 		}
-	}
-
-	/**
-	 * Provides LDAP Provider. Cannot be established in constructor
-	 *
-	 * @return LDAPProvider
-	 * @throws QueryException
-	 */
-	private function getLDAPProvider() {
-		if (!$this->ldapProvider) {
-			$this->ldapProvider = \OC::$server->query('LDAPProvider');
-		}
-		return $this->ldapProvider;
 	}
 
 	private function buildNewEntry($gid) {

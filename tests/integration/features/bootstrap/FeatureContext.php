@@ -28,14 +28,26 @@ use PHPUnit\Framework\Assert;
 
 class FeatureContext extends LDAPContext implements Context {
 
+	/** @var string[]  */
 	private $userIdsToCleanUp = [];
+	/** @var string[]  */
+	private $groupIdsToCleanUp = [];
+	/** @var string  */
+	private $recentlyCreatedUser;
 
 	/**
 	 * @AfterScenario
 	 */
-	public function deleteCreatedUsers() {
+	public function deleteCreatedObjects() {
+		$this->asAn('admin');
 		while($uid = array_shift($this->userIdsToCleanUp)) {
+			error_log("deleting user $uid");
 			$this->deletingTheUser($uid);
+		}
+
+		while($gid = array_shift($this->groupIdsToCleanUp)) {
+			error_log("deleting group $gid");
+			$this->sendingTo('DELETE', '/cloud/groups/' . $gid);
 		}
 	}
 
@@ -60,6 +72,28 @@ class FeatureContext extends LDAPContext implements Context {
 		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
 		if($xml->data && $xml->data->id) {
 			$this->userIdsToCleanUp[(string)$xml->data->id] = (string)$xml->data->id;
+			$this->recentlyCreatedUser = (string)$xml->data->id;
 		}
 	}
+
+	/**
+	 * @Given /^the created users resides on LDAP$/
+	 */
+	public function theCreatedUsersResidesOnLDAP() {
+		$tableNode = new TableNode([['backend', 'LDAP']]);
+		$this->userHasSetting($this->recentlyCreatedUser, $tableNode);
+	}
+
+	/**
+	 * @Given /^creating a group with gid "([^"]*)"$/
+	 */
+	public function creatingAGroupWithGid($gid) {
+		$args = new TableNode([['groupid', $gid]]);
+		$this->sendingToWith('POST', '/cloud/groups', $args);
+		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
+		if($this->getOCSResponse($this->getResponse()) === 200) {
+			$this->groupIdsToCleanUp[$gid] = $gid;
+		}
+	}
+
 }

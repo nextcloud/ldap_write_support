@@ -60,18 +60,25 @@ class Application extends App {
 			throw $e;
 		}
 
+		$ldapConnect = new LDAPConnect($s->query(Helper::class), $s->getLogger());
+
 		// resolving LDAP provider fails indeed
 		$this->ldapUserManager = new LDAPUserManager(
 			$s->getUserManager(),
 			$s->getUserSession(),
-			new LDAPConnect($s->query(Helper::class), $s->getLogger()),
+			$ldapConnect,
 			$provider,
 			$c->query(Configuration::class),
 			$s->getL10N(self::APP_ID),
 			$s->getLogger()
 		);
 
-		$this->ldapGroupManager = $c->query(LDAPGroupManager::class);
+		$this->ldapGroupManager = new LDAPGroupManager(
+			$s->getGroupManager(),
+			$ldapConnect,
+			$s->getLogger(),
+			$provider
+		);
 
 		/** @var UserPluginManager $userPluginManager */
 		$userPluginManager = OC::$server->query('LDAPUserPluginManager');
@@ -82,23 +89,4 @@ class Application extends App {
 		$groupPluginManager->register($this->ldapGroupManager);
 	}
 
-	public function registerHooks(): void {
-		if(!$this->ldapEnabled || $this->ldapUserManager === null) {
-			return;
-		}
-
-		$subAdmin = OC::$server->getGroupManager()->getSubAdmin();
-
-		$subAdmin->listen('\OC\SubAdmin', 'postCreateSubAdmin', function (User $user, Group $group) {
-			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
-				$this->ldapGroupManager->addToGroup($user->getUID(), $group->getGID());
-			}
-		});
-
-		$subAdmin->listen('\OC\SubAdmin', 'postDeleteSubAdmin', function (User $user, Group $group) {
-			if ($user->getBackendClassName() === "LDAP" and $this->ldapGroupManager->isLDAPGroup($group->getGID())) {
-				$this->ldapGroupManager->removeFromGroup($user->getUID(), $group->getGID());
-			}
-		});
-	}
 }
