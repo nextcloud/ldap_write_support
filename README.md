@@ -22,7 +22,7 @@ git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
 
 `git` is required for applying the patch, because it contains changes in binary files (compiled javascript resources) and the good old `patch`  does not have support for it.
 
-## Known limitations
+## Beware the dog
 
 * Due to the internal workings of Nextcloud in provisioning users and groups, the user has to meet the LDAP filter criteria upon creation. At this point of time only the username and password are known.
 * When creating groups, and empty record of `groupOfNames` is created.
