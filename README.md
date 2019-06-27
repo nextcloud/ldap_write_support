@@ -2,7 +2,7 @@
 
 Manage your LDAP directory from within Nextcloud.
 
-![](screenshots/settings.png)
+![](img/screenshots/settings.png)
 
 * 📇 **Create records:** add new users and groups
 * 📛 **Update details:** display name, email address and avatars

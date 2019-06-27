@@ -21,8 +21,8 @@
     <category>tools</category>
     <bugs>https://github.com/nextcloud/ldap_write_support/issues</bugs>
     <repository>https://github.com/nextcloud/ldap_write_support</repository>
-    <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/screenshots/settings.png</screenshot>
-    <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/screenshots/users.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/settings.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/users.png</screenshot>
     <dependencies>
         <nextcloud min-version="16" max-version="17"/>
     </dependencies>
