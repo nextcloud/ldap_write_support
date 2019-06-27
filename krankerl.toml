@@ -19,7 +19,8 @@ exclude = [
 	"mkdocs.yml",
 	"run-eslint.sh",
 	"webpack.*",
-	"img/screenshots"
+	"img/screenshots",
+	"utilities",
 ]
 
 before_cmds = [
