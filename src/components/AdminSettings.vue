@@ -33,11 +33,11 @@
 				{{ t('ldap_write_support', 'To create users, the acting (sub)admin has to be provided by LDAP.')}}
 			</ActionCheckbox>
 			<ActionCheckbox :checked="switches.newUserGenerateUserID"
-							@change.stop.prevent="toggleSwitch('newUserGenerateUserID', !switches.newUserGenerateUserID, 'settings')">
+							@change.stop.prevent="toggleSwitch('newUserGenerateUserID', !switches.newUserGenerateUserID, 'core')">
 				{{ t('ldap_write_support', 'A random user ID has to be generated, i.e. not being provided by the (sub)admin.')}}
 			</ActionCheckbox>
 			<ActionCheckbox :checked="switches.newUserRequireEmail"
-							@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'settings')">
+							@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'core')">
 				{{ t('ldap_write_support', 'An LDAP user must have an email address set.')}}
 			</ActionCheckbox>
 			<ActionCheckbox :checked="switches.hasAvatarPermission"
@@ -94,11 +94,14 @@
 			},
 			toggleSwitch(prefKey, state, appId = 'ldap_write_support') {
 				this.switches[prefKey] = state;
-				if(appId === 'settings') {
+				let value = (state | 0).toString();
+				if(appId === 'core') {
 					// the database key has a slighlty different style, need to transform
 					prefKey = 'newUser.' + prefKey.charAt(7).toLowerCase() + prefKey.slice(8);
+					value = value === '1' ? 'yes' : 'no';
 				}
-				OCP.AppConfig.setValue(appId, prefKey, (state | 0).toString());
+
+				OCP.AppConfig.setValue(appId, prefKey, value);
 			}
 		}
 	}
