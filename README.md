@@ -1,44 +1,37 @@
-# user_ldap_extended
-This is an experimental app. Use at your own risk!
+# 👥🖎 LDAP Write Support
 
-user_ldap_extended App enables your NextCloud instance to fully work over an LDAP user base. user_ldap_extended hooks NextCloud functions of create/delete user, create/delete groups and add/remove users from groups to edit directly an LDAP user base on your desired server.
+Manage your LDAP directory from within Nextcloud.
 
-## Dependencies
+![](screenshots/settings.png)
 
-In order to use `user_ldap_extended`, `user_ldap` plugin must be enabled!
-user_ldap_extended will work in NC13. We at EITA Cooperative are using in a patch done to NC12, the patch is available here:  https://gitlab.com/eita/rios/rios-cloud-server/tree/rios-vivos
+* 📇 **Create records:** add new users and groups
+* 📛 **Update details:** display name, email address and avatars
+* ⚙️ **Integrated**: works in the known Nextcloud users page
+* 📜 **Templates** configure an LDAP user template LDIF once
 
-## Install
+## Installation
 
-Place this app in **nextcloud/apps/**. From your nextcloud root:
+This app requires the LDAP backend being enabled and configured, since it is a plugin to it. Find it on the app store!
+
+For Nextcloud 16.0.1 and also to use all features in Nextcloud 16, following patch has to be applied:
+
 ```
-cd apps/
-git clone git@gitlab.com:eita/rios/user_ldap_extended.git
+wget https://github.com/nextcloud/ldap_write_support/releases/download/untagged-fea033b1ad3a244b3cd3/ldap_write_support-v16.0.1.patch
+git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
 ```
-## Configure
 
-For `user_ldap_extended` to work properly, `user_ldap` plugin should correctly configured.
+`git` is required for applying the patch, because it contains changes in binary files (compiled javascript resources) and the good old `patch`  does not have support for it.
 
+## Known limitations
 
-## Known issues
+* Due to the internal workings of Nextcloud in provisioning users and groups, the user has to meet the LDAP filter criteria upon creation. At this point of time only the username and password are known.
+* When creating groups, and empty record of `groupOfNames` is created.
 
-* Usernames containing spaces do not work
+## 🏗 Development setup
 
-## LDAP parameters
+Currently this app requires the master branch of the [Viewer app](https://github.com/nextcloud/viewer).
 
-NextCloud interface for creating users allows only to input an username and a password. However, other parameters must be given so that LDAP can create an user an NextCloud can recognize it. Parameters and values are not configurable by now, and are fixed at:
-            
-* o: uid
-* objectClass: {'inetOrgPerson', 'posixAccount', 'top'}
-* cn: uid
-* gidnumber: 
-* homedirectory: 
-* mail: 'x@x.com'
-* sn: uid
-* uid: uid
-* uidnumber: 1010
-* userpassword: password
-* displayName: uid
-* street: 'street'
-
-Each user can edit displayName, avatar, street and mail using the personal profile editor on NextCloud.
+1. ☁ Clone this app into the `apps` folder of your Nextcloud: `git clone https://github.com/nextcloud/text.git`
+2. 👩‍💻 In the folder of the app, run the command `npm i` to install dependencies and `npm run build` to build the Javascript.
+3. ✅ Enable the app through the app management of your Nextcloud
+4. 🎉 Partytime! Help fix [some issues](https://github.com/nextcloud/ldap_write_supprt/issues) and [review pull requests](https://github.com/nextcloud/ldap_write_support/pulls) 👍
