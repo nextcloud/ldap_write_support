@@ -3,8 +3,14 @@
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>ldap_write_support</id>
     <name>Write support for LDAP</name>
-    <summary>Manages users on LDAP</summary>
-    <description><![CDATA[This app implements the following actions to an LDAP backend: create/delete user, modify display name, avatar and e-mail.]]></description>
+    <summary>Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud</summary>
+    <description>The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.
+* create, edit and delete users
+* create, modify memberships and delete groups
+* prevent fallback to the local database backend (optional)
+* auto generate a user id (optional)
+* and more behavioral switches
+    </description>
     <version>1.0.0</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
