@@ -1,7 +1,5 @@
 <?php
 /**
- * Matrix.org chat integration
- *
  * @copyright 2019 Cooperativa EITA (eita.org.br)
  *
  * @author Vinicius Cubas Brand <vinicius@eita.org.br>
@@ -22,7 +20,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OCA\Ldapusermanagement\Command;
+namespace OCA\LdapWriteSupport\Command;
 
 use OC\SubAdmin;
 use OCA\User_LDAP\Group_Proxy;

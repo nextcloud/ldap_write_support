@@ -1,0 +1,142 @@
+kind: pipeline
+name: checkers
+steps:
+  - name: compatibility
+    image: nextcloudci/php7.1:php7.1-16
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: master
+      DB: sqlite
+    commands:
+      # Pre-setup steps
+      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+      - cd ../server
+      # Code checker
+      - ./occ app:check-code $APP_NAME -c strong-comparison
+      - ./occ app:check-code $APP_NAME -c deprecation
+  - name: syntax-php7.0
+    image: nextcloudci/php7.0:php7.0-17
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: stable16
+      DB: sqlite
+    commands:
+      - composer install
+      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
+  - name: syntax-php7.1
+    image: nextcloudci/php7.1:php7.1-15
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: stable16
+      DB: sqlite
+    commands:
+      - composer install
+      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
+  - name: syntax-php7.2
+    image: nextcloudci/php7.2:php7.2-9
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: stable16
+      DB: sqlite
+    commands:
+      - composer install
+      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
+  - name: syntax-php7.3
+    image: nextcloudci/php7.3:php7.3-2
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: stable16
+      DB: sqlite
+    commands:
+      - composer install
+      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+---
+kind: pipeline
+name: integration-master
+steps:
+  - name: integration
+    image: nextcloudci/php7.1:php7.1-16
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: master
+      DB: sqlite
+    commands:
+      # Pre-setup steps
+      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+      - cd ../server/
+      - php occ config:system:set redis host --value=cache
+      - php occ config:system:set redis port --value=6379 --type=integer
+      - php occ config:system:set redis timeout --value=0 --type=integer
+      - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.local
+      - php occ config:system:set --type string --value "\\OC\\Memcache\\Redis" memcache.distributed
+      - php occ app:enable user_ldap
+      - php occ app:enable $APP_NAME
+      - cd apps/$APP_NAME
+      - cd tests/integration
+      - ./run.sh
+
+services:
+  - name: cache
+    image: redis
+  - name: openldap
+    image: nextcloudci/openldap:openldap-7
+    environment:
+      SLAPD_DOMAIN: nextcloud.ci
+      SLAPD_ORGANIZATION: Nextcloud
+      SLAPD_PASSWORD: admin
+      SLAPD_ADDITIONAL_MODULES: memberof
+
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
+name: integration-master-nocache
+steps:
+  - name: integration
+    image: nextcloudci/php7.1:php7.1-16
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: master
+      DB: sqlite
+    commands:
+      # Pre-setup steps
+      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+      - cd ../server/
+      - php occ app:enable user_ldap
+      - php occ app:enable $APP_NAME
+      - cd apps/$APP_NAME
+      - cd tests/integration
+      - ./run.sh
+
+services:
+  - name: openldap
+    image: nextcloudci/openldap:openldap-7
+    environment:
+      SLAPD_DOMAIN: nextcloud.ci
+      SLAPD_ORGANIZATION: Nextcloud
+      SLAPD_PASSWORD: admin
+      SLAPD_ADDITIONAL_MODULES: memberof
+
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push

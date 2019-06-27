@@ -1,9 +1,0 @@
-	Mensagens de erro ldap manager
-
-1) criar usuário com espaço (NC muda o username)	
-
-ERROR messages >> try catch
-
-Rever Controller
-
-adicionar dependencia para ldap_user +/-

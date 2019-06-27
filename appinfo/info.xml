@@ -1,25 +1,27 @@
 <?xml version="1.0"?>
 <info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-    <id>user_ldap_extended</id>
-    <name>Ldap User Extended</name>
-    <summary>Creates users on LDAP database instead of NextCloud</summary>
+    <id>ldap_write_support</id>
+    <name>Write support for LDAP</name>
+    <summary>Manages users on LDAP</summary>
     <description><![CDATA[This app implements the following actions to an LDAP backend: create/delete user, modify display name, avatar and e-mail.]]></description>
+    <version>1.0.0</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
-    <version>0.0.8</version>
-    <namespace>Ldapusermanagement</namespace>
-    <types>
-        <authentication/>
-    </types>
-    <category>auth</category>
-    <bugs>https://gitlab.com/eita/ldapusermanagement/issues</bugs>
+    <author mail="blizzz@arthur-schiwon.de" homepage="https://arthur-schiwon.de">Arthur Schiwon</author>
+    <namespace>LdapWriteSupport</namespace>
+    <category>integration</category>
+    <category>organization</category>
+    <category>tools</category>
+    <bugs>https://github.com/nextcloud/ldap_write_support/issues</bugs>
+    <repository>https://github.com/nextcloud/ldap_write_support</repository>
     <dependencies>
-        <user_ldap />
-        <owncloud min-version="9.1" max-version="9.1"/>
-        <nextcloud min-version="10" max-version="14"/>
+        <nextcloud min-version="16" max-version="17"/>
     </dependencies>
-    <install>
-        <step>OCA\Ldapusermanagement\Validate</step>
-    </install>
+    <commands>
+        <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
+    </commands>
+    <settings>
+        <admin>OCA\LdapWriteSupport\Settings\Admin</admin>
+    </settings>
 </info>

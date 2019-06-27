@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Alan Tygel <alan@eita.org.br>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -19,75 +20,101 @@
  *
  */
 
-namespace OCA\Ldapusermanagement;
+namespace OCA\LdapWriteSupport;
 
-use OCA\Ldapusermanagement;
-use OCP\IConfig;
+use OC\ServerNotAvailableException;
+use OCA\LdapWriteSupport\AppInfo\Application;
+use OCA\User_LDAP\Configuration;
+use OCA\User_LDAP\Helper;
+use OCP\ILogger;
 
 class LDAPConnect {
+	/** @var Configuration */
+	private $ldapConfig;
+	/** @var ILogger */
+	private $logger;
 
-	private $config;
-
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	public function __construct(Helper $ldapBackendHelper, ILogger $logger) {
+		$this->logger = $logger;
+		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
+		$prefix = array_shift($ldapConfigPrefixes);
+		$this->ldapConfig = new Configuration($prefix);
 	}
 
-    public function connect() {
-
-        $ldaphost  = $this->config->getAppValue('user_ldap','ldap_host','');
-        $ldapport  = $this->config->getAppValue('user_ldap','ldap_port','');
+	/**
+	 * @return bool|resource
+	 * @throws ServerNotAvailableException
+	 */
+	public function connect() {
+		$ldapHost = $this->ldapConfig->ldapHost;
+		$ldapPort = $this->ldapConfig->ldapPort;
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
-        $ds = $ldapconn = ldap_connect($ldaphost, $ldapport)
-                  or die("Could not connect to $ldaphost");
+        $cr = ldap_connect($ldapHost, $ldapPort);
+        if(!is_resource($cr)) {
+			throw new ServerNotAvailableException('LDAP server not available');
+		}
 
-        if ($ds) {
-            // set LDAP config to work with version 3
-            ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-            $message = "Connected to LDAP host $ldaphost:$ldapport";
-            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
-            return $ds;
-        } else {
-            $message = "Unable to connect to LDAP host $ldaphost:$ldapport";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
-            return False;
-        }
+		if ($cr) {
+			ldap_set_option($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
+			$this->logger->debug('Connected to LDAP host {ldapHost}:{ldapPort}',
+				[
+					'app' => Application::APP_ID,
+					'ldapHost' => $ldapHost,
+					'ldapPort' => $ldapPort,
+				]);
+			return $cr;
+		} else {
+			$this->logger->error('Unable to connect to LDAP host {ldapHost}:{ldapPort}',
+				[
+					'app' => Application::APP_ID,
+					'ldapHost' => $ldapHost,
+					'ldapPort' => $ldapPort,
+				]);
+			return false;
+		}
     }
 
-    public function bind() {
-
-        // LDAP variables
+	/**
+	 * @return bool|resource
+	 * @throws ServerNotAvailableException
+	 */
+	public function bind() {
         $ds = $this->connect();
-        $dn = $this->config->getAppValue('user_ldap','ldap_dn','');
-        $secret = base64_decode($this->config->getAppValue('user_ldap','ldap_agent_password',''));
-        /* shouldnt do this: modify base64_decode and set decoding method from user_ldap */
+        $dn = $this->ldapConfig->ldapAgentName;
+        $secret = $this->ldapConfig->ldapAgentPassword;
 
-        // Connecting to LDAP
         if (!ldap_bind($ds,$dn,$secret)) {
-            $message = "Unable to bind to LDAP server using credentials $dn > $secret";
-            \OC::$server->getLogger()->error($message, array('app' => 'ldapusermanagement'));
+			$this->logger->error('Unable to bind to LDAP server',
+				['app' => Application::APP_ID]
+			);
+			return false;
         } else {
-            $message = "Bind to LDAP server using credentials $dn";
-            \OC::$server->getLogger()->notice($message, array('app' => 'ldapusermanagement'));
+			$this->logger->debug('Bound to LDAP server using credentials for {dn}', [
+				'app' => Application::APP_ID,
+				'dn' => $dn,
+			]);
             return $ds;
         }
-        // try catch!!!
     }
 
-    public function getLDAPConnection() {
+	/**
+	 * @return bool|resource
+	 * @throws ServerNotAvailableException
+	 */
+	public function getLDAPConnection() {
     	return $this->bind();
 	}
 
 	public function getLDAPBaseUsers() {
-		return $this->config->getAppValue('user_ldap','ldap_base_users','');
+		return $this->ldapConfig->ldapBaseUsers;
 	}
 
 	public function getLDAPBaseGroups() {
-		return $this->config->getAppValue('user_ldap','ldap_base_groups','');
+		return $this->ldapConfig->ldapBaseGroups;
 	}
 
-    public function disconnect($ds) {
-        return ldap_unbind($ds);
-
-    }
+	public function getDisplayNameAttribute() {
+		return $this->ldapConfig->ldapUserDisplayName;
+	}
 }
