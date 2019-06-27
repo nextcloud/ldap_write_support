@@ -4,7 +4,7 @@
     <id>ldap_write_support</id>
     <name>Write support for LDAP</name>
     <summary>Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud</summary>
-    <description>The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.
+    <description><![CDATA[The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.
 * create, edit and delete users
 * create, modify memberships and delete groups
 * prevent fallback to the local database backend (optional)
@@ -20,7 +20,7 @@ cd /path/to/nextcloud
 wget https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/utilities/ldap_write_support-v16.0.1.patch
 git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
 ```
-    </description>
+    ]]></description>
     <version>1.0.0</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
