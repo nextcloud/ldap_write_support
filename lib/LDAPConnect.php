@@ -107,11 +107,19 @@ class LDAPConnect {
 	}
 
 	public function getLDAPBaseUsers() {
-		return $this->ldapConfig->ldapBaseUsers;
+		$bases = $this->ldapConfig->ldapBaseUsers;
+		if(empty($bases)) {
+			$bases = $this->ldapConfig->ldapBase;
+		}
+		return $bases;
 	}
 
 	public function getLDAPBaseGroups() {
-		return $this->ldapConfig->ldapBaseGroups;
+		$bases = $this->ldapConfig->ldapBaseGroups;
+		if(empty($bases)) {
+			$bases = $this->ldapConfig->ldapBase;
+		}
+		return $bases;
 	}
 
 	public function getDisplayNameAttribute() {
