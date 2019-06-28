@@ -233,14 +233,19 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $username);
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
-		$message = $ret
-			? 'Create LDAP user \'{username}\' ({dn}'
-			: 'Unable to create LDAP user \'{username}\' ({dn})';
-		$this->logger->error($message, [
+
+		$message = 'Create LDAP user \'{username}\' ({dn}';
+		$level = ILogger::INFO;
+		if($ret === false) {
+			$message = 'Unable to create LDAP user \'{username}\' ({dn})';
+			$level = ILogger::ERROR;
+		}
+		$this->logger->log($level, $message, [
 			'app' => Application::APP_ID,
 			'username' => $username,
 			'dn' => $newUserDN,
 		]);
+
 		if (!$ret && $this->configuration->isPreventFallback()) {
 			throw new \Exception('Cannot create user: ' . ldap_error($connection), ldap_errno($connection));
 		}
