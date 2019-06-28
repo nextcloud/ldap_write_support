@@ -35,6 +35,19 @@ Feature: user
     And the created users resides on LDAP
 
   # requires NC 17
+  Scenario: create a new user with dynamic user id without user base set
+    Given As an "admin"
+    And parameter "newUser.generateUserID" of app "core" is set to "yes"
+    And modify LDAP configuration
+      | ldapBaseUsers |  |
+    When creating a user with
+      | userid |  |
+      | password | 123456 |
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the created users resides on LDAP
+
+  # requires NC 17
   Scenario: create a new user with dynamic user id
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
