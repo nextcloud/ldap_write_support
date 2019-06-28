@@ -30,9 +30,7 @@ git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
 
 ## 🏗 Development setup
 
-Currently this app requires the master branch of the [Viewer app](https://github.com/nextcloud/viewer).
-
-1. ☁ Clone this app into the `apps` folder of your Nextcloud: `git clone https://github.com/nextcloud/text.git`
-2. 👩‍💻 In the folder of the app, run the command `npm i` to install dependencies and `npm run build` to build the Javascript.
+1. ☁ Clone this app into the `apps` folder of your Nextcloud: `git clone https://github.com/nextcloud/ldap_write_support.git`
+2. 👩‍💻 In the folder of the app, run the command `npm i` to install dependencies and `npm run build` to build the Javascript
 3. ✅ Enable the app through the app management of your Nextcloud
 4. 🎉 Partytime! Help fix [some issues](https://github.com/nextcloud/ldap_write_supprt/issues) and [review pull requests](https://github.com/nextcloud/ldap_write_support/pulls) 👍
