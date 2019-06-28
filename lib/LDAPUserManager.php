@@ -234,7 +234,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
 
-		$message = 'Create LDAP user \'{username}\' ({dn}';
+		$message = 'Create LDAP user \'{username}\' ({dn})';
 		$level = ILogger::INFO;
 		if($ret === false) {
 			$message = 'Unable to create LDAP user \'{username}\' ({dn})';
