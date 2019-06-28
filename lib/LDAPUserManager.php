@@ -219,7 +219,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		} catch (Exception $e) {
 			if ($requireActorFromLDAP) {
 				if ($this->configuration->isPreventFallback()) {
-					throw $e;
+					throw new \Exception('Acting admin is not from LDAP', 0, $e);
 				}
 				return false;
 			}
