@@ -70,9 +70,8 @@ Feature: user
       | userid |  |
       | password | 123456 |
       | email    | foo@bar.foobar |
-    Then the OCS status code should be "109"
-    And the HTTP status code should be "400"
-    # because we cannot send email here, we'll get this error === success
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
 
   # requires NC 17
   Scenario: create a new user with dynamic user id, forgot email
