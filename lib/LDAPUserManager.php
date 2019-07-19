@@ -99,9 +99,14 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * compared with OC_USER_BACKEND_CREATE_USER etc.
 	 */
 	public function respondToActions() {
+		$setPassword = function_exists('ldap_exop_passwd') && !$this->ldapConnect->hasPasswordPolicy()
+			? Backend::SET_PASSWORD
+			: 0;
+
 		return Backend::SET_DISPLAYNAME |
 			Backend::PROVIDE_AVATAR |
-			Backend::CREATE_USER;
+			Backend::CREATE_USER |
+			$setPassword;
 	}
 
 	/**
@@ -332,7 +337,19 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * Change the password of a user
 	 */
 	public function setPassword($uid, $password) {
-		// Not implemented
+		if(!function_exists('ldap_exop_passwd')) {
+			// since PHP 7.2 – respondToActions checked this already, this
+			// method should not be called. Double check due to public scope.
+			// This method can be removed when Nextcloud 16 compat is dropped.
+			return false;
+		}
+		try {
+			$cr = $this->ldapProvider->getLDAPConnection($uid);
+			$userDN = $this->getUserDN($uid);
+			return ldap_exop_passwd($cr, $userDN, '', $password);
+		} catch (\Exception $e) {
+			$this->logger->logException($e, ['app' => Application::APP_ID]);
+		}
 		return false;
 	}
 

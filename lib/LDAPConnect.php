@@ -125,4 +125,9 @@ class LDAPConnect {
 	public function getDisplayNameAttribute() {
 		return $this->ldapConfig->ldapUserDisplayName;
 	}
+
+	public function hasPasswordPolicy(): bool {
+		$ppDN = $this->ldapConfig->ldapDefaultPPolicyDN;
+		return !empty($ppDN);
+	}
 }
