@@ -21,7 +21,7 @@ wget https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/utili
 git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
 ```
     ]]></description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
     <author mail="blizzz@arthur-schiwon.de" homepage="https://arthur-schiwon.de">Arthur Schiwon</author>
