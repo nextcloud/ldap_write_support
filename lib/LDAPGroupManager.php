@@ -52,10 +52,12 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $ldapProvider) {
 		$this->groupManager = $groupManager;
 		$this->ldapConnect = $ldapConnect;
-
-		$this->makeLdapBackendFirst();
 		$this->logger = $logger;
 		$this->ldapProvider = $ldapProvider;
+
+		if($this->ldapConnect->groupsEnabled()) {
+			$this->makeLdapBackendFirst();
+		}
 	}
 
 	/**
@@ -68,6 +70,9 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * compared with OC_GROUP_BACKEND_CREATE_GROUP etc.
 	 */
 	public function respondToActions() {
+		if(!$this->ldapConnect->groupsEnabled()) {
+			return 0;
+		}
 		return Backend::CREATE_GROUP |
 			Backend::DELETE_GROUP |
 			Backend::ADD_TO_GROUP |
