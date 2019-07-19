@@ -126,6 +126,13 @@ class LDAPConnect {
 		return $this->ldapConfig->ldapUserDisplayName;
 	}
 
+	public function groupsEnabled(): bool {
+		$filter = trim((string)$this->ldapConfig->ldapGroupFilter);
+		$gAssoc = trim((string)$this->ldapConfig->ldapGroupMemberAssocAttr);
+		
+		return $filter !== '' && $gAssoc !== '';
+	}
+
 	public function hasPasswordPolicy(): bool {
 		$ppDN = $this->ldapConfig->ldapDefaultPPolicyDN;
 		return !empty($ppDN);

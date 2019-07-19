@@ -2,6 +2,7 @@ js/
 node_modules/
 
 /vendor/
+/build/
 
 /tests/integration/vendor/
 /tests/integration/composer.lock
