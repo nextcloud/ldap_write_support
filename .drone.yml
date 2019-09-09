@@ -1,11 +1,25 @@
 kind: pipeline
 name: checkers
 steps:
-  - name: compatibility
+  - name: compatibility-stable17
     image: nextcloudci/php7.1:php7.1-16
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable17
+      DB: sqlite
+    commands:
+      # Pre-setup steps
+      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+      - cd ../server
+      # Code checker
+      - ./occ app:check-code $APP_NAME -c strong-comparison
+      - ./occ app:check-code $APP_NAME -c deprecation
+  - name: compatibility-stable16
+    image: nextcloudci/php7.1:php7.1-16
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: stable16
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -28,7 +42,7 @@ steps:
     image: nextcloudci/php7.1:php7.1-15
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: stable17
       DB: sqlite
     commands:
       - composer install
@@ -37,7 +51,7 @@ steps:
     image: nextcloudci/php7.2:php7.2-9
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: stable17
       DB: sqlite
     commands:
       - composer install
@@ -46,7 +60,7 @@ steps:
     image: nextcloudci/php7.3:php7.3-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: stable17
       DB: sqlite
     commands:
       - composer install
@@ -60,13 +74,13 @@ trigger:
     - push
 ---
 kind: pipeline
-name: integration-master
+name: integration-stable17
 steps:
   - name: integration
     image: nextcloudci/php7.1:php7.1-16
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable17
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -105,13 +119,13 @@ trigger:
 
 ---
 kind: pipeline
-name: integration-master-nocache
+name: integration-stable17-nocache
 steps:
   - name: integration
     image: nextcloudci/php7.1:php7.1-16
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable17
       DB: sqlite
     commands:
       # Pre-setup steps
