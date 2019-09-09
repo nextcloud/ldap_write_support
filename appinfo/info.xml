@@ -34,7 +34,7 @@ git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/settings.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/users.png</screenshot>
     <dependencies>
-        <nextcloud min-version="16" max-version="17"/>
+        <nextcloud min-version="16" max-version="18"/>
     </dependencies>
     <commands>
         <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
