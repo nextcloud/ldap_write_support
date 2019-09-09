@@ -15,20 +15,11 @@ steps:
       # Code checker
       - ./occ app:check-code $APP_NAME -c strong-comparison
       - ./occ app:check-code $APP_NAME -c deprecation
-  - name: syntax-php7.0
-    image: nextcloudci/php7.0:php7.0-17
-    environment:
-      APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
-      DB: sqlite
-    commands:
-      - composer install
-      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
   - name: syntax-php7.1
     image: nextcloudci/php7.1:php7.1-15
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: master
       DB: sqlite
     commands:
       - composer install
@@ -37,7 +28,7 @@ steps:
     image: nextcloudci/php7.2:php7.2-9
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: master
       DB: sqlite
     commands:
       - composer install
@@ -46,7 +37,7 @@ steps:
     image: nextcloudci/php7.3:php7.3-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: stable16
+      CORE_BRANCH: master
       DB: sqlite
     commands:
       - composer install
