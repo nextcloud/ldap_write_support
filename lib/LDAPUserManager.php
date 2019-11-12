@@ -254,6 +254,22 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		if (!$ret && $this->configuration->isPreventFallback()) {
 			throw new \Exception('Cannot create user: ' . ldap_error($connection), ldap_errno($connection));
 		}
+
+		// Set password through ldap password exop, if supported
+		if ($this->respondToActions() & Backend::SET_PASSWORD) {
+			try {
+				$ret = ldap_exop_passwd($connection, $newUserDN, '', $password);
+				if ($ret === false) {
+					$message = 'Failed to set password for new user {dn}';
+					$this->logger->log(ILogger::ERROR, $message, [
+						'app' => Application::APP_ID,
+						'dn' => $newUserDN,
+					]);
+				}
+			} catch (\Exception $e) {
+				$this->logger->logException($e, ['app' => Application::APP_ID]);
+			}
+		} 
 		return $ret ? $newUserDN : false;
 	}
 
