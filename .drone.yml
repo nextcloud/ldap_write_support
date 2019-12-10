@@ -54,7 +54,7 @@ kind: pipeline
 name: integration-master
 steps:
   - name: integration
-    image: nextcloudci/php7.1:php7.1-16
+    image: nextcloudci/php7.2:php7.2-12
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -99,7 +99,7 @@ kind: pipeline
 name: integration-master-nocache
 steps:
   - name: integration
-    image: nextcloudci/php7.1:php7.1-16
+    image: nextcloudci/php7.2:php7.2-12
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master

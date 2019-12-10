@@ -63,8 +63,7 @@ class Configuration {
 			'uid: {UID}' . PHP_EOL .
 			'displayName: {UID}' . PHP_EOL .
 			'cn: {UID}' . PHP_EOL .
-			'sn: {UID}' . PHP_EOL .
-			'userPassword: {PWD}';
+			'sn: {UID}';
 	}
 
 	public function isRequireEmail(): bool {
