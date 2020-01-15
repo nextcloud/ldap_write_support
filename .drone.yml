@@ -2,7 +2,7 @@ kind: pipeline
 name: checkers
 steps:
   - name: compatibility
-    image: nextcloudci/php7.1:php7.1-16
+    image: nextcloudci/php7.3:php7.3-5
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -15,17 +15,8 @@ steps:
       # Code checker
       - ./occ app:check-code $APP_NAME -c strong-comparison
       - ./occ app:check-code $APP_NAME -c deprecation
-  - name: syntax-php7.1
-    image: nextcloudci/php7.1:php7.1-15
-    environment:
-      APP_NAME: ldap_write_support
-      CORE_BRANCH: master
-      DB: sqlite
-    commands:
-      - composer install
-      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
   - name: syntax-php7.2
-    image: nextcloudci/php7.2:php7.2-9
+    image: nextcloudci/php7.2:php7.2-13
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -34,7 +25,16 @@ steps:
       - composer install
       - ./vendor/bin/parallel-lint --exclude ./vendor/ .
   - name: syntax-php7.3
-    image: nextcloudci/php7.3:php7.3-2
+    image: nextcloudci/php7.3:php7.3-5
+    environment:
+      APP_NAME: ldap_write_support
+      CORE_BRANCH: master
+      DB: sqlite
+    commands:
+      - composer install
+      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
+  - name: syntax-php7.4
+    image: nextcloudci/php7.4:2
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -54,7 +54,7 @@ kind: pipeline
 name: integration-master
 steps:
   - name: integration
-    image: nextcloudci/php7.1:php7.1-16
+    image: nextcloudci/php7.3:php7.3-5
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -99,7 +99,7 @@ kind: pipeline
 name: integration-master-nocache
 steps:
   - name: integration
-    image: nextcloudci/php7.1:php7.1-16
+    image: nextcloudci/php7.3:php7.3-5
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
