@@ -265,6 +265,17 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	public function buildNewEntry($username, $password, $base) {
+		// Make sure the parameters don't fool the following algorithm
+		if (strpos($username, PHP_EOL) !== false) {
+			throw new Exception('Username contains a new line');
+		}
+		if (strpos($password, PHP_EOL) !== false) {
+			throw new Exception('Password contains a new line');
+		}
+		if (strpos($base, PHP_EOL) !== false) {
+			throw new Exception('Base DN contains a new line');
+		}
+
 		$ldif = $this->configuration->getUserTemplate();
 
 		$ldif = str_replace('{UID}', $username, $ldif);
