@@ -217,6 +217,11 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			throw new Exception('Acting user is not from LDAP');
 		}
 		try {
+			// $adminUser can be null, for example when using the registration app,
+			// throw an Exception to fallback on using the global LDAP connection.
+			if ($adminUser === null) {
+				throw new Exception('No admin user available');
+			}
 			$connection = $this->ldapProvider->getLDAPConnection($adminUser->getUID());
 			// TODO: what about multiple bases?
 			$base = $this->ldapProvider->getLDAPBaseUsers($adminUser->getUID());
