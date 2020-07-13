@@ -24,6 +24,7 @@ namespace OCA\LdapWriteSupport\Command;
 
 use OC\SubAdmin;
 use OCA\User_LDAP\Group_Proxy;
+use OCA\User_LDAP\GroupPluginManager;
 use OCA\User_LDAP\Helper;
 use OCA\User_LDAP\LDAP;
 use OCP\IConfig;
@@ -101,7 +102,7 @@ class GroupAdminsToLdap extends Command {
 				throw new \Exception("NOT PREPARED TO DEAL WITH MODE THAN 1 LDAP SOURCE, EXITING...");
 			}
 
-			$proxy = new Group_Proxy($configPrefixes, $ldapWrapper, \OC::$server->query('LDAPGroupPluginManager'));
+			$proxy = new Group_Proxy($configPrefixes, $ldapWrapper, \OC::$server->query(GroupPluginManager::class));
 			$access = $proxy->getLDAPAccess($configPrefixes[0]);
 			$conn = $access->getConnection();
 

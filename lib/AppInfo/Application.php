@@ -81,9 +81,9 @@ class Application extends App {
 		);
 
 		/** @var UserPluginManager $userPluginManager */
-		$userPluginManager = OC::$server->query('LDAPUserPluginManager');
+		$userPluginManager = OC::$server->query(UserPluginManager::class);
 		/** @var GroupPluginManager $groupPluginManager */
-		$groupPluginManager = OC::$server->query('LDAPGroupPluginManager');
+		$groupPluginManager = OC::$server->query(GroupPluginManager::class);
 
 		$userPluginManager->register($this->ldapUserManager);
 		$groupPluginManager->register($this->ldapGroupManager);
