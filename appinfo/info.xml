@@ -10,16 +10,6 @@
 * prevent fallback to the local database backend (optional)
 * auto generate a user id (optional)
 * and more behavioral switches
-
-### Nextcloud 16.0.1 ###
-
-Current Nextcloud 16.0.1 misses some bug fixes that will be included in 16.0.2. Full feature support is available for upcoming 17. A patch for 16.0.1 is available and has to be applied accordingly (please replace the path):
-
-```
-cd /path/to/nextcloud
-wget https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/utilities/ldap_write_support-v16.0.1.patch
-git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
-```
     ]]></description>
     <version>1.1.0</version>
     <licence>agpl</licence>
@@ -34,7 +24,7 @@ git apply -p1 < /path/to/ldap_write_support-v16.0.1.patch
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/settings.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/users.png</screenshot>
     <dependencies>
-        <nextcloud min-version="18" max-version="20"/>
+        <nextcloud min-version="18" max-version="19"/>
     </dependencies>
     <commands>
         <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
