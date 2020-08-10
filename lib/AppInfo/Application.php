@@ -44,7 +44,9 @@ class Application extends App {
 			return;
 		}
 
-		\OC_App::loadApp('user_ldap');
+		if(!\OC_App::isAppLoaded('user_ldap')) {
+			\OC_App::loadApp('user_ldap');
+		}
 		$c = $this->getContainer();
 		$s = $this->getContainer()->getServer();
 		try {
