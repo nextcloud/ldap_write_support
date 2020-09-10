@@ -76,11 +76,11 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param IL10N $l10n
 	 * @param ILogger $logger
 	 */
-	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $ldapProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
+	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $LDAPProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
-		$this->ldapProvider = $ldapProvider;
+		$this->ldapProvider = $LDAPProvider;
 		$this->configuration = $configuration;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
