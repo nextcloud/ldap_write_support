@@ -274,7 +274,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$entry = [];
 		$lines = explode(PHP_EOL, $ldif);
 		foreach ($lines as $line) {
-			$split = explode(':', $line);
+			$split = explode(':', $line, 2);
 			$key = trim($split[0]);
 			$value = trim($split[1]);
 			if (!isset($entry[$key])) {
