@@ -77,6 +77,7 @@ class Application extends App {
 
 		$this->ldapGroupManager = new LDAPGroupManager(
 			$s->getGroupManager(),
+			$s->getUserSession(),
 			$ldapConnect,
 			$s->getLogger(),
 			$provider
