@@ -51,7 +51,9 @@ class Admin implements ISettings {
 			'templates',
 			[
 				'user' => $this->config->getUserTemplate(),
-				'userDefault' => $this->config->getUserTemplateDefault(),
+				'userDefault' => $this->config->getGroupTemplateDefault(),
+				'group' => $this->config->getGroupTemplate(),
+				'groupDefault' => $this->config->getGroupTemplateDefault(),
 			]
 		);
 		$this->initialStateService->provideInitialState(

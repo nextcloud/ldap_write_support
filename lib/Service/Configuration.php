@@ -56,6 +56,14 @@ class Configuration {
 		);
 	}
 
+	public function getGroupTemplate() {
+		return $this->config->getAppValue(
+			Application::APP_ID,
+			'template.group',
+			$this->getGroupTemplateDefault()
+		);
+	}
+
 	public function getUserTemplateDefault() {
 		return
 			'dn: uid={UID},{BASE}' . PHP_EOL .
@@ -64,6 +72,14 @@ class Configuration {
 			'displayName: {UID}' . PHP_EOL .
 			'cn: {UID}' . PHP_EOL .
 			'sn: {UID}';
+	}
+
+	public function getGroupTemplateDefault() {
+		return
+			'dn: cn={GID},{BASE}' . PHP_EOL .
+			'objectClass: groupOfNames' . PHP_EOL .
+			'cn: {GID}' . PHP_EOL .
+			'member:';
 	}
 
 	public function isRequireEmail(): bool {
