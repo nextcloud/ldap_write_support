@@ -79,8 +79,10 @@ class Application extends App {
 			$s->getGroupManager(),
 			$s->getUserSession(),
 			$ldapConnect,
-			$s->getLogger(),
-			$provider
+			$provider,
+			$c->query(Configuration::class),
+			$s->getL10N(self::APP_ID),
+			$s->getLogger()
 		);
 
 		/** @var UserPluginManager $userPluginManager */

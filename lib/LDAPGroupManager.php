@@ -28,13 +28,16 @@ namespace OCA\LdapWriteSupport;
 use Exception;
 use OC\Group\Backend;
 use OCA\LdapWriteSupport\AppInfo\Application;
+use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Group_Proxy;
 use OCA\User_LDAP\ILDAPGroupPlugin;
 use OCA\User_LDAP\LDAPProvider;
 use OCP\AppFramework\QueryException;
 use OCP\IGroupManager;
-use OCP\IUserSession;
+use OCP\IL10N;
 use OCP\ILogger;
+use OCP\IUser;
+use OCP\IUserSession;
 use OCP\LDAP\ILDAPProvider;
 
 class LDAPGroupManager implements ILDAPGroupPlugin {
@@ -53,12 +56,14 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	/** @var ILogger */
 	private $logger;
 
-	public function __construct(IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $ldapProvider) {
+	public function __construct(IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $ldapProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
-		$this->logger = $logger;
 		$this->ldapProvider = $ldapProvider;
+		$this->configuration = $configuration;
+		$this->l10n = $l10n;
+		$this->logger = $logger;
 
 		if($this->ldapConnect->groupsEnabled()) {
 			$this->makeLdapBackendFirst();
