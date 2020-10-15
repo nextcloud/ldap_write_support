@@ -49,11 +49,11 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	/** @var ILogger */
 	private $logger;
 
-	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $ldapProvider) {
+	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $LDAPProvider) {
 		$this->groupManager = $groupManager;
 		$this->ldapConnect = $ldapConnect;
 		$this->logger = $logger;
-		$this->ldapProvider = $ldapProvider;
+		$this->ldapProvider = $LDAPProvider;
 
 		if($this->ldapConnect->groupsEnabled()) {
 			$this->makeLdapBackendFirst();

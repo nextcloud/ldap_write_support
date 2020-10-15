@@ -24,7 +24,7 @@
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/settings.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/users.png</screenshot>
     <dependencies>
-        <nextcloud min-version="20" max-version="20"/>
+        <nextcloud min-version="20" max-version="21"/>
     </dependencies>
     <commands>
         <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
