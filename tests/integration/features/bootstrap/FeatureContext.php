@@ -96,4 +96,13 @@ class FeatureContext extends LDAPContext implements Context {
 		}
 	}
 
+	/**
+	 * @Given /^user "([^"]*)" exists on "([^"]*)" backend$/
+	 */
+	public function userExistsOnBackend($uid, $backendName) {
+		$this->assureUserExists($uid);
+		$needle = '<backend>' . $backendName . '</backend>';
+		Assert::assertNotFalse(strpos($this->getResponse()->getBody()->getContents(), $needle));
+	}
+
 }

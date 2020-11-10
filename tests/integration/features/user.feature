@@ -19,11 +19,8 @@ Feature: user
       | password | 123456 |
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And user "brand-new-user" exists
-    And invoking occ with "user:info brand-new-user"
-    And the command output contains the text "backend: LDAP"
+    And user "brand-new-user" exists on "LDAP" backend
 
-  # requires NC 17
   Scenario: create a new user with dynamic user id
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
@@ -34,7 +31,6 @@ Feature: user
     And the HTTP status code should be "200"
     And the created users resides on LDAP
 
-  # requires NC 17
   Scenario: create a new user with dynamic user id without user base set
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
@@ -47,7 +43,6 @@ Feature: user
     And the HTTP status code should be "200"
     And the created users resides on LDAP
 
-  # requires NC 17
   Scenario: create a new user with dynamic user id
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
@@ -61,7 +56,6 @@ Feature: user
     When sending "GET" to "/cloud/users?search=Foo"
     Then it yields "1" result
 
-  # requires NC 17
   Scenario: create a new user with dynamic user id and required email
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
@@ -73,7 +67,6 @@ Feature: user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
 
-  # requires NC 17
   Scenario: create a new user with dynamic user id, forgot email
     Given As an "admin"
     And parameter "newUser.generateUserID" of app "core" is set to "yes"
