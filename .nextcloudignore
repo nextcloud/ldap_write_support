@@ -16,6 +16,7 @@ issue_template.md
 krankerl.toml
 Makefile
 mkdocs.yml
+.nextcloudignore
 package.json
 package-lock.json
 README.md
