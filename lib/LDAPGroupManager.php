@@ -30,11 +30,9 @@ use OC\Group\Backend;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Group_Proxy;
 use OCA\User_LDAP\ILDAPGroupPlugin;
-use OCA\User_LDAP\LDAPProvider;
-use OCP\AppFramework\QueryException;
 use OCP\IGroupManager;
-use OCP\ILogger;
 use OCP\LDAP\ILDAPProvider;
+use Psr\Log\LoggerInterface;
 
 class LDAPGroupManager implements ILDAPGroupPlugin {
 
@@ -46,10 +44,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	/** @var LDAPConnect */
 	private $ldapConnect;
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, ILogger $logger, ILDAPProvider $LDAPProvider) {
+	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, LoggerInterface $logger, ILDAPProvider $LDAPProvider) {
 		$this->groupManager = $groupManager;
 		$this->ldapConnect = $ldapConnect;
 		$this->logger = $logger;
@@ -193,7 +191,6 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				break;
 			case 'gidNumber':
 				throw new Exception('Cannot remove from group when gidNumber is used as relation');
-				break;
 		}
 
 		if (!$ret = ldap_mod_del($connection, $groupDN, $entry)) {
@@ -215,7 +212,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		return false;
 	}
 
-	public function isLDAPGroup($gid) {
+	public function isLDAPGroup($gid): bool {
 		try {
 			return !empty($this->ldapProvider->getGroupDN($gid));
 		} catch (Exception $e) {
@@ -223,7 +220,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		}
 	}
 
-	private function buildNewEntry($gid) {
+	private function buildNewEntry($gid): array {
 		return [
 			'objectClass' => ['groupOfNames', 'top'],
 			'cn' => $gid,
@@ -231,7 +228,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		];
 	}
 
-	public function makeLdapBackendFirst() {
+	public function makeLdapBackendFirst(): void {
 		$backends = $this->groupManager->getBackends();
 		$otherBackends = [];
 		$this->groupManager->clearBackends();
