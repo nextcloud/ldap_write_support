@@ -37,12 +37,12 @@ use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
 use OCP\IImage;
 use OCP\IL10N;
-use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\LDAP\IDeletionFlagSupport;
 use OCP\LDAP\ILDAPProvider;
+use Psr\Log\LoggerInterface;
 
 
 class LDAPUserManager implements ILDAPUserPlugin {
@@ -62,21 +62,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	private $configuration;
 	/** @var IL10N */
 	private $l10n;
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
-	/**
-	 * LDAPUserManager constructor.
-	 *
-	 * @param IUserManager $userManager
-	 * @param IUserSession $userSession
-	 * @param LDAPConnect $ldapConnect
-	 * @param ILDAPProvider $ldapProvider
-	 * @param Configuration $configuration
-	 * @param IL10N $l10n
-	 * @param ILogger $logger
-	 */
-	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $LDAPProvider, Configuration $configuration, IL10N $l10n, ILogger $logger) {
+	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $LDAPProvider, Configuration $configuration, IL10N $l10n, LoggerInterface $logger) {
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
@@ -166,7 +155,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param IUser $user
 	 */
-	public function changeAvatar($user) {
+	public function changeAvatar($user): void {
 		try {
 			$userDN = $this->getUserDN($user->getUID());
 		} catch (Exception $e) {
@@ -181,7 +170,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$connection = $this->ldapProvider->getLDAPConnection($user->getUID());
 			ldap_mod_replace($connection, $userDN, ['jpegphoto' => $data]);
 		}
-
 	}
 
 	/**
@@ -238,19 +226,19 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$displayNameAttribute = $this->ldapConnect->getDisplayNameAttribute();
 		}
 
-		list($newUserDN, $newUserEntry) = $this->buildNewEntry($username, $password, $base);
+		[$newUserDN, $newUserEntry] = $this->buildNewEntry($username, $password, $base);
 		$newUserDN = $this->ldapProvider->sanitizeDN([$newUserDN])[0];
 		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $username);
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
 
 		$message = 'Create LDAP user \'{username}\' ({dn})';
-		$level = ILogger::INFO;
+		$logMethod = 'info';
 		if($ret === false) {
 			$message = 'Unable to create LDAP user \'{username}\' ({dn})';
-			$level = ILogger::ERROR;
+			$logMethod = 'error';
 		}
-		$this->logger->log($level, $message, [
+		$this->logger->$logMethod($message, [
 			'app' => Application::APP_ID,
 			'username' => $username,
 			'dn' => $newUserDN,
@@ -262,14 +250,14 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		return $ret ? $newUserDN : false;
 	}
 
-	public function ensureAttribute(array &$ldif, string $attribute, string $fallbackValue) {
+	public function ensureAttribute(array &$ldif, string $attribute, string $fallbackValue): void {
 		$lowerCasedLDIF = array_change_key_case($ldif, CASE_LOWER);
 		if(!isset($lowerCasedLDIF[strtolower($attribute)])) {
 			$ldif[$attribute] = $fallbackValue;
 		}
 	}
 
-	public function buildNewEntry($username, $password, $base) {
+	public function buildNewEntry($username, $password, $base): array {
 		// Make sure the parameters don't fool the following algorithm
 		if (strpos($username, PHP_EOL) !== false) {
 			throw new Exception('Username contains a new line');
@@ -311,7 +299,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param $uid
 	 * @return bool
 	 */
-	public function deleteUser($uid) {
+	public function deleteUser($uid): bool {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 		$userDN = $this->getUserDN($uid);
 		$user = $this->userManager->get($uid);
@@ -401,7 +389,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		return false;
 	}
 
-	public function makeLdapBackendFirst() {
+	public function makeLdapBackendFirst(): void {
 		$backends = $this->userManager->getBackends();
 		$otherBackends = [];
 		$this->userManager->clearBackends();
@@ -435,7 +423,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 	}
 
-	private function getUserDN($uid) {
+	private function getUserDN($uid): string {
 		return $this->ldapProvider->getUserDN($uid);
 	}
 }

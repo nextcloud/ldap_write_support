@@ -59,7 +59,7 @@
 <script>
 	import {
 		ActionCheckbox,
-	} from 'nextcloud-vue';
+	} from '@nextcloud/vue';
 
 	export default {
 		name: 'AdminSettings',

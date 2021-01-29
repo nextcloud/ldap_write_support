@@ -27,18 +27,17 @@ namespace OCA\LdapWriteSupport\Settings;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\LdapWriteSupport\Service\Configuration;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IConfig;
-use OCP\IInitialStateService;
+use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
 
 class Admin implements ISettings {
 	/** @var Configuration */
 	private $config;
 
-	/** @var IInitialStateService */
+	/** @var IInitialState */
 	private $initialStateService;
 
-	public function __construct(IInitialStateService $initialStateService, Configuration $config) {
+	public function __construct(IInitialState $initialStateService, Configuration $config) {
 		$this->initialStateService = $initialStateService;
 		$this->config = $config;
 	}
@@ -49,7 +48,6 @@ class Admin implements ISettings {
 	 */
 	public function getForm() {
 		$this->initialStateService->provideInitialState(
-			Application::APP_ID,
 			'templates',
 			[
 				'user' => $this->config->getUserTemplate(),
@@ -57,7 +55,6 @@ class Admin implements ISettings {
 			]
 		);
 		$this->initialStateService->provideInitialState(
-			Application::APP_ID,
 			'switches',
 			[
 				'createRequireActorFromLdap' => $this->config->isLdapActorRequired(),

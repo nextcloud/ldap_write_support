@@ -26,15 +26,15 @@ use OC\ServerNotAvailableException;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Configuration;
 use OCA\User_LDAP\Helper;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class LDAPConnect {
 	/** @var Configuration */
 	private $ldapConfig;
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(Helper $ldapBackendHelper, ILogger $logger) {
+	public function __construct(Helper $ldapBackendHelper, LoggerInterface $logger) {
 		$this->logger = $logger;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
 		$prefix = array_shift($ldapConfigPrefixes);
@@ -106,7 +106,7 @@ class LDAPConnect {
     	return $this->bind();
 	}
 
-	public function getLDAPBaseUsers() {
+	public function getLDAPBaseUsers(): array {
 		$bases = $this->ldapConfig->ldapBaseUsers;
 		if(empty($bases)) {
 			$bases = $this->ldapConfig->ldapBase;
@@ -114,7 +114,7 @@ class LDAPConnect {
 		return $bases;
 	}
 
-	public function getLDAPBaseGroups() {
+	public function getLDAPBaseGroups(): array {
 		$bases = $this->ldapConfig->ldapBaseGroups;
 		if(empty($bases)) {
 			$bases = $this->ldapConfig->ldapBase;
@@ -122,14 +122,14 @@ class LDAPConnect {
 		return $bases;
 	}
 
-	public function getDisplayNameAttribute() {
+	public function getDisplayNameAttribute(): string {
 		return $this->ldapConfig->ldapUserDisplayName;
 	}
 
 	public function groupsEnabled(): bool {
 		$filter = trim((string)$this->ldapConfig->ldapGroupFilter);
 		$gAssoc = trim((string)$this->ldapConfig->ldapGroupMemberAssocAttr);
-		
+
 		return $filter !== '' && $gAssoc !== '';
 	}
 

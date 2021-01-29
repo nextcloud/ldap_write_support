@@ -22,11 +22,10 @@
 
 namespace OCA\LdapWriteSupport\Command;
 
+use Exception;
 use OC\SubAdmin;
 use OCA\User_LDAP\Group_Proxy;
-use OCA\User_LDAP\GroupPluginManager;
 use OCA\User_LDAP\Helper;
-use OCA\User_LDAP\LDAP;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,25 +38,33 @@ class GroupAdminsToLdap extends Command {
 	/**
 	 * This adds/removes group subadmins as ldap group owners
 	 */
-
-
 	private $simulate = false;
 	private $verbose = false;
 
 	/** @var SubAdmin */
 	private $subAdmin;
-
 	/** @var IConfig  */
 	private $ocConfig;
+	/** @var Helper */
+	private $helper;
+	/** @var Group_Proxy */
+	private $groupProxy;
 
-
-	public function __construct(SubAdmin $subAdmin, IConfig $ocConfig) {
+	/**
+	 * GroupAdminsToLdap constructor.
+	 */
+	public function __construct(
+		SubAdmin $subAdmin,
+		IConfig $ocConfig,
+		Helper $helper,
+		Group_Proxy $groupProxy
+	) {
+		parent::__construct();
 
 		$this->subAdmin = $subAdmin;
 		$this->ocConfig = $ocConfig;
-
-		parent::__construct();
-
+		$this->helper = $helper;
+		$this->groupProxy = $groupProxy;
 	}
 
 	protected function configure() {
@@ -79,7 +86,7 @@ class GroupAdminsToLdap extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 
 		if ($input->getOption('sim')) {
 			$this->simulate = true;
@@ -94,16 +101,13 @@ class GroupAdminsToLdap extends Command {
 				$output->writeln("SIMULATE MODE ON");
 			}
 
-			$helper = new Helper($this->ocConfig);
-			$configPrefixes = $helper->getServerConfigurationPrefixes(true);
-			$ldapWrapper = new LDAP();
+			$configPrefixes = $this->helper->getServerConfigurationPrefixes(true);
 
 			if (count($configPrefixes) > 1) {
-				throw new \Exception("NOT PREPARED TO DEAL WITH MODE THAN 1 LDAP SOURCE, EXITING...");
+				throw new Exception("NOT PREPARED TO DEAL WITH MODE THAN 1 LDAP SOURCE, EXITING...");
 			}
 
-			$proxy = new Group_Proxy($configPrefixes, $ldapWrapper, \OC::$server->query(GroupPluginManager::class));
-			$access = $proxy->getLDAPAccess($configPrefixes[0]);
+			$access = $this->groupProxy->getLDAPAccess($configPrefixes[0]);
 			$conn = $access->getConnection();
 
 			$allSubAdmins = $this->subAdmin->getAllSubAdmins();
@@ -185,8 +189,11 @@ class GroupAdminsToLdap extends Command {
 
 			$output->writeln("As Pink Floyd says: 'This is the end....'");
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$output->writeln('<error>' . $e->getMessage(). '</error>');
+			return 1;
 		}
+
+		return 0;
 	}
 }
