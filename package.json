@@ -13,7 +13,7 @@
   "author": "Arthur Schiwon",
   "license": "AGPL-3.0",
   "dependencies": {
-    "nextcloud-vue": "^0.13.1",
+    "@nextcloud/vue": "^3.5.4",
     "vue": "^2.6.12"
   },
   "devDependencies": {
