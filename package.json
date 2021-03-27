@@ -17,7 +17,7 @@
     "vue": "^2.6.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.13.13",
     "@babel/preset-env": "^7.12.11",
     "@vue/babel-preset-app": "^4.5.11",
     "babel-loader": "^8.2.2",
