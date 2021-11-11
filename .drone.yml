@@ -5,7 +5,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable23
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -49,7 +49,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable23
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -95,7 +95,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable23
       DB: sqlite
     commands:
       # Pre-setup steps
