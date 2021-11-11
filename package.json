@@ -1,37 +1,37 @@
 {
-  "name": "ldap_write_suppport",
-  "version": "1.0.0",
-  "description": "Adds write support to the LDAP backend",
-  "private": true,
-  "scripts": {
-    "build": "webpack --progress --config src/webpack.prod.js",
-    "dev": "webpack --progress --watch --config src/webpack.dev.js"
-  },
-  "jshintConfig": {
-    "esversion": 6
-  },
-  "author": "Arthur Schiwon",
-  "license": "AGPL-3.0",
-  "dependencies": {
-    "@nextcloud/vue": "^4.1.1",
-    "vue": "^2.6.14"
-  },
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=7.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.16.0",
-    "@vue/babel-preset-app": "^4.5.15",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^6.5.1",
-    "file-loader": "^6.2.0",
-    "url-loader": "^4.1.1",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.6.14",
-    "webpack": "^5.62.1",
-    "webpack-cli": "^4.9.1",
-    "webpack-merge": "^5.8.0"
-  }
+	"name": "ldap_write_suppport",
+	"version": "1.0.0",
+	"description": "Adds write support to the LDAP backend",
+	"private": true,
+	"scripts": {
+		"build": "webpack --progress --config src/webpack.prod.js",
+		"dev": "webpack --progress --watch --config src/webpack.dev.js"
+	},
+	"jshintConfig": {
+		"esversion": 6
+	},
+	"author": "Arthur Schiwon",
+	"license": "AGPL-3.0",
+	"dependencies": {
+		"@nextcloud/vue": "^4.1.1",
+		"vue": "^2.6.14"
+	},
+	"engines": {
+		"node": "^14.0.0",
+		"npm": "^7.0.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.15.8",
+		"@babel/preset-env": "^7.16.0",
+		"@vue/babel-preset-app": "^4.5.15",
+		"babel-loader": "^8.2.2",
+		"css-loader": "^6.5.1",
+		"file-loader": "^6.2.0",
+		"url-loader": "^4.1.1",
+		"vue-loader": "^15.9.8",
+		"vue-template-compiler": "^2.6.14",
+		"webpack": "^5.62.1",
+		"webpack-cli": "^4.9.1",
+		"webpack-merge": "^5.8.0"
+	}
 }
