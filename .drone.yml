@@ -5,7 +5,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable24
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -43,13 +43,13 @@ trigger:
     - push
 ---
 kind: pipeline
-name: integration-master
+name: integration-stable24
 steps:
   - name: integration
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable24
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -89,13 +89,13 @@ type: docker
 
 ---
 kind: pipeline
-name: integration-master-nocache
+name: integration-stable24-nocache
 steps:
   - name: integration
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable24
       DB: sqlite
     commands:
       # Pre-setup steps
