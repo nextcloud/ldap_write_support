@@ -6,7 +6,7 @@
 	"author": "Arthur Schiwon",
 	"license": "AGPL-3.0",
 	"scripts": {
-	    "build": "NODE_ENV=production webpack --progress --config webpack.js",
+		"build": "NODE_ENV=production webpack --progress --config webpack.js",
 		"dev": "NODE_ENV=development webpack --config webpack.js",
 		"lint": "eslint --ext .js,.vue src",
 		"lint:fix": "eslint --ext .js,.vue src --fix",
