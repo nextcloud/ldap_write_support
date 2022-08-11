@@ -11,7 +11,7 @@
 		"lint": "eslint --ext .js,.vue src",
 		"lint:fix": "eslint --ext .js,.vue src --fix",
 		"stylelint": "stylelint src css",
-		"stylelint:fix": "stylelint src --fix"
+		"stylelint:fix": "stylelint src css --fix"
 	},
 	"browserslist": [
 		"extends @nextcloud/browserslist-config"
