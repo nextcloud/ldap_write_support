@@ -6,7 +6,7 @@
 	"author": "Arthur Schiwon",
 	"license": "AGPL-3.0",
 	"scripts": {
-	    "build": "NODE_ENV=production webpack --progress --config webpack.js",
+		"build": "NODE_ENV=production webpack --progress --config webpack.js",
 		"dev": "NODE_ENV=development webpack --config webpack.js",
 		"lint": "eslint --ext .js,.vue src",
 		"lint:fix": "eslint --ext .js,.vue src --fix",
@@ -20,6 +20,8 @@
 		"esversion": 6
 	},
 	"dependencies": {
+		"@nextcloud/dialogs": "^3.2.0",
+		"@nextcloud/initial-state": "^1.2.1",
 		"@nextcloud/vue": "^5.4.0",
 		"vue": "^2.7.8"
 	},

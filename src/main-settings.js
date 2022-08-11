@@ -1,9 +1,9 @@
-/*
+/**
  * @copyright 2019 Christoph Wurst <christoph@winzerhof-wurst.at>
  *
  * @author 2019 Christoph Wurst <christoph@winzerhof-wurst.at>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,18 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Vue from 'vue';
+import Vue from 'vue'
+import { loadState } from '@nextcloud/initial-state'
 
-import AdminSettings from './components/AdminSettings';
-import Nextcloud from './mixins/Nextcloud';
+import AdminSettings from './components/AdminSettings.vue'
 
-Vue.mixin(Nextcloud);
+const View = Vue.extend(AdminSettings)
+const AppID = 'ldap_write_support'
 
-const View = Vue.extend(AdminSettings);
-const AppID = 'ldap_write_support';
 new View({
 	propsData: {
-		templates: OCP.InitialState.loadState(AppID, 'templates'),
-		switches: OCP.InitialState.loadState(AppID, 'switches')
-	}
-}).$mount('#ldap-write-support-admin-settings');
+		templates: loadState(AppID, 'templates'),
+		switches: loadState(AppID, 'switches'),
+	},
+}).$mount('#ldap-write-support-admin-settings')
