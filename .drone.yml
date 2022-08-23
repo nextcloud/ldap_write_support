@@ -12,9 +12,6 @@ steps:
       - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
       - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
       - cd ../server
-      # Code checker
-      - ./occ app:check-code $APP_NAME -c strong-comparison
-      - ./occ app:check-code $APP_NAME -c deprecation
   - name: syntax-php7.4
     image: nextcloudci/php7.4:php7.4-2
     environment:
