@@ -14,7 +14,7 @@
 	"license": "AGPL-3.0",
 	"dependencies": {
 		"@nextcloud/vue": "^4.1.1",
-		"vue": "^2.7.6"
+		"vue": "^3.2.38"
 	},
 	"engines": {
 		"node": "^14.0.0",
