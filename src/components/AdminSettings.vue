@@ -113,3 +113,27 @@ export default {
 	},
 }
 </script>
+<style lang="scss">
+#ldap-write-support-admin-settings {
+	.mono {
+		font-family: monospace;
+		font-size: larger;
+	}
+
+	ul.disc {
+		list-style-type: disc;
+		list-style-position: inside;
+		margin-left: 44px;
+
+		li {
+			margin: 5px 0;
+		}
+	}
+
+	textarea {
+		width: 100%;
+		height: 150px;
+		max-width: 600px;
+	}
+}
+</style>
