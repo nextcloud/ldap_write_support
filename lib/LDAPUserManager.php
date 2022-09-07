@@ -122,7 +122,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			);
 		}
 
-		if (!is_resource($connection)) {
+		if (!is_resource($connection) && !is_object($connection)) {
 			$this->logger->debug('LDAP resource not available', ['app' => 'ldap_write_support']);
 			throw new ServerNotAvailableException('LDAP server is not available');
 		}
