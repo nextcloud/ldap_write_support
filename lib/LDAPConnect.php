@@ -51,7 +51,7 @@ class LDAPConnect {
 
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
         $cr = ldap_connect($ldapHost, $ldapPort);
-        if(!is_resource($cr)) {
+        if(!is_resource($cr) && !is_object($cr)) {
 			throw new ServerNotAvailableException('LDAP server not available');
 		}
 
