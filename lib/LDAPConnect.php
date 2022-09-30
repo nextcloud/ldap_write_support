@@ -49,8 +49,16 @@ class LDAPConnect {
 		$ldapHost = $this->ldapConfig->ldapHost;
 		$ldapPort = $this->ldapConfig->ldapPort;
 
+		// shamelessly copied from OCA\User_LDAP\LDAP::connect()
+		if (strpos($ldapHost, '://') === false) {
+			$ldapHost = 'ldap://' . $ldapHost;
+		}
+		if (strpos($ldapHost, ':', strpos($ldapHost, '://') + 1) === false) {
+			$ldapHost .= ':' . $ldapPort;
+		}
+
         // Connecting to LDAP - TODO: connect directly via LDAP plugin
-        $cr = ldap_connect($ldapHost, $ldapPort);
+        $cr = ldap_connect($ldapHost);
         if(!is_resource($cr) && !is_object($cr)) {
 			throw new ServerNotAvailableException('LDAP server not available');
 		}
