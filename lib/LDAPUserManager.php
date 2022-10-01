@@ -107,6 +107,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @throws ServerNotAvailableException
 	 */
 	public function setDisplayName($uid, $displayName) {
+        trigger_error(__METHOD__);
+        $this->logger->error(__METHOD__, ['app' => 'ldap_write_support']);
 		$userDN = $this->getUserDN($uid);
 
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
@@ -130,6 +132,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			if (ldap_mod_replace($connection, $userDN, [$displayNameField => $displayName])) {
 				return $displayName;
 			}
+            trigger_error(print_r(['conn' => $connection,
+                                   'user' => $userDN,
+                                   'dpyField' => $displayNameField,
+                                   'dpy' => $displayName], true));
 			throw new HintException('Failed to set display name');
 		} catch (ConstraintViolationException $e) {
 			throw new HintException(
