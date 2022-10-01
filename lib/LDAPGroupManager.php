@@ -55,7 +55,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, LoggerInterface $logger, ILDAPProvider $LDAPProvider) {
+	public function __construct(IGroupManager $groupManager, IUserSession $userSession, LDAPConnect $ldapConnect, LoggerInterface $logger, ILDAPProvider $ldapProvider, Configuration $configuration) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->ldapConnect = $ldapConnect;
