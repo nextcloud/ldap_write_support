@@ -32,7 +32,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
 class GroupBackendRegisteredListener implements IEventListener {
-
 	/** @var IAppManager */
 	private $appManager;
 	/** @var LDAPGroupManager */

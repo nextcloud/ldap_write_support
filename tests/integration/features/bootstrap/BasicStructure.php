@@ -39,7 +39,6 @@ use Psr\Http\Message\ResponseInterface;
 require __DIR__ . '/../../vendor/autoload.php';
 
 trait BasicStructure {
-
 	/** @var string */
 	private $currentUser = '';
 
@@ -67,7 +66,6 @@ trait BasicStructure {
 	protected $remoteBaseUrl;
 
 	public function __construct($baseUrl, $admin, $regular_user_password) {
-
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
 		$this->adminUser = $admin;
@@ -366,7 +364,7 @@ trait BasicStructure {
 	private function getDataDirectory() {
 		// Based on "runOcc" from CommandLine trait
 		$args = ['config:system:get', 'datadirectory'];
-		$args = array_map(function($arg) {
+		$args = array_map(function ($arg) {
 			return escapeshellarg($arg);
 		}, $args);
 		$args[] = '--no-ansi --no-warnings';
@@ -514,11 +512,11 @@ trait BasicStructure {
 	 * @throws \Exception
 	 */
 	public function theFollowingHeadersShouldBeSet(TableNode $table) {
-		foreach($table->getTable() as $header) {
+		foreach ($table->getTable() as $header) {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$returnedHeader = $this->response->getHeader($headerName)[0];
-			if($returnedHeader !== $expectedHeaderValue) {
+			if ($returnedHeader !== $expectedHeaderValue) {
 				throw new \Exception(
 					sprintf(
 						"Expected value '%s' for header '%s', got '%s'",

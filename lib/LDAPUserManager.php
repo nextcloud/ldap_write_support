@@ -44,7 +44,6 @@ use OCP\LDAP\IDeletionFlagSupport;
 use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
 
-
 class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var ILDAPProvider */
 	private $ldapProvider;
@@ -234,7 +233,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		$message = 'Create LDAP user \'{username}\' ({dn})';
 		$logMethod = 'info';
-		if($ret === false) {
+		if ($ret === false) {
 			$message = 'Unable to create LDAP user \'{username}\' ({dn})';
 			$logMethod = 'error';
 		}
@@ -271,13 +270,13 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			} catch (\Exception $e) {
 				$this->logger->logException($e, ['app' => Application::APP_ID]);
 			}
-		} 
+		}
 		return $ret ? $newUserDN : false;
 	}
 
 	public function ensureAttribute(array &$ldif, string $attribute, string $fallbackValue): void {
 		$lowerCasedLDIF = array_change_key_case($ldif, CASE_LOWER);
-		if(!isset($lowerCasedLDIF[strtolower($attribute)])) {
+		if (!isset($lowerCasedLDIF[strtolower($attribute)])) {
 			$ldif[$attribute] = $fallbackValue;
 		}
 	}
@@ -308,7 +307,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$value = trim($split[1]);
 			if (!isset($entry[$key])) {
 				$entry[$key] = $value;
-			} else if (is_array($entry[$key])) {
+			} elseif (is_array($entry[$key])) {
 				$entry[$key][] = $value;
 			} else {
 				$entry[$key] = [$entry[$key], $value];
@@ -366,7 +365,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * Change the password of a user
 	 */
 	public function setPassword($uid, $password) {
-		if(!function_exists('ldap_exop_passwd')) {
+		if (!function_exists('ldap_exop_passwd')) {
 			// since PHP 7.2 – respondToActions checked this already, this
 			// method should not be called. Double check due to public scope.
 			// This method can be removed when Nextcloud 16 compat is dropped.
@@ -444,7 +443,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				//attr1 = new email ; attr2 = old email
 				$this->changeEmail($user, $attr1);
 				break;
-
 		}
 	}
 

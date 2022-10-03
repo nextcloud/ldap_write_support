@@ -57,9 +57,9 @@ class LDAPConnect {
 			$ldapHost .= ':' . $ldapPort;
 		}
 
-        // Connecting to LDAP - TODO: connect directly via LDAP plugin
-        $cr = ldap_connect($ldapHost);
-        if(!is_resource($cr) && !is_object($cr)) {
+		// Connecting to LDAP - TODO: connect directly via LDAP plugin
+		$cr = ldap_connect($ldapHost);
+		if (!is_resource($cr) && !is_object($cr)) {
 			throw new ServerNotAvailableException('LDAP server not available');
 		}
 
@@ -81,42 +81,42 @@ class LDAPConnect {
 				]);
 			return false;
 		}
-    }
+	}
 
 	/**
 	 * @return bool|resource
 	 * @throws ServerNotAvailableException
 	 */
 	public function bind() {
-        $ds = $this->connect();
-        $dn = $this->ldapConfig->ldapAgentName;
-        $secret = $this->ldapConfig->ldapAgentPassword;
+		$ds = $this->connect();
+		$dn = $this->ldapConfig->ldapAgentName;
+		$secret = $this->ldapConfig->ldapAgentPassword;
 
-        if (!ldap_bind($ds,$dn,$secret)) {
+		if (!ldap_bind($ds, $dn, $secret)) {
 			$this->logger->error('Unable to bind to LDAP server',
 				['app' => Application::APP_ID]
 			);
 			return false;
-        } else {
+		} else {
 			$this->logger->debug('Bound to LDAP server using credentials for {dn}', [
 				'app' => Application::APP_ID,
 				'dn' => $dn,
 			]);
-            return $ds;
-        }
-    }
+			return $ds;
+		}
+	}
 
 	/**
 	 * @return bool|resource
 	 * @throws ServerNotAvailableException
 	 */
 	public function getLDAPConnection() {
-    	return $this->bind();
+		return $this->bind();
 	}
 
 	public function getLDAPBaseUsers(): array {
 		$bases = $this->ldapConfig->ldapBaseUsers;
-		if(empty($bases)) {
+		if (empty($bases)) {
 			$bases = $this->ldapConfig->ldapBase;
 		}
 		return $bases;
@@ -124,7 +124,7 @@ class LDAPConnect {
 
 	public function getLDAPBaseGroups(): array {
 		$bases = $this->ldapConfig->ldapBaseGroups;
-		if(empty($bases)) {
+		if (empty($bases)) {
 			$bases = $this->ldapConfig->ldapBase;
 		}
 		return $bases;
