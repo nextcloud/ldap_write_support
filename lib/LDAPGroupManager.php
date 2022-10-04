@@ -35,7 +35,6 @@ use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
 
 class LDAPGroupManager implements ILDAPGroupPlugin {
-
 	/** @var ILDAPProvider */
 	private $ldapProvider;
 
@@ -53,7 +52,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$this->logger = $logger;
 		$this->ldapProvider = $LDAPProvider;
 
-		if($this->ldapConnect->groupsEnabled()) {
+		if ($this->ldapConnect->groupsEnabled()) {
 			$this->makeLdapBackendFirst();
 		}
 	}
@@ -68,7 +67,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * compared with OC_GROUP_BACKEND_CREATE_GROUP etc.
 	 */
 	public function respondToActions() {
-		if(!$this->ldapConnect->groupsEnabled()) {
+		if (!$this->ldapConnect->groupsEnabled()) {
 			return 0;
 		}
 		return Backend::CREATE_GROUP |
@@ -82,7 +81,6 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * @return string|null
 	 */
 	public function createGroup($gid) {
-
 		/**
 		 * FIXME could not create group using LDAPProvider, because its methods rely
 		 * on passing an already inserted [ug]id, which we do not have at this point.
@@ -245,5 +243,4 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 			$this->groupManager->addBackend($backend);
 		}
 	}
-
 }

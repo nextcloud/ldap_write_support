@@ -32,9 +32,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class GroupAdminsToLdap extends Command {
-
 	/**
 	 * This adds/removes group subadmins as ldap group owners
 	 */
@@ -87,7 +85,6 @@ class GroupAdminsToLdap extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-
 		if ($input->getOption('sim')) {
 			$this->simulate = true;
 		}
@@ -115,8 +112,10 @@ class GroupAdminsToLdap extends Command {
 			$currentNCAdmins = [];
 			foreach ($allSubAdmins as $subAdmin) {
 				$gid = $subAdmin['group']->getGID();
-				if (!key_exists($gid,$currentNCAdmins)) $currentNCAdmins[$gid] = [];
-				array_push($currentNCAdmins[$gid],$subAdmin['user']->getUID());
+				if (!key_exists($gid, $currentNCAdmins)) {
+					$currentNCAdmins[$gid] = [];
+				}
+				array_push($currentNCAdmins[$gid], $subAdmin['user']->getUID());
 			}
 
 			$allLdapGroups = $access->fetchListOfGroups(
@@ -125,13 +124,15 @@ class GroupAdminsToLdap extends Command {
 			);
 
 			$currentLDAPAdmins = [];
-			foreach($allLdapGroups as $ldapGroup) {
+			foreach ($allLdapGroups as $ldapGroup) {
 				$gid = $ldapGroup[$conn->ldapGroupDisplayName][0];
-				if (key_exists('owner',$ldapGroup)) {
-					if (!key_exists($gid,$currentLDAPAdmins)) $currentLDAPAdmins[$gid] = [];
+				if (key_exists('owner', $ldapGroup)) {
+					if (!key_exists($gid, $currentLDAPAdmins)) {
+						$currentLDAPAdmins[$gid] = [];
+					}
 					foreach ($ldapGroup['owner'] as $ownerDN) {
 						$uid = $access->getUserMapper()->getNameByDN($ownerDN);
-						array_push($currentLDAPAdmins[$gid],$uid);
+						array_push($currentLDAPAdmins[$gid], $uid);
 					}
 				}
 			}
@@ -142,17 +143,18 @@ class GroupAdminsToLdap extends Command {
 					if (!isset($array2[$gid]) || !is_array($array2[$gid])) {
 						$difference[$gid] = $users;
 					} else {
-						$diff = array_diff($array1[$gid],$array2[$gid]);
-						if (count($diff)) $difference[$gid] = array_diff($array1[$gid],$array2[$gid]);
+						$diff = array_diff($array1[$gid], $array2[$gid]);
+						if (count($diff)) {
+							$difference[$gid] = array_diff($array1[$gid], $array2[$gid]);
+						}
 					}
-
 				}
 				return $difference;
 			}
 
 
-			$onlyInLDAP = diff_user_arrays($currentLDAPAdmins,$currentNCAdmins);
-			$onlyInNC   = diff_user_arrays($currentNCAdmins,$currentLDAPAdmins);
+			$onlyInLDAP = diff_user_arrays($currentLDAPAdmins, $currentNCAdmins);
+			$onlyInNC = diff_user_arrays($currentNCAdmins, $currentLDAPAdmins);
 
 
 			foreach ($onlyInNC as $gid => $users) {
@@ -188,7 +190,6 @@ class GroupAdminsToLdap extends Command {
 			}
 
 			$output->writeln("As Pink Floyd says: 'This is the end....'");
-
 		} catch (Exception $e) {
 			$output->writeln('<error>' . $e->getMessage(). '</error>');
 			return 1;

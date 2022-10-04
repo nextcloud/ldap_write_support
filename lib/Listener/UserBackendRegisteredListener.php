@@ -32,7 +32,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
 class UserBackendRegisteredListener implements IEventListener {
-
 	/** @var IAppManager */
 	private $appManager;
 	/** @var LDAPUserManager */
