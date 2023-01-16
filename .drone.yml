@@ -2,7 +2,7 @@ kind: pipeline
 name: checkers
 steps:
   - name: compatibility
-    image: nextcloudci/php7.4:php7.4-2
+    image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -12,8 +12,8 @@ steps:
       - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
       - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
       - cd ../server
-  - name: syntax-php7.4
-    image: nextcloudci/php7.4:php7.4-2
+  - name: syntax-php8.0
+    image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -43,7 +43,7 @@ kind: pipeline
 name: integration-master
 steps:
   - name: integration
-    image: nextcloudci/php7.4:php7.4-2
+    image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -89,7 +89,7 @@ kind: pipeline
 name: integration-master-nocache
 steps:
   - name: integration
-    image: nextcloudci/php7.4:php7.4-2
+    image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
