@@ -16,7 +16,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       - composer install
@@ -25,7 +25,7 @@ steps:
     image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       - composer install
@@ -46,7 +46,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -92,7 +92,7 @@ steps:
     image: nextcloudci/php7.4:php7.4-2
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       # Pre-setup steps
