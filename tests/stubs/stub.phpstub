@@ -1,0 +1,238 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2022 Côme Chilliet <come.chilliet@nextcloud.com>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+class OC_User {
+	public static function useBackend(string|\OCP\UserInterface $backend = 'database'): bool;
+}
+
+namespace OC\User {
+	abstract class Backend {
+		public const NOT_IMPLEMENTED = -501;
+		public const CREATE_USER = 1;			// 1 << 0
+		public const SET_PASSWORD = 16;			// 1 << 4
+		public const CHECK_PASSWORD = 256;			// 1 << 8
+		public const GET_HOME = 4096;			// 1 << 12
+		public const GET_DISPLAYNAME = 65536;		// 1 << 16
+		public const SET_DISPLAYNAME = 1048576;		// 1 << 20
+		public const PROVIDE_AVATAR = 16777216;		// 1 << 24
+		public const COUNT_USERS = 268435456;	// 1 << 28
+	}
+}
+
+namespace OCA\User_LDAP\Events {
+	class UserBackendRegistered extends \OCP\EventDispatcher\Event {
+		public function getBackend(): \OCA\User_LDAP\IUserLDAP;
+		public function getPluginManager(): \OCA\User_LDAP\UserPluginManager;
+	}
+	class GroupBackendRegistered extends \OCP\EventDispatcher\Event {
+		public function getPluginManager(): \OCA\User_LDAP\GroupPluginManager;
+	}
+}
+
+namespace OCA\User_LDAP\Exceptions {
+	class ConstraintViolationException extends \Exception;
+}
+
+namespace OCA\User_LDAP\Mapping {
+	class AbstractMapping {
+		/**
+		* @param string $name
+		* @return string|false
+		*/
+		public function getDNByName($name);
+
+		/**
+		* @param string $fdn
+		* @return string|false
+		*/
+		public function getNameByDN($fdn);
+	}
+}
+
+namespace OCA\User_LDAP {
+	interface IUserLDAP {
+	}
+	class UserPluginManager {
+		public function register(ILDAPUserPlugin $plugin): void;
+	}
+	interface ILDAPUserPlugin {
+		/**
+		* @return int
+		*/
+		public function respondToActions();
+
+		/**
+		* @param string $uid The UID of the user to create
+		* @param string $password The password of the new user
+		* @return bool|string
+		*/
+		public function createUser($uid, $password);
+
+		/**
+		* @param string $uid The username
+		* @param string $password The new password
+		* @return bool
+		*/
+		public function setPassword($uid, $password);
+
+		/**
+		* @param string $uid the username
+		* @return bool
+		*/
+		public function getHome($uid);
+
+		/**
+		* @param string $uid user ID of the user
+		* @return string display name
+		*/
+		public function getDisplayName($uid);
+
+		/**
+		* @param string $uid user ID of the user
+		* @param string $displayName new user's display name
+		* @return string display name
+		*/
+		public function setDisplayName($uid, $displayName);
+
+		/**
+		* @param string $uid the Nextcloud user name
+		* @return bool either the user can or cannot
+		*/
+		public function canChangeAvatar($uid);
+
+		/**
+		* @return int|false
+		*/
+		public function countUsers();
+	}
+	class GroupPluginManager {
+		public function register(ILDAPGroupPlugin $plugin): void;
+	}
+	interface ILDAPGroupPlugin {
+	}
+	class Access {
+		/**
+		* @throws \Exception
+		*/
+		public function getUserMapper(): \OCA\User_LDAP\Mapping\AbstractMapping;
+
+		/**
+		* @throws \Exception
+		*/
+		public function getGroupMapper(): \OCA\User_LDAP\Mapping\AbstractMapping;
+
+		/**
+		* returns the Connection instance
+		*
+		* @return \OCA\User_LDAP\Connection
+		*/
+		public function getConnection();
+
+		/**
+		* @return array[]
+		*/
+		public function fetchListOfGroups(string $filter, array $attr, int $limit = null, int $offset = null): array;
+	}
+	/**
+	* magic properties (incomplete)
+	* responsible for LDAP connections in context with the provided configuration
+	*
+	* @property string ldapHost
+	* @property string ldapPort holds the port number
+	* @property string ldapUserFilter
+	* @property string ldapUserDisplayName
+	* @property string ldapUserDisplayName2
+	* @property string ldapUserAvatarRule
+	* @property boolean turnOnPasswordChange
+	* @property string[] ldapBaseUsers
+	* @property int|null ldapPagingSize holds an integer
+	* @property bool|mixed|void ldapGroupMemberAssocAttr
+	* @property string ldapUuidUserAttribute
+	* @property string ldapUuidGroupAttribute
+	* @property string ldapExpertUUIDUserAttr
+	* @property string ldapExpertUUIDGroupAttr
+	* @property string ldapQuotaAttribute
+	* @property string ldapQuotaDefault
+	* @property string ldapEmailAttribute
+	* @property string ldapExtStorageHomeAttribute
+	* @property string homeFolderNamingRule
+	* @property bool|string ldapNestedGroups
+	* @property string[] ldapBaseGroups
+	* @property string ldapLoginFilter
+	* @property string ldapDynamicGroupMemberURL
+	* @property string ldapGidNumber
+	* @property int hasMemberOfFilterSupport
+	* @property int useMemberOfToDetectMembership
+	* @property string ldapMatchingRuleInChainState
+	*/
+	class Connection {
+		public string $ldapGroupFilter;
+		public string $ldapGroupDisplayName;
+		/**
+		* @return resource|\LDAP\Connection The LDAP resource
+		*/
+		public function getConnectionResource();
+	}
+	class Configuration {
+		public string $ldapAgentName;
+		public string $ldapAgentPassword;
+		public array $ldapBase;
+		public array $ldapBaseUsers;
+		public array $ldapBaseGroups;
+		public string $ldapUserDisplayName;
+		public string $ldapGroupFilter;
+		public string $ldapGroupMemberAssocAttr;
+		public string $ldapDefaultPPolicyDN;
+		public string $ldapHost;
+		public string $ldapPort;
+		public function __construct(string $configPrefix, bool $autoRead = true);
+	}
+	abstract class Proxy {
+		/**
+		* @param string $id
+		* @return Access
+		*/
+		abstract public function getLDAPAccess($id);
+	}
+	class Group_Proxy extends Proxy {
+	}
+	class Helper {
+		/**
+		* returns prefixes for each saved LDAP/AD server configuration.
+		*
+		* @param bool $activeConfigurations optional, whether only active configuration shall be
+		* retrieved, defaults to false
+		* @return array with a list of the available prefixes
+		*/
+		public function getServerConfigurationPrefixes(bool $activeConfigurations = false): array;
+	}
+}
+
+namespace OC {
+	class SubAdmin {
+		public function getAllSubAdmins(): array;
+	}
+	class ServerNotAvailableException extends \Exception {
+	}
+}
