@@ -21,15 +21,6 @@ steps:
     commands:
       - composer install
       - ./vendor/bin/parallel-lint --exclude ./vendor/ .
-  - name: syntax-php8.0
-    image: nextcloudci/php8.0:latest
-    environment:
-      APP_NAME: ldap_write_support
-      CORE_BRANCH: master
-      DB: sqlite
-    commands:
-      - composer install
-      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
 type: docker
 trigger:
   branch:
