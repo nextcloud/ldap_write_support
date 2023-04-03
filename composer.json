@@ -3,12 +3,17 @@
     "type": "project",
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
-        "nextcloud/coding-standard": "^1.0"
+        "nextcloud/coding-standard": "^1.0",
+        "nextcloud/ocp": "dev-master",
+        "vimeo/psalm": "^5.9"
     },
-	"scripts": {
-		"cs:fix": "php-cs-fixer fix",
+    "scripts": {
+        "cs:fix": "php-cs-fixer fix",
         "cs:check": "php-cs-fixer fix --dry-run --diff",
-        "lint": "find . -name \\*.php -not -path './vendor/*' -not -path './build/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l"
+        "lint": "find . -name \\*.php -not -path './vendor/*' -not -path './build/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l",
+        "psalm": "psalm",
+        "psalm:fix": "psalm --alter --issues=InvalidReturnType,InvalidNullableReturnType,MissingParamType,InvalidFalsableReturnType",
+        "psalm:update-baseline": "psalm --threads=1 --update-baseline"
     },
     "license": "AGPLv3",
     "authors": [
