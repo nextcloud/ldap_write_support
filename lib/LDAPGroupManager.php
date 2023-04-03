@@ -26,10 +26,10 @@
 namespace OCA\LdapWriteSupport;
 
 use Exception;
-use OC\Group\Backend;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Group_Proxy;
 use OCA\User_LDAP\ILDAPGroupPlugin;
+use OCP\GroupInterface;
 use OCP\IGroupManager;
 use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
@@ -58,22 +58,19 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	}
 
 	/**
-	 * Check if plugin implements actions
-	 *
-	 * @param int $actions bitwise-or'ed actions
-	 * @return boolean
-	 *
 	 * Returns the supported actions as int to be
 	 * compared with OC_GROUP_BACKEND_CREATE_GROUP etc.
+	 *
+	 * @return int bitwise-or'ed actions
 	 */
 	public function respondToActions() {
 		if (!$this->ldapConnect->groupsEnabled()) {
 			return 0;
 		}
-		return Backend::CREATE_GROUP |
-			Backend::DELETE_GROUP |
-			Backend::ADD_TO_GROUP |
-			Backend::REMOVE_FROM_GROUP;
+		return GroupInterface::CREATE_GROUP |
+			GroupInterface::DELETE_GROUP |
+			GroupInterface::ADD_TO_GROUP |
+			GroupInterface::REMOVE_FROM_GROUP;
 	}
 
 	/**
