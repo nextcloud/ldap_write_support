@@ -42,7 +42,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return bool|resource
+	 * @return false|resource|\LDAP\Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function connect() {
@@ -60,31 +60,27 @@ class LDAPConnect {
 		// Connecting to LDAP - TODO: connect directly via LDAP plugin
 		$cr = ldap_connect($ldapHost);
 		if (!is_resource($cr) && !is_object($cr)) {
-			throw new ServerNotAvailableException('LDAP server not available');
-		}
-
-		if ($cr) {
-			ldap_set_option($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
-			$this->logger->debug('Connected to LDAP host {ldapHost}:{ldapPort}',
-				[
-					'app' => Application::APP_ID,
-					'ldapHost' => $ldapHost,
-					'ldapPort' => $ldapPort,
-				]);
-			return $cr;
-		} else {
 			$this->logger->error('Unable to connect to LDAP host {ldapHost}:{ldapPort}',
 				[
 					'app' => Application::APP_ID,
 					'ldapHost' => $ldapHost,
 					'ldapPort' => $ldapPort,
 				]);
-			return false;
+			throw new ServerNotAvailableException('LDAP server not available');
 		}
+
+		ldap_set_option($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
+		$this->logger->debug('Connected to LDAP host {ldapHost}:{ldapPort}',
+			[
+				'app' => Application::APP_ID,
+				'ldapHost' => $ldapHost,
+				'ldapPort' => $ldapPort,
+			]);
+		return $cr;
 	}
 
 	/**
-	 * @return bool|resource
+	 * @return false|resource|\LDAP\Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function bind() {
@@ -107,7 +103,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return bool|resource
+	 * @return false|resource|\LDAP\Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function getLDAPConnection() {

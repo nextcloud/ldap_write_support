@@ -26,7 +26,6 @@
 namespace OCA\LdapWriteSupport;
 
 use Exception;
-use OC\HintException;
 use OC\ServerNotAvailableException;
 use OC\User\Backend;
 use OC_User;
@@ -35,6 +34,7 @@ use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
 use OCA\User_LDAP\ILDAPUserPlugin;
 use OCA\User_LDAP\IUserLDAP;
+use OCP\HintException;
 use OCP\IImage;
 use OCP\IL10N;
 use OCP\IUser;
@@ -78,13 +78,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	/**
-	 * Check if plugin implements actions
-	 *
-	 * @param int $actions bitwise-or'ed actions
-	 * @return boolean
-	 *
 	 * Returns the supported actions as int to be
 	 * compared with OC_USER_BACKEND_CREATE_USER etc.
+	 *
+	 * @return int bitwise-or'ed actions
 	 */
 	public function respondToActions() {
 		$setPassword = function_exists('ldap_exop_passwd') && !$this->ldapConnect->hasPasswordPolicy()
@@ -253,22 +250,20 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				$ret = ldap_exop_passwd($connection, $newUserDN, '', $password);
 				if ($ret === false) {
 					$message = 'ldap_exop_passwd failed, falling back to ldap_mod_replace to to set password for new user';
-					$this->logger->log(ILogger::DEBUG, $message, [
-						'app' => Application::APP_ID,
-					]);
+					$this->logger->debug($message, ['app' => Application::APP_ID]);
 
 					// Fallback to `userPassword` in case the server does not support exop_passwd
 					$ret = ldap_mod_replace($connection, $newUserDN, ['userPassword' => $password]);
 					if ($ret === false) {
 						$message = 'Failed to set password for new user {dn}';
-						$this->logger->log(ILogger::ERROR, $message, [
+						$this->logger->error($message, [
 							'app' => Application::APP_ID,
 							'dn' => $newUserDN,
 						]);
 					}
 				}
 			} catch (\Exception $e) {
-				$this->logger->logException($e, ['app' => Application::APP_ID]);
+				$this->logger->error($e->getMessage(), ['exception' => $e, 'app' => Application::APP_ID]);
 			}
 		}
 		return $ret ? $newUserDN : false;
@@ -374,9 +369,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		try {
 			$cr = $this->ldapProvider->getLDAPConnection($uid);
 			$userDN = $this->getUserDN($uid);
-			return ldap_exop_passwd($cr, $userDN, '', $password);
+			return ldap_exop_passwd($cr, $userDN, '', $password) !== false;
 		} catch (\Exception $e) {
-			$this->logger->logException($e, ['app' => Application::APP_ID]);
+			$this->logger->error($e->getMessage(), ['exception' => $e, 'app' => Application::APP_ID]);
 		}
 		return false;
 	}
@@ -400,7 +395,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 */
 	public function getDisplayName($uid) {
 		// Not implemented
-		return false;
+		return $uid;
 	}
 
 	/**
