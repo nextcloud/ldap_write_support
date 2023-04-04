@@ -34,7 +34,7 @@ kind: pipeline
 name: integration-master
 steps:
   - name: integration
-    image: nextcloudci/php8.0:latest
+    image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -57,9 +57,9 @@ steps:
 
 services:
   - name: cache
-    image: redis
+    image: ghcr.io/nextcloud/continuous-integration-redis:latest
   - name: openldap
-    image: nextcloudci/openldap:openldap-7
+    image: ghcr.io/nextcloud/continuous-integration-openldap:openldap-7
     environment:
       SLAPD_DOMAIN: nextcloud.ci
       SLAPD_ORGANIZATION: Nextcloud
@@ -80,7 +80,7 @@ kind: pipeline
 name: integration-master-nocache
 steps:
   - name: integration
-    image: nextcloudci/php8.0:latest
+    image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -98,7 +98,7 @@ steps:
 
 services:
   - name: openldap
-    image: nextcloudci/openldap:openldap-7
+    image: ghcr.io/nextcloud/continuous-integration-openldap:openldap-7
     environment:
       SLAPD_DOMAIN: nextcloud.ci
       SLAPD_ORGANIZATION: Nextcloud
