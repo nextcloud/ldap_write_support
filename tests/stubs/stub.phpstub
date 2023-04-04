@@ -51,7 +51,8 @@ namespace OCA\User_LDAP\Events {
 }
 
 namespace OCA\User_LDAP\Exceptions {
-	class ConstraintViolationException extends \Exception;
+	class ConstraintViolationException extends \Exception {
+	}
 }
 
 namespace OCA\User_LDAP\Mapping {
