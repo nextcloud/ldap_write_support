@@ -88,14 +88,15 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$newGroupDN = "cn=$gid," . $this->ldapConnect->getLDAPBaseGroups()[0];
 		$newGroupDN = $this->ldapProvider->sanitizeDN([$newGroupDN])[0];
 
-		if ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry)) {
+		if ($connection && ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry))) {
 			$message = "Create LDAP group '$gid' ($newGroupDN)";
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
+			return $newGroupDN;
 		} else {
 			$message = "Unable to create LDAP group '$gid' ($newGroupDN)";
 			$this->logger->error($message, ['app' => Application::APP_ID]);
+			return null;
 		}
-		return $ret ? $newGroupDN : null;
 	}
 
 	/**

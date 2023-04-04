@@ -42,7 +42,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|\LDAP\Connection
+	 * @return resource|\LDAP\Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function connect() {
@@ -50,10 +50,12 @@ class LDAPConnect {
 		$ldapPort = $this->ldapConfig->ldapPort;
 
 		// shamelessly copied from OCA\User_LDAP\LDAP::connect()
-		if (strpos($ldapHost, '://') === false) {
+		$pos = strpos($ldapHost, '://');
+		if ($pos === false) {
 			$ldapHost = 'ldap://' . $ldapHost;
+			$pos = 4;
 		}
-		if (strpos($ldapHost, ':', strpos($ldapHost, '://') + 1) === false) {
+		if (strpos($ldapHost, ':', $pos + 1) === false && !empty($ldapPort)) {
 			$ldapHost .= ':' . $ldapPort;
 		}
 
