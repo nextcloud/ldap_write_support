@@ -15,6 +15,9 @@
         "psalm:fix": "psalm --alter --issues=InvalidReturnType,InvalidNullableReturnType,MissingParamType,InvalidFalsableReturnType",
         "psalm:update-baseline": "psalm --threads=1 --update-baseline"
     },
+    "platform": {
+        "php": "8.0"
+    },
     "license": "AGPLv3",
     "authors": [
         {
