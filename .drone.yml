@@ -12,15 +12,6 @@ steps:
       - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
       - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
       - cd ../server
-  - name: syntax-php8.0
-    image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
-    environment:
-      APP_NAME: ldap_write_support
-      CORE_BRANCH: master
-      DB: sqlite
-    commands:
-      - composer install
-      - ./vendor/bin/parallel-lint --exclude ./vendor/ .
 type: docker
 trigger:
   branch:
