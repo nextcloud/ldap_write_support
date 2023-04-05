@@ -2,7 +2,7 @@ kind: pipeline
 name: checkers
 steps:
   - name: compatibility
-    image: nextcloudci/php8.0:latest
+    image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
@@ -13,7 +13,7 @@ steps:
       - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
       - cd ../server
   - name: syntax-php8.0
-    image: nextcloudci/php8.0:latest
+    image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
       CORE_BRANCH: master
