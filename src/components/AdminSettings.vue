@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { NcActionCheckbox } from '@nextcloud/vue'
+import NcActionCheckbox from '@nextcloud/vue/dist/Components/NcActionCheckbox.js'
 import { showError } from '@nextcloud/dialogs'
 import i10n from '../mixins/i10n.js'
 
