@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@nextcloud/dialogs": "^3.2.0",
 		"@nextcloud/initial-state": "^2.0.0",
-		"@nextcloud/vue": "^5.4.0",
+		"@nextcloud/vue": "^7.9.0",
 		"vue": "^2.7.14"
 	},
 	"engines": {
