@@ -16,7 +16,7 @@ steps:
     image: nextcloudci/php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       - composer install
@@ -37,7 +37,7 @@ steps:
     image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -83,7 +83,7 @@ steps:
     image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable26
       DB: sqlite
     commands:
       # Pre-setup steps
