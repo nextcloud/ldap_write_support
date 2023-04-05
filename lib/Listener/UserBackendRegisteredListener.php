@@ -31,6 +31,9 @@ use OCP\App\IAppManager;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
+/**
+ * @template-implements IEventListener<UserBackendRegistered>
+ */
 class UserBackendRegisteredListener implements IEventListener {
 	/** @var IAppManager */
 	private $appManager;
