@@ -24,26 +24,26 @@
 		<h2>{{ t('ldap_write_support', 'Writing') }}</h2>
 		<h3>{{ t('ldap_write_support', 'Switches') }}</h3>
 		<ul>
-			<ActionCheckbox :checked="switches.createPreventFallback"
+			<NcActionCheckbox :checked="switches.createPreventFallback"
 				@change.stop.prevent="toggleSwitch('createPreventFallback', !switches.createPreventFallback)">
 				{{ t('ldap_write_support', 'Prevent fallback to other backends when creating users or groups.') }}
-			</ActionCheckbox>
-			<ActionCheckbox :checked="switches.createRequireActorFromLdap"
+			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.createRequireActorFromLdap"
 				@change.stop.prevent="toggleSwitch('createRequireActorFromLdap', !switches.createRequireActorFromLdap)">
 				{{ t('ldap_write_support', 'To create users, the acting (sub)admin has to be provided by LDAP.') }}
-			</ActionCheckbox>
-			<ActionCheckbox :checked="switches.newUserGenerateUserID"
+			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.newUserGenerateUserID"
 				@change.stop.prevent="toggleSwitch('newUserGenerateUserID', !switches.newUserGenerateUserID, 'core')">
 				{{ t('ldap_write_support', 'A random user ID has to be generated, i.e. not being provided by the (sub)admin.') }}
-			</ActionCheckbox>
-			<ActionCheckbox :checked="switches.newUserRequireEmail"
+			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.newUserRequireEmail"
 				@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'core')">
 				{{ t('ldap_write_support', 'An LDAP user must have an email address set.') }}
-			</ActionCheckbox>
-			<ActionCheckbox :checked="switches.hasAvatarPermission"
+			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.hasAvatarPermission"
 				@change.stop.prevent="toggleSwitch('hasAvatarPermission', !switches.hasAvatarPermission)">
 				{{ t('ldap_write_support', 'Allow users to set their avatar') }}
-			</ActionCheckbox>
+			</NcActionCheckbox>
 		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>
@@ -57,14 +57,14 @@
 </template>
 
 <script>
-import { ActionCheckbox } from '@nextcloud/vue'
+import { NcActionCheckbox } from '@nextcloud/vue'
 import { showError } from '@nextcloud/dialogs'
 import i10n from '../mixins/i10n.js'
 
 export default {
 	name: 'AdminSettings',
 	components: {
-		ActionCheckbox,
+		NcActionCheckbox,
 	},
 	mixins: [i10n],
 	props: {
