@@ -21,3 +21,4 @@ package-lock.json
 README.md
 webpack.js
 img/screenshots
+psalm.xml
