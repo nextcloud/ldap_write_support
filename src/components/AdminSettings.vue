@@ -61,6 +61,8 @@ import NcActionCheckbox from '@nextcloud/vue/dist/Components/NcActionCheckbox.js
 import { showError } from '@nextcloud/dialogs'
 import i10n from '../mixins/i10n.js'
 
+import '@nextcloud/dialogs/dist/index.css'
+
 export default {
 	name: 'AdminSettings',
 	components: {
