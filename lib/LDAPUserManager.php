@@ -43,6 +43,7 @@ use OCP\IUserSession;
 use OCP\LDAP\IDeletionFlagSupport;
 use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class LDAPUserManager implements ILDAPUserPlugin {
 	/** @var ILDAPProvider */
@@ -74,6 +75,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$this->logger = $logger;
 
 		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
+		if ($this->configuration->canUpdateContactInfo()) {
+			$eventDispatcher = \OC::$server->getEventDispatcher();
+			$eventDispatcher->addListener('OC\AccountManager::userUpdated', [$this, 'userUpdatedHook']);
+		}
 		$this->makeLdapBackendFirst();
 	}
 
@@ -438,6 +443,96 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				//attr1 = new email ; attr2 = old email
 				$this->changeEmail($user, $attr1);
 				break;
+		}
+	}
+
+	public function userUpdatedHook(GenericEvent $event): void {
+		$user = $event->getSubject();
+		$args = $event->getArguments();
+
+		try {
+			$userDN = $this->getUserDN($user->getUID());
+		} catch (Exception $e) {
+			return;
+		}
+
+		$connection = $this->ldapProvider->getLDAPConnection($user->getUID());
+
+		if (!is_resource($connection) && !is_object($connection)) {
+			$this->logger->debug('LDAP resource not available', ['app' => 'ldap_write_support']);
+			throw new ServerNotAvailableException('LDAP server is not available');
+		}
+
+		try {
+			$updates = array();
+			$urls = array();
+			$deletes = array();
+			foreach ($args as $arg) {
+				// `displayname` and `email` also exist and could replace above until
+				// non-Symfony calls are standardized.
+				// `headline`, `twitter`, and `fediverse` are also available.
+				switch ($arg['name']) {
+					case 'phone':
+						if ($arg['value'] == "") {
+							$deletes['telephoneNumber'] = array();
+						} else {
+							$updates['telephoneNumber'] = $arg['value'];
+						}
+						break;
+					case 'address':
+						if ($arg['value'] == "") {
+							$deletes['l'] = array();
+						} else {
+							$updates['l'] = $arg['value'];
+						}
+						break;
+					case 'website':
+						if ($arg['value'] == "") {
+							$deletes['wWWHomePage'] = array();
+						} else {
+							$updates['wWWHomePage'] = $arg['value'];
+						}
+						break;
+					case 'organisation':
+						if ($arg['value'] == "") {
+							$deletes['department'] = array();
+						} else {
+							$updates['department'] = $arg['value'];
+						}
+						break;
+					case 'role':
+						if ($arg['value'] == "") {
+							$deletes['title'] = array();
+						} else {
+							$updates['title'] = $arg['value'];
+						}
+						break;
+					case 'biography':
+						if ($arg['value'] == "") {
+							$deletes['description'] = array();
+						} else {
+							$updates['description'] = $arg['value'];
+						}
+						break;
+				}
+			}
+			if (ldap_mod_replace($connection, $userDN, $updates)) {
+				if (count($deletes) > 0) {
+					try {
+						@ldap_mod_del($connection, $userDN, $deletes);
+					} catch(Exception $e) {
+						// Nothing required
+					}
+				}
+				return;
+			}
+			throw new HintException('Failed to set LDAP information');
+		} catch (ConstraintViolationException $e) {
+			throw new HintException(
+				$e->getMessage(),
+				$this->l10n->t('LDAP change rejected'),
+				$e->getCode()
+			);
 		}
 	}
 
