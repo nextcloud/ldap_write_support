@@ -6,7 +6,7 @@ steps:
     image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable28
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -23,13 +23,13 @@ trigger:
     - push
 ---
 kind: pipeline
-name: integration-master
+name: integration-stable28
 steps:
   - name: integration
     image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable28
       DB: sqlite
     commands:
       # Pre-setup steps
@@ -69,13 +69,13 @@ type: docker
 
 ---
 kind: pipeline
-name: integration-master-nocache
+name: integration-stable28-nocache
 steps:
   - name: integration
     image: ghcr.io/nextcloud/continuous-integration-php8.0:latest
     environment:
       APP_NAME: ldap_write_support
-      CORE_BRANCH: master
+      CORE_BRANCH: stable28
       DB: sqlite
     commands:
       # Pre-setup steps
