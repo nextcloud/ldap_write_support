@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
-  <file src="lib/AppInfo/Application.php">
-    <InvalidArgument>
-      <code>GroupBackendRegisteredListener::class</code>
-      <code>UserBackendRegisteredListener::class</code>
-    </InvalidArgument>
-  </file>
+<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
   <file src="lib/LDAPConnect.php">
     <RedundantCast>
       <code><![CDATA[(string)$this->ldapConfig->ldapGroupFilter]]></code>
@@ -16,16 +10,6 @@
     </RedundantCondition>
   </file>
   <file src="lib/LDAPUserManager.php">
-    <MethodSignatureMustProvideReturnType>
-      <code>canChangeAvatar</code>
-      <code>countUsers</code>
-      <code>createUser</code>
-      <code>getDisplayName</code>
-      <code>getHome</code>
-      <code>respondToActions</code>
-      <code>setDisplayName</code>
-      <code>setPassword</code>
-    </MethodSignatureMustProvideReturnType>
     <UndefinedInterfaceMethod>
       <code>listen</code>
     </UndefinedInterfaceMethod>
