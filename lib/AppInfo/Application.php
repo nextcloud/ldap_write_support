@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OCA\LdapWriteSupport\AppInfo;
 
-use OCA\LdapWriteSupport\Listener\UserBackendRegisteredListener;
 use OCA\LdapWriteSupport\Listener\GroupBackendRegisteredListener;
+use OCA\LdapWriteSupport\Listener\UserBackendRegisteredListener;
 use OCA\User_LDAP\Events\GroupBackendRegistered;
 use OCA\User_LDAP\Events\UserBackendRegistered;
 use OCP\AppFramework\App;
