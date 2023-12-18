@@ -189,12 +189,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	/**
 	 * Create a new user in LDAP Backend
 	 *
-	 * @param string $username The username of the user to create
+	 * @param string $uid The username of the user to create
 	 * @param string $password The password of the new user
 	 * @return bool|string the created user of false
 	 * @throws Exception
 	 */
-	public function createUser($username, $password) {
+	public function createUser($uid, $password) {
 		$adminUser = $this->userSession->getUser();
 		$requireActorFromLDAP = $this->configuration->isLdapActorRequired();
 		if ($requireActorFromLDAP && !$adminUser instanceof IUser) {
@@ -222,9 +222,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$displayNameAttribute = $this->ldapConnect->getDisplayNameAttribute();
 		}
 
-		[$newUserDN, $newUserEntry] = $this->buildNewEntry($username, $password, $base);
+		[$newUserDN, $newUserEntry] = $this->buildNewEntry($uid, $password, $base);
 		$newUserDN = $this->ldapProvider->sanitizeDN([$newUserDN])[0];
-		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $username);
+		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $uid);
 
 		$ret = ldap_add($connection, $newUserDN, $newUserEntry);
 
@@ -236,7 +236,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 		$this->logger->$logMethod($message, [
 			'app' => Application::APP_ID,
-			'username' => $username,
+			'username' => $uid,
 			'dn' => $newUserDN,
 		]);
 
