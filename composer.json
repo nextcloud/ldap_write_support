@@ -12,7 +12,8 @@
         "lint": "find . -name \\*.php -not -path './vendor/*' -not -path './build/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l",
         "psalm": "psalm",
         "psalm:fix": "psalm --alter --issues=InvalidReturnType,InvalidNullableReturnType,MissingParamType,InvalidFalsableReturnType",
-        "psalm:update-baseline": "psalm --threads=1 --update-baseline"
+        "psalm:update-baseline": "psalm --threads=1 --update-baseline",
+        "test:integration": "cd tests/integration && ./run.sh"
     },
     "platform": {
         "php": "8.0"
