@@ -155,6 +155,8 @@ jobs:
         # Only run if phpunit integration config file exists
         if: steps.check_integration.outcome == 'success'
         working-directory: apps/${{ env.APP_NAME }}
+        env:
+          LDAP_HOST: localhost
         run: composer run test:integration
 
       - name: Print logs
