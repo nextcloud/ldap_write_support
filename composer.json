@@ -2,9 +2,9 @@
     "name": "nextcloud/ldap_write_support",
     "type": "project",
     "require-dev": {
-        "nextcloud/coding-standard": "^1.0",
+        "nextcloud/coding-standard": "^1.1",
         "nextcloud/ocp": "dev-stable28",
-        "vimeo/psalm": "^5.9"
+        "vimeo/psalm": "^5.13"
     },
     "scripts": {
         "cs:fix": "php-cs-fixer fix",
@@ -15,14 +15,16 @@
         "psalm:update-baseline": "psalm --threads=1 --update-baseline",
         "test:integration": "cd tests/integration && ./run.sh"
     },
-    "platform": {
-        "php": "8.0.2"
-    },
     "license": "AGPLv3",
     "authors": [
         {
             "name": "Arthur Schiwon",
             "email": "blizzz@arthur-schiwon.de"
         }
-    ]
+    ],
+    "config": {
+        "platform": {
+            "php": "8.0.2"
+        }
+    }
 }
