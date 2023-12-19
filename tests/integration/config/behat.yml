@@ -1,4 +1,10 @@
 default:
+  formatters:
+    junit:
+      output_path: '%paths.base%/../output'
+    pretty:
+      output_styles:
+        comment: [ 'bright-blue' ]
   suites:
     test:
       paths:
