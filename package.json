@@ -20,21 +20,21 @@
 		"esversion": 6
 	},
 	"dependencies": {
-		"@nextcloud/dialogs": "^4.0.1",
-		"@nextcloud/initial-state": "^2.0.0",
-		"@nextcloud/vue": "^7.11.6",
-		"vue": "^2.7.14"
+		"@nextcloud/dialogs": "^4.2.2",
+		"@nextcloud/initial-state": "^2.1.0",
+		"@nextcloud/vue": "^8.3.0",
+		"vue": "^2.7.15"
 	},
 	"engines": {
-		"node": "^16.0.0",
-		"npm": "^7.0.0 || ^8.0.0"
+		"node": "^20.0.0",
+		"npm": "^9.0.0"
 	},
 	"devDependencies": {
 		"@nextcloud/babel-config": "^1.0.0",
-		"@nextcloud/browserslist-config": "^2.3.0",
-		"@nextcloud/eslint-config": "^8.2.1",
-		"@nextcloud/stylelint-config": "^2.3.0",
-		"@nextcloud/webpack-vue-config": "^5.5.1",
+		"@nextcloud/browserslist-config": "^3.0.0",
+		"@nextcloud/eslint-config": "^8.3.0",
+		"@nextcloud/stylelint-config": "^2.3.1",
+		"@nextcloud/webpack-vue-config": "^6.0.0",
 		"file-loader": "^6.2.0",
 		"url-loader": "^4.1.1"
 	}
