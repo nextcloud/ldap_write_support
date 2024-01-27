@@ -20,7 +20,7 @@
     "esversion": 6
   },
   "dependencies": {
-    "@nextcloud/dialogs": "^4.2.3",
+    "@nextcloud/dialogs": "^5.1.1",
     "@nextcloud/initial-state": "^2.1.0",
     "@nextcloud/vue": "^8.5.1",
     "vue": "^2.7.16"
