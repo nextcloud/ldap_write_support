@@ -44,6 +44,10 @@
 				@change.stop.prevent="toggleSwitch('hasAvatarPermission', !switches.hasAvatarPermission)">
 				{{ t('ldap_write_support', 'Allow users to set their avatar') }}
 			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.canUpdateContactInfo"
+				@change.stop.prevent="toggleSwitch('canUpdateContactInfo', !switches.canUpdateContactInfo)">
+				{{ t('ldap_write_support', 'Update LDAP/AD when contact info changes') }}
+			</NcActionCheckbox>
 		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>

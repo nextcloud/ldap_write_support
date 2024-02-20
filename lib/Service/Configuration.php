@@ -48,6 +48,10 @@ class Configuration {
 		return $this->config->getAppValue('ldap_write_support', 'hasAvatarPermission', '1') === '1';
 	}
 
+	public function canUpdateContactInfo(): bool {
+		return $this->config->getAppValue('ldap_write_support', 'canUpdateContactInfo', '1') === '1';
+	}
+
 	public function getUserTemplate() {
 		return $this->config->getAppValue(
 			Application::APP_ID,
