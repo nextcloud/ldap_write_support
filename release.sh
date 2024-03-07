@@ -53,13 +53,12 @@ case $input in
 esac
 
 # Ask for confirmation
-read -r -p "Tag and push? [y/N] " input
+read -r -p "Push? [y/N] " input
 
 case $input in
     [yY][eE][sS]|[yY])
         echo "You say Yes"
         # Then:
-        git tag v$version
         git push --tags
         # Create release on github
 
