@@ -58,7 +58,7 @@ read -r -p "Tag and push? [y/N] " input
 case $input in
     [yY][eE][sS]|[yY])
         echo "You say Yes"
-        # Then manually:
+        # Then:
         git tag v$version
         git push --tags
         # Create release on github
