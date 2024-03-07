@@ -21,10 +21,6 @@ declare(strict_types=1);
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-use OCA\LdapWriteSupport\AppInfo\Application;
-
-script(Application::APP_ID, 'ldap_write_suppport-admin-settings');
 ?>
 <div id="ldap-write-support-admin-settings">
 </div>
