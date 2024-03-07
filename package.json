@@ -5,9 +5,10 @@
   "private": true,
   "author": "Arthur Schiwon",
   "license": "AGPL-3.0",
+  "type": "module",
   "scripts": {
-    "build": "NODE_ENV=production webpack --progress --config webpack.js",
-    "dev": "NODE_ENV=development webpack --config webpack.js",
+    "build": "vite --mode production build",
+    "dev": "vite --mode development build",
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --ext .js,.vue src --fix",
     "stylelint": "stylelint src css",
@@ -20,9 +21,9 @@
     "esversion": 6
   },
   "dependencies": {
-    "@nextcloud/dialogs": "^4.2.5",
+    "@nextcloud/dialogs": "^5.2.0",
     "@nextcloud/initial-state": "^2.1.0",
-    "@nextcloud/vue": "^8.6.2",
+    "@nextcloud/vue": "^8.9.1",
     "vue": "^2.7.16"
   },
   "engines": {
@@ -30,12 +31,10 @@
     "npm": "^10.0.0"
   },
   "devDependencies": {
-    "@nextcloud/babel-config": "^1.0.0",
     "@nextcloud/browserslist-config": "^3.0.0",
     "@nextcloud/eslint-config": "^8.3.0",
     "@nextcloud/stylelint-config": "^2.4.0",
-    "@nextcloud/webpack-vue-config": "^6.0.1",
-    "file-loader": "^6.2.0",
-    "url-loader": "^4.1.1"
+    "@nextcloud/vite-config": "^1.2.2",
+    "vite": "^5.1.5"
   }
 }
