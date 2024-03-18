@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: checkers
 steps:
@@ -104,3 +105,8 @@ trigger:
     - pull_request
     - push
 type: docker
+---
+kind: signature
+hmac: 3972c46c835f38d2514fb4ce5f5cf830035235af883197fc5c190996829ae0d1
+
+...
