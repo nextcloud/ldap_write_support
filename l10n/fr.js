@@ -18,7 +18,7 @@ OC.L10N.register(
     "the user id provided by the (sub)admin" : "L’identifiant utilisateur fourni par le (sous-)administrateur",
     "the password provided by the (sub)admin" : "Le mot de passe fourni par le (sous-)administrateur",
     "the LDAP node of the acting (sub)admin or the configured user base" : "le nœud LDAP du (sous) administrateur suppléant ou la base utilisateurs configurée",
-    "Failed to set user template." : "Échec de la définition du modèle d'utilisateur.",
+    "Failed to set user template." : "Échec de la définition du modèle d’utilisateur.",
     "Failed to set switch." : "Impossible de définir le commutateur."
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
