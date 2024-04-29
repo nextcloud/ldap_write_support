@@ -8,7 +8,7 @@
 * create, edit and delete users
 * create, modify memberships and delete groups
 * prevent fallback to the local database backend (optional)
-* auto generate a user id (optional)
+* auto generate a user ID (optional)
 * and more behavioral switches
     ]]></description>
     <version>1.12.0</version>
