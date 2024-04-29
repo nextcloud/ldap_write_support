@@ -1,0 +1,26 @@
+# Mock for compatibility with stable28+
+
+name: PHPUnit MySQL
+
+on: pull_request
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phpunit-mysql-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  summary:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest-low
+
+    if: always()
+
+    name: phpunit-mysql-summary
+
+    steps:
+      - name: Summary status
+        run: exit 0
