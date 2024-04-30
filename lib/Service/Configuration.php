@@ -48,6 +48,14 @@ class Configuration {
 		return $this->config->getAppValue('ldap_write_support', 'hasAvatarPermission', '1') === '1';
 	}
 
+	public function hasPasswordPermission(): bool {
+		return $this->config->getAppValue('ldap_write_support', 'hasPasswordPermission', '1') === '1';
+	}
+
+	public function useUnicodePassword(): bool {
+		return $this->config->getAppValue('ldap_write_support', 'useUnicodePassword', '0') === '1';
+	}
+
 	public function getUserTemplate() {
 		return $this->config->getAppValue(
 			Application::APP_ID,

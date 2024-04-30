@@ -33,8 +33,11 @@ class LDAPConnect {
 	private $ldapConfig;
 	/** @var LoggerInterface */
 	private $logger;
+	/** @var bool|null */
+	private $passwdSupport;
 
 	public function __construct(Helper $ldapBackendHelper, LoggerInterface $logger) {
+		$this->passwdSupport = null;
 		$this->logger = $logger;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
 		$prefix = array_shift($ldapConfigPrefixes);
@@ -142,5 +145,40 @@ class LDAPConnect {
 	public function hasPasswordPolicy(): bool {
 		$ppDN = $this->ldapConfig->ldapDefaultPPolicyDN;
 		return !empty($ppDN);
+	}
+
+	/**
+	 * checks whether the LDAP server supports the passwd exop
+	 *
+	 * @param \LDAP\Connection $connection LDAP connection to check
+	 * @return boolean either the user can or cannot
+	 */
+	public function hasPasswdExopSupport($connection): bool {
+		// TODO: We should cache this by ldap prefix, but currently we have no access to it.
+		if (is_null($this->passwdSupport)) {
+			$ret = ldap_read($connection, '', '(objectclass=*)', ['supportedExtension']);
+			if ($ret === false) {
+				$this->passwdSupport = false;
+				$this->logger->debug(
+					'Could not check passwd_exop support of LDAP host, host does not provide the supportedExtension entry.',
+					[ 'app' => Application::APP_ID ]
+				);
+				return false;
+			}
+
+			$ret = ldap_first_entry($connection, $ret);
+			if ($ret === false) {
+				$this->passwdSupport = false;
+				$this->logger->error(
+					'Could not check passwd_exop support of LDAP host, host returned malformed data for the supported ldap extension entry.',
+					[ 'app' => Application::APP_ID ]
+				);
+				return false;
+			}
+
+			$values = ldap_get_values($connection, $ret, 'supportedExtension');
+			$this->passwdSupport = ($values !== false) && in_array(LDAP_EXOP_MODIFY_PASSWD, $values);
+		}
+		return $this->passwdSupport;
 	}
 }

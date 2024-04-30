@@ -84,7 +84,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @return int bitwise-or'ed actions
 	 */
 	public function respondToActions() {
-		$setPassword = function_exists('ldap_exop_passwd') && !$this->ldapConnect->hasPasswordPolicy()
+		$setPassword = $this->canSetPassword() && !$this->ldapConnect->hasPasswordPolicy()
 			? Backend::SET_PASSWORD
 			: 0;
 
@@ -140,7 +140,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * checks whether the user is allowed to change his avatar in Nextcloud
 	 *
 	 * @param string $uid the Nextcloud user name
-	 * @return boolean either the user can or cannot
+	 * @return bool either the user can or cannot
 	 */
 	public function canChangeAvatar($uid) {
 		return $this->configuration->hasAvatarPermission();
@@ -222,7 +222,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			$displayNameAttribute = $this->ldapConnect->getDisplayNameAttribute();
 		}
 
+		if ($connection === false) {
+			throw new \Exception('Could not bind to LDAP server');
+		}
+
 		[$newUserDN, $newUserEntry] = $this->buildNewEntry($uid, $password, $base);
+
 		$newUserDN = $this->ldapProvider->sanitizeDN([$newUserDN])[0];
 		$this->ensureAttribute($newUserEntry, $displayNameAttribute, $uid);
 
@@ -244,27 +249,8 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			throw new \Exception('Cannot create user: ' . ldap_error($connection), ldap_errno($connection));
 		}
 
-		// Set password through ldap password exop, if supported
 		if ($this->respondToActions() & Backend::SET_PASSWORD) {
-			try {
-				$ret = ldap_exop_passwd($connection, $newUserDN, '', $password);
-				if ($ret === false) {
-					$message = 'ldap_exop_passwd failed, falling back to ldap_mod_replace to to set password for new user';
-					$this->logger->debug($message, ['app' => Application::APP_ID]);
-
-					// Fallback to `userPassword` in case the server does not support exop_passwd
-					$ret = ldap_mod_replace($connection, $newUserDN, ['userPassword' => $password]);
-					if ($ret === false) {
-						$message = 'Failed to set password for new user {dn}';
-						$this->logger->error($message, [
-							'app' => Application::APP_ID,
-							'dn' => $newUserDN,
-						]);
-					}
-				}
-			} catch (\Exception $e) {
-				$this->logger->error($e->getMessage(), ['exception' => $e, 'app' => Application::APP_ID]);
-			}
+			$this->handleSetPassword($newUserDN, $password, $connection);
 		}
 		return $ret ? $newUserDN : false;
 	}
@@ -351,6 +337,15 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	}
 
 	/**
+	 * checks whether the user is allowed to change their password in Nextcloud
+	 *
+	 * @return bool either the user can or cannot
+	 */
+	public function canSetPassword(): bool {
+		return $this->configuration->hasPasswordPermission();
+	}
+
+	/**
 	 * Set password
 	 *
 	 * @param string $uid The username
@@ -360,27 +355,17 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * Change the password of a user
 	 */
 	public function setPassword($uid, $password) {
-		if (!function_exists('ldap_exop_passwd')) {
-			// since PHP 7.2 – respondToActions checked this already, this
-			// method should not be called. Double check due to public scope.
-			// This method can be removed when Nextcloud 16 compat is dropped.
-			return false;
-		}
-		try {
-			$cr = $this->ldapProvider->getLDAPConnection($uid);
-			$userDN = $this->getUserDN($uid);
-			return ldap_exop_passwd($cr, $userDN, '', $password) !== false;
-		} catch (\Exception $e) {
-			$this->logger->error($e->getMessage(), ['exception' => $e, 'app' => Application::APP_ID]);
-		}
-		return false;
+		$connection = $this->ldapProvider->getLDAPConnection($uid);
+		$userDN = $this->getUserDN($uid);
+
+		return $this->handleSetPassword($userDN, $password, $connection);
 	}
 
 	/**
 	 * get the user's home directory
 	 *
 	 * @param string $uid the username
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getHome($uid) {
 		// Not implemented
@@ -443,5 +428,63 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	private function getUserDN($uid): string {
 		return $this->ldapProvider->getUserDN($uid);
+	}
+
+	/**
+	 * Handle setting user password password
+	 *
+	 * @param string $userDN The username
+	 * @param string $password The new password
+	 * @param \LDAP\Connection $connection The LDAP connection to use
+	 * @return bool
+	 *
+	 * Change the password of a user
+	 */
+	private function handleSetPassword(string $userDN, string $password, \LDAP\Connection $connection): bool {
+		try {
+			$ret = false;
+
+			// try ldap_exop_passwd first
+			if ($this->ldapConnect->hasPasswdExopSupport($connection)) {
+				if (ldap_exop_passwd($connection, $userDN, '', $password) === true) {
+					// `ldap_exop_passwd` is either FALSE or the password, in the later case return TRUE
+					return true;
+				}
+
+				$message = 'Failed to set password for user {dn} using ldap_exop_passwd';
+				$this->logger->error($message, [
+					'ldap_error' => ldap_error($connection),
+					'app' => Application::APP_ID,
+					'dn' => $userDN,
+				]);
+			} else {
+				// Use ldap_mod_replace in case the server does not support exop_passwd
+				$entry = [];
+				if ($this->configuration->useUnicodePassword()) {
+					$entry['unicodePwd'] = iconv('UTF-8', 'UTF-16LE', '"' . $password . '"');
+				} else {
+					$entry['userPassword'] = $password;
+				}
+
+				if(ldap_mod_replace($connection, $userDN, $entry)) {
+					return true;
+				}
+				
+				$message = 'Failed to set password for user {dn} using ldap_mod_replace';
+				$this->logger->error($message, [
+					'ldap_error' => ldap_error($connection),
+					'app' => Application::APP_ID,
+					'dn' => $userDN,
+				]);
+			}
+			return false;
+		} catch (\Exception $e) {
+			$this->logger->error('Exception occured while setting the password of user {dn}', [
+				'app' => Application::APP_ID,
+				'exception' => $e,
+				'dn' => $userDN,
+			]);
+			return false;
+		}
 	}
 }

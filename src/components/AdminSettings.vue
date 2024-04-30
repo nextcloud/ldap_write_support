@@ -44,6 +44,15 @@
 				@change.stop.prevent="toggleSwitch('hasAvatarPermission', !switches.hasAvatarPermission)">
 				{{ t('ldap_write_support', 'Allow users to set their avatar') }}
 			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.hasPasswordPermission"
+				@change.stop.prevent="toggleSwitch('hasPasswordPermission', !switches.hasPasswordPermission)">
+				{{ t('ldap_write_support', 'Allow users to set their password') }}
+			</NcActionCheckbox>
+			<NcActionCheckbox :checked="switches.useUnicodePassword"
+				:title="t('ldap_write_support', 'If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password')"
+				@change.stop.prevent="toggleSwitch('useUnicodePassword', !switches.useUnicodePassword)">
+				{{ t('ldap_write_support', 'Use the `unicodePwd` attribute for setting the user password') }}
+			</NcActionCheckbox>
 		</ul>
 		<h3>{{ t('ldap_write_support', 'User template') }}</h3>
 		<p>{{ t('ldap_write_support', 'LDIF template for creating users. Following placeholders may be used') }}</p>
