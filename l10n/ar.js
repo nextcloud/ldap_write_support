@@ -5,7 +5,6 @@ OC.L10N.register(
     "DisplayName change rejected" : "تمّ رفض تغيير الاسم المعروض DisplayName",
     "Write support for LDAP" : "دعم الكتابة إلى LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "إضافة دعم إنشاء، و جلب، و حذف المستخدمين و المجموعات من LDAP عبر نكست كلاود",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "يعمل دعم الكتابة على LDAP على إثراء واجهة LDAP الخلفية بإمكانيات إدارة دليل LDAP من داخل نكست كلاود. \n* إنشاء و تحرير وحذف المستخدمين \n* إنشاء وتعديل العضويات وحذف المجموعات \n* منع الرجوع إلى الواجهة الخلفية لقاعدة البيانات المحلية (اختياري) \n* إنشاء معرف مستخدم تلقائيًا (اختياري) \n* والمزيد من التبديلات في التصرفات",
     "Writing" : "الكتابة",
     "Switches" : "تبديلات",
     "Prevent fallback to other backends when creating users or groups." : "منع الرجوع إلى الواجهات الخلفية الأخرى عند إنشاء مستخدمين أو مجموعات.",
@@ -19,6 +18,7 @@ OC.L10N.register(
     "the password provided by the (sub)admin" : "كلمة المرور المعطاة من قِبَل المشرف (أو المشرف الفرعي)",
     "the LDAP node of the acting (sub)admin or the configured user base" : "خلية LDAP node الخاصة بالمشرف (أو المشرف الفرعي) أو قاعدة المستخدمين user base التي تم تكوينها",
     "Failed to set user template." : "تعذّر تعيين قالب المستخدِم",
-    "Failed to set switch." : "تعذّر تعيين التبديلة switch."
+    "Failed to set switch." : "تعذّر تعيين التبديلة switch.",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "يعمل دعم الكتابة على LDAP على إثراء واجهة LDAP الخلفية بإمكانيات إدارة دليل LDAP من داخل نكست كلاود. \n* إنشاء و تحرير وحذف المستخدمين \n* إنشاء وتعديل العضويات وحذف المجموعات \n* منع الرجوع إلى الواجهة الخلفية لقاعدة البيانات المحلية (اختياري) \n* إنشاء معرف مستخدم تلقائيًا (اختياري) \n* والمزيد من التبديلات في التصرفات"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");
