@@ -3,6 +3,7 @@
     "DisplayName change rejected" : "تمّ رفض تغيير الاسم المعروض DisplayName",
     "Write support for LDAP" : "دعم الكتابة إلى LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "إضافة دعم إنشاء، و جلب، و حذف المستخدمين و المجموعات من LDAP عبر نكست كلاود",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "يعمل دعم الكتابة لـ LDAP على إثراء واجهة LDAP الخلفية بإمكانيات إدارة الدليل من نكست كلاود مثل: \n* إنشاء وتحرير وحذف المستخدمين \n* إنشاء وتعديل العضويات وحذف المجموعات \n* منع الرجوع إلى الواجهة الخلفية لقاعدة البيانات المحلية (اختياري) \n* إنشاء مُعرِّف المستخدم ID تلقائيًا (اختياري) \n* والمزيد ...",
     "Writing" : "الكتابة",
     "Switches" : "تبديلات",
     "Prevent fallback to other backends when creating users or groups." : "منع الرجوع إلى الواجهات الخلفية الأخرى عند إنشاء مستخدمين أو مجموعات.",
