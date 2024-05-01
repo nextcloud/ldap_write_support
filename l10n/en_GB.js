@@ -5,6 +5,7 @@ OC.L10N.register(
     "DisplayName change rejected" : "DisplayName change rejected",
     "Write support for LDAP" : "Write support for LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches",
     "Writing" : "Writing",
     "Switches" : "Switches",
     "Prevent fallback to other backends when creating users or groups." : "Prevent fallback to other backends when creating users or groups.",
