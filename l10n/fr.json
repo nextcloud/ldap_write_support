@@ -11,6 +11,8 @@
     "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Un identifiant d’utilisateur aléatoire doit être généré, c’est-à-dire non fourni par le (sous)administrateur.",
     "An LDAP user must have an email address set." : "Un utilisateur LDAP doit avoir une adresse électronique définie.",
     "Allow users to set their avatar" : "Permettre aux utilisateurs de définir leur avatar",
+    "Allow users to set their password" : "Autoriser les utilisateurs à définir leur mot de passe",
+    "Use the `unicodePwd` attribute for setting the user password" : "Utiliser l’attribut `unicodePwd` pour définir le mot de passe de l’utilisateur",
     "User template" : "Modèle utilisateur",
     "LDIF template for creating users. Following placeholders may be used" : "Modèle LDIF pour la création d’utilisateurs. Les espaces réservés suivants peuvent être utilisés.",
     "the user id provided by the (sub)admin" : "L’identifiant utilisateur fourni par le (sous-)administrateur",
