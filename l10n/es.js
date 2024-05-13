@@ -1,10 +1,28 @@
 OC.L10N.register(
     "ldap_write_support",
     {
-    "DisplayName change rejected" : "Cambio de nombre mostrado rechazado",
+    "Could not find related LDAP entry" : "No se pudo conseguir la entrada LDAP correspondinete",
+    "DisplayName change rejected" : "Cambio al atributo DisplayName rechazado",
     "Write support for LDAP" : "Soporte de escritura para LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Agrega soporte para crear, manipular y eliminar usuarios y grupos en LDAP a través de Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "El soporte de escritura para LDAP enriquece al backend LDAP con la capacidad de administrar el directorio desde Nextcloud.\n* cree, edite y elimine usuarios\n* cree, modifique membresías o elimine grupos\n* evitar cualquier intento de recurrir a la base de datos local (opcional)\n* auto generar un ID de usuario (opcional)\n* y más interruptores para cambios de comportamiento",
+    "Writing" : "Escribiendo",
+    "Switches" : "Interruptores",
+    "Prevent fallback to other backends when creating users or groups." : "Evitar intentar recurrir a otros backends cuando se crean usuarios o grupos.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Para crear usuarios el administrador o subadministrador debe ser provisto por LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Un ID aleatorio de usuario debe ser generado, p. ej. no está siendo proporcionado por el administrador o subadministrador.",
     "An LDAP user must have an email address set." : "Un usuario LDAP debe tener una dirección de correo electrónico configurada.",
-    "User template" : "Plantilla de usuario"
+    "Allow users to set their avatar" : "Permitir a los usuarios establecer su avatar",
+    "Allow users to set their password" : "Permitir a los usuarios establecer su contraseña",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Si el servidor no soporta la operación extendida para cambio de contraseña, utilice el atributo `unicodePwd` en vez del atributo `userPassword` para establecer la contraseña",
+    "Use the `unicodePwd` attribute for setting the user password" : "Utilizar el atributo `unicodePwd` para establecer la contraseña del usuario",
+    "User template" : "Plantilla de usuario",
+    "LDIF template for creating users. Following placeholders may be used" : "Plantilla LDIF para creación de usuarios. Los siguientes marcadores de posición pueden ser utilizados",
+    "the user id provided by the (sub)admin" : "el id de usuario provisto por el administrador o subadministrador",
+    "the password provided by the (sub)admin" : "la contraseña provista por el administrador o subadministrador",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "el nodo LDAP del administrador o subadministrador que ejecuta o, la base de usuarios configurada",
+    "Failed to set user template." : "Fallo al establecer la plantilla de usuario.",
+    "Failed to set switch." : "Fallo al establecer el interruptor.",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "El soporte de escritura para LDAP enriquece al backend LDAP con la capacidad de administrar el directorio desde Nextcloud.\n* cree, edite y elimine usuarios\n* cree, modifique membresías o elimine grupos\n* evitar cualquier intento de recurrir a la base de datos local (opcional)\n* auto generar un ID de usuario (opcional)\n* y más interruptores para cambios de comportamiento"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
