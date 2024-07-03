@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Δεν ήταν δυνατή η εύρεση σχετικής καταχώρησης LDAP",
+    "DisplayName change rejected" : "Η αλλαγή του DisplayName απορρίφθηκε",
+    "Write support for LDAP" : "Υποστήριξη εγγραφής για LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Προσθέτει υποστήριξη για δημιουργία, διαχείριση και διαγραφή χρηστών και ομάδων στο LDAP μέσω του Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Η υποστήριξη εγγραφής για LDAP εμπλουτίζει το σύστημα υποστήριξης LDAP με δυνατότητες διαχείρισης του καταλόγου από το Nextcloud.\n* δημιουργία, επεξεργασία και διαγραφή χρηστών\n* δημιουργία, τροποποίηση μελών και διαγραφή ομάδων\n* αποτροπή επιστροφής στο τοπικό backend βάσης δεδομένων (προαιρετικά)\n* αυτόματη δημιουργία αναγνωριστικού χρήστη (προαιρετικά)\n* και περισσότερους διακόπτες συμπεριφοράς",
+    "Writing" : "Εγγραφή",
+    "Switches" : "Διακόπτες",
+    "Prevent fallback to other backends when creating users or groups." : "Αποτροπή επιστροφής σε άλλα συστήματα υποστήριξης κατά τη δημιουργία χρηστών ή ομάδων.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Για τη δημιουργία χρηστών, ο ενεργός (υπο)διαχειριστής πρέπει να παρέχεται από το LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Πρέπει να δημιουργηθεί τυχαίο αναγνωριστικό χρήστη, δηλαδή να μην παρέχεται από τον (υπο)διαχειριστή.",
+    "An LDAP user must have an email address set." : "Ένας χρήστης LDAP πρέπει να έχει ορισμένη διεύθυνση email.",
+    "Allow users to set their avatar" : "Να επιτρέπεται στους χρήστες να ορίζουν το avatar τους",
+    "Allow users to set their password" : "Να επιτρέπεται στους χρήστες να ορίζουν το συνθηματικό τους",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Αν ο διακομιστής δεν υποστηρίζει την εκτεταμένη λειτουργία τροποποίησης συνθηματικού, χρησιμοποιήστε το `unicodePwd` αντί του `userPassword` για τον ορισμό του συνθηματικού",
+    "Use the `unicodePwd` attribute for setting the user password" : "Χρησιμοποιήστε το `unicodePwd` για τον ορισμό του συνθηματικού του χρήστη",
+    "User template" : "Πρότυπο χρήστη",
+    "LDIF template for creating users. Following placeholders may be used" : "Πρότυπο LDIF για τη δημιουργία χρηστών. Μπορούν να χρησιμοποιηθούν οι ακόλουθες μεταβλητές",
+    "the user id provided by the (sub)admin" : "το αναγνωριστικό χρήστη που παρέχεται από τον (υπο)διαχειριστή",
+    "the password provided by the (sub)admin" : "το συνθηματικό που παρέχεται από τον (υπο)διαχειριστή",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "ο κόμβος LDAP του ενεργού (υπο)διαχειριστή ή η διαμορφωμένη βάση χρηστών",
+    "Failed to set user template." : "Αποτυχία ορισμού προτύπου χρήστη.",
+    "Failed to set switch." : "Αποτυχία ορισμού διακόπτη.",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Η υποστήριξη εγγραφής για LDAP εμπλουτίζει το σύστημα υποστήριξης LDAP με δυνατότητες διαχείρισης του καταλόγου από το Nextcloud.\n* δημιουργία, επεξεργασία και διαγραφή χρηστών\n* δημιουργία, τροποποίηση μελών και διαγραφή ομάδων\n* αποτροπή επιστροφής στο τοπικό backend βάσης δεδομένων (προαιρετικά)\n* αυτόματη δημιουργία αναγνωριστικού χρήστη (προαιρετικά)\n* και περισσότερους διακόπτες συμπεριφοράς"
+},
+"nplurals=2; plural=(n != 1);");
