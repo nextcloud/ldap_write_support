@@ -1,6 +1,6 @@
 {
   "name": "ldap_write_suppport",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Adds write support to the LDAP backend",
   "private": true,
   "author": "Arthur Schiwon",
