@@ -1,6 +1,6 @@
 {
   "name": "ldap_write_suppport",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Adds write support to the LDAP backend",
   "private": true,
   "author": "Arthur Schiwon",
@@ -21,9 +21,9 @@
     "esversion": 6
   },
   "dependencies": {
-    "@nextcloud/dialogs": "^5.3.1",
+    "@nextcloud/dialogs": "^5.3.5",
     "@nextcloud/initial-state": "^2.2.0",
-    "@nextcloud/vue": "^8.12.0",
+    "@nextcloud/vue": "^8.16.0",
     "vue": "^2.7.16"
   },
   "engines": {
@@ -35,6 +35,6 @@
     "@nextcloud/eslint-config": "^8.4.1",
     "@nextcloud/stylelint-config": "^2.4.0",
     "@nextcloud/vite-config": "^1.2.3",
-    "vite": "^5.2.12"
+    "vite": "^5.4.1"
   }
 }
