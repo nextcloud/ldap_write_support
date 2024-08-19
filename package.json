@@ -17,9 +17,6 @@
   "browserslist": [
     "extends @nextcloud/browserslist-config"
   ],
-  "jshintConfig": {
-    "esversion": 6
-  },
   "dependencies": {
     "@nextcloud/dialogs": "^6.0.0",
     "@nextcloud/initial-state": "^2.2.0",
