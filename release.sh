@@ -39,7 +39,7 @@ case $input in
         git add appinfo/info.xml
 
         # Bump npm version, commit and tag
-        npm version -f $version
+        npm version --allow-same-version -f $version
 
         # Show the result
         git log -1 -p
