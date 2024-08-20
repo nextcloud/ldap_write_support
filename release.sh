@@ -39,7 +39,7 @@ case $input in
         git add appinfo/info.xml
 
         # Bump npm version, commit and tag
-        npm version -f $version
+        npm version --allow-same-version -f $version
 
         # Show the result
         git log -1 -p
@@ -70,6 +70,6 @@ case $input in
         ;;
 esac
 
-echo https://github.com/nextcloud/ldap_write_support/tags
-echo https://github.com/nextcloud-releases/ldap_write_support/tags
-# https://github.com/nextcloud/ldap_write_support/releases/new?tag=v1.10.0
+# Then manually:
+echo "Create release on github from tag on https://github.com/nextcloud/ldap_write_support/tags"
+echo "Create release on github from tag on https://github.com/nextcloud-releases/ldap_write_support/tags"
