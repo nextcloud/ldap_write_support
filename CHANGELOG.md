@@ -89,18 +89,4 @@ https://github.com/nextcloud-releases/ldap_write_support/releases/tag/v1.4.0
 
 # 1.0.0 - 27 Jun 2019
 
-[v1.12.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.11.0...v1.12.0
-[v1.11.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.10.0...v1.11.0
-[v1.10.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.9.0...v1.10.0
-[v1.9.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.8.0...v1.9.0
-[v1.8.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.7.0...v1.8.0
-[v1.7.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.6.0...v1.7.0
-[v1.6.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.4.0...v1.6.0
-[v1.4.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.3.0...v1.4.0
-[v1.3.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.2.1...v1.3.0
-[v1.2.1]: https://github.com/nextcloud/ldap_write_support/compare/v1.2.0...v1.2.1
-[v1.2.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.1.0...v1.2.0
-[v1.1.0]: https://github.com/nextcloud/ldap_write_support/compare/v1.0.2...v1.1.0
-[v1.0.2]: https://github.com/nextcloud/ldap_write_support/compare/v1.0.1...v1.0.2
-[v1.0.1]: https://github.com/nextcloud/ldap_write_support/compare/v1.0.0...v1.0.1
-[v1.0.0]: https://github.com/nextcloud/ldap_write_support/tree/v1.0.0
+* Initial release
