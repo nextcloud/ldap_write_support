@@ -22,6 +22,7 @@
 
 namespace OCA\LdapWriteSupport;
 
+use LDAP\Connection;
 use OC\ServerNotAvailableException;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Configuration;
@@ -45,7 +46,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return resource|\LDAP\Connection
+	 * @return resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function connect() {
@@ -85,7 +86,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|\LDAP\Connection
+	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function bind() {
@@ -108,7 +109,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|\LDAP\Connection
+	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function getLDAPConnection() {
@@ -150,7 +151,7 @@ class LDAPConnect {
 	/**
 	 * checks whether the LDAP server supports the passwd exop
 	 *
-	 * @param \LDAP\Connection $connection LDAP connection to check
+	 * @param Connection $connection LDAP connection to check
 	 * @return boolean either the user can or cannot
 	 */
 	public function hasPasswdExopSupport($connection): bool {

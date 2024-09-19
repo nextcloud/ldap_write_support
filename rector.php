@@ -15,4 +15,5 @@ return RectorConfig::configure()
 		__DIR__ . '/templates',
 	])
 	->withPhpSets(php81:true)
-	->withTypeCoverageLevel(0);
+	->withTypeCoverageLevel(0)
+	->withImportNames(importShortClasses: false);

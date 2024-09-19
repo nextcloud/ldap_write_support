@@ -26,6 +26,7 @@
 namespace OCA\LdapWriteSupport;
 
 use Exception;
+use LDAP\Connection;
 use OC\ServerNotAvailableException;
 use OC\User\Backend;
 use OC_User;
@@ -432,12 +433,12 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $userDN The username
 	 * @param string $password The new password
-	 * @param \LDAP\Connection $connection The LDAP connection to use
+	 * @param Connection $connection The LDAP connection to use
 	 * @return bool
 	 *
 	 * Change the password of a user
 	 */
-	private function handleSetPassword(string $userDN, string $password, \LDAP\Connection $connection): bool {
+	private function handleSetPassword(string $userDN, string $password, Connection $connection): bool {
 		try {
 			$ret = false;
 

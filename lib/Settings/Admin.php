@@ -30,6 +30,7 @@ use OCA\LdapWriteSupport\Service\Configuration;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
+use OCP\Util;
 
 class Admin implements ISettings {
 	/** @var IInitialState */
@@ -67,8 +68,8 @@ class Admin implements ISettings {
 			]
 		);
 
-		\OCP\Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
-		\OCP\Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
 
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
