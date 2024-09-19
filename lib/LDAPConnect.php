@@ -31,14 +31,14 @@ use Psr\Log\LoggerInterface;
 class LDAPConnect {
 	/** @var Configuration */
 	private $ldapConfig;
-	/** @var LoggerInterface */
-	private $logger;
 	/** @var bool|null */
 	private $passwdSupport;
 
-	public function __construct(Helper $ldapBackendHelper, LoggerInterface $logger) {
+	public function __construct(
+		Helper $ldapBackendHelper,
+		private LoggerInterface $logger,
+	) {
 		$this->passwdSupport = null;
-		$this->logger = $logger;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
 		$prefix = array_shift($ldapConfigPrefixes);
 		$this->ldapConfig = new Configuration($prefix);
@@ -58,7 +58,7 @@ class LDAPConnect {
 			$ldapHost = 'ldap://' . $ldapHost;
 			$pos = 4;
 		}
-		if (strpos($ldapHost, ':', $pos + 1) === false && !empty($ldapPort)) {
+		if (!str_contains(substr($ldapHost, $pos + 1), ':') && !empty($ldapPort)) {
 			$ldapHost .= ':' . $ldapPort;
 		}
 

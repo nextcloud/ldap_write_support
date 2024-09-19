@@ -37,12 +37,12 @@ use OCP\EventDispatcher\IEventListener;
 class GroupBackendRegisteredListener implements IEventListener {
 	/** @var IAppManager */
 	private $appManager;
-	/** @var LDAPGroupManager */
-	private $ldapGroupManager;
 
-	public function __construct(IAppManager $appManager, LDAPGroupManager $ldapGroupManager) {
+	public function __construct(
+		IAppManager $appManager,
+		private LDAPGroupManager $ldapGroupManager,
+	) {
 		$this->appManager = $appManager;
-		$this->ldapGroupManager = $ldapGroupManager;
 	}
 
 	/**

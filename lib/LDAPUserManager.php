@@ -53,25 +53,22 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	/** @var IUserManager */
 	private $userManager;
-
-	/** @var LDAPConnect */
-	private $ldapConnect;
-
-	/** @var Configuration */
-	private $configuration;
 	/** @var IL10N */
 	private $l10n;
-	/** @var LoggerInterface */
-	private $logger;
 
-	public function __construct(IUserManager $userManager, IUserSession $userSession, LDAPConnect $ldapConnect, ILDAPProvider $LDAPProvider, Configuration $configuration, IL10N $l10n, LoggerInterface $logger) {
+	public function __construct(
+		IUserManager $userManager,
+		IUserSession $userSession,
+		private LDAPConnect $ldapConnect,
+		ILDAPProvider $LDAPProvider,
+		private Configuration $configuration,
+		IL10N $l10n,
+		private LoggerInterface $logger,
+	) {
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
-		$this->ldapConnect = $ldapConnect;
 		$this->ldapProvider = $LDAPProvider;
-		$this->configuration = $configuration;
 		$this->l10n = $l10n;
-		$this->logger = $logger;
 
 		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
 		$this->makeLdapBackendFirst();
@@ -154,7 +151,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	public function changeAvatar($user): void {
 		try {
 			$userDN = $this->getUserDN($user->getUID());
-		} catch (Exception $e) {
+		} catch (Exception) {
 			return;
 		}
 
@@ -177,7 +174,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	public function changeEmail(IUser $user, string $newEmail): void {
 		try {
 			$userDN = $this->getUserDN($user->getUID());
-		} catch (Exception $e) {
+		} catch (Exception) {
 			return;
 		}
 
@@ -264,13 +261,13 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 	public function buildNewEntry($username, $password, $base): array {
 		// Make sure the parameters don't fool the following algorithm
-		if (strpos($username, PHP_EOL) !== false) {
+		if (str_contains($username, PHP_EOL)) {
 			throw new Exception('Username contains a new line');
 		}
-		if (strpos($password, PHP_EOL) !== false) {
+		if (str_contains($password, PHP_EOL)) {
 			throw new Exception('Password contains a new line');
 		}
-		if (strpos($base, PHP_EOL) !== false) {
+		if (str_contains($base, PHP_EOL)) {
 			throw new Exception('Base DN contains a new line');
 		}
 

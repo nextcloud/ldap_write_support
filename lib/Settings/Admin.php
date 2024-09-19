@@ -32,15 +32,14 @@ use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
 
 class Admin implements ISettings {
-	/** @var Configuration */
-	private $config;
-
 	/** @var IInitialState */
 	private $initialStateService;
 
-	public function __construct(IInitialState $initialStateService, Configuration $config) {
+	public function __construct(
+		IInitialState $initialStateService,
+		private Configuration $config,
+	) {
 		$this->initialStateService = $initialStateService;
-		$this->config = $config;
 	}
 
 	/**
