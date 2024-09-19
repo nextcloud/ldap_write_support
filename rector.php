@@ -14,5 +14,5 @@ return RectorConfig::configure()
 		__DIR__ . '/lib',
 		__DIR__ . '/templates',
 	])
-	->withPhpSets(php80:true)
+	->withPhpSets(php81:true)
 	->withTypeCoverageLevel(0);
