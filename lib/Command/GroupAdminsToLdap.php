@@ -41,7 +41,7 @@ class GroupAdminsToLdap extends Command {
 
 	/** @var SubAdmin */
 	private $subAdmin;
-	/** @var IConfig  */
+	/** @var IConfig */
 	private $ocConfig;
 	/** @var Helper */
 	private $helper;
@@ -55,7 +55,7 @@ class GroupAdminsToLdap extends Command {
 		SubAdmin $subAdmin,
 		IConfig $ocConfig,
 		Helper $helper,
-		Group_Proxy $groupProxy
+		Group_Proxy $groupProxy,
 	) {
 		parent::__construct();
 
@@ -95,13 +95,13 @@ class GroupAdminsToLdap extends Command {
 
 		try {
 			if ($this->simulate) {
-				$output->writeln("SIMULATE MODE ON");
+				$output->writeln('SIMULATE MODE ON');
 			}
 
 			$configPrefixes = $this->helper->getServerConfigurationPrefixes(true);
 
 			if (count($configPrefixes) > 1) {
-				throw new Exception("NOT PREPARED TO DEAL WITH MODE THAN 1 LDAP SOURCE, EXITING...");
+				throw new Exception('NOT PREPARED TO DEAL WITH MODE THAN 1 LDAP SOURCE, EXITING...');
 			}
 
 			$access = $this->groupProxy->getLDAPAccess($configPrefixes[0]);
@@ -120,7 +120,7 @@ class GroupAdminsToLdap extends Command {
 
 			$allLdapGroups = $access->fetchListOfGroups(
 				$conn->ldapGroupFilter,
-				array($conn->ldapGroupDisplayName, 'dn','member','owner')
+				[$conn->ldapGroupDisplayName, 'dn','member','owner']
 			);
 
 			$currentLDAPAdmins = [];
@@ -138,7 +138,7 @@ class GroupAdminsToLdap extends Command {
 			}
 
 			function diff_user_arrays($array1, $array2) {
-				$difference = array();
+				$difference = [];
 				foreach ($array1 as $gid => $users) {
 					if (!isset($array2[$gid]) || !is_array($array2[$gid])) {
 						$difference[$gid] = $users;
@@ -161,9 +161,9 @@ class GroupAdminsToLdap extends Command {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);
-					$entry = array(
+					$entry = [
 						'owner' => $userDN
-					);
+					];
 					if ($this->verbose) {
 						$output->writeln("ADD: UID=$uid ($userDN) into GID=$gid ($groupDN)");
 					}
@@ -177,9 +177,9 @@ class GroupAdminsToLdap extends Command {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);
-					$entry = array(
+					$entry = [
 						'owner' => $userDN
-					);
+					];
 					if ($this->verbose) {
 						$output->writeln("DEL: UID=$uid ($userDN) into GID=$gid ($groupDN)");
 					}
@@ -191,7 +191,7 @@ class GroupAdminsToLdap extends Command {
 
 			$output->writeln("As Pink Floyd says: 'This is the end....'");
 		} catch (Exception $e) {
-			$output->writeln('<error>' . $e->getMessage(). '</error>');
+			$output->writeln('<error>' . $e->getMessage() . '</error>');
 			return 1;
 		}
 

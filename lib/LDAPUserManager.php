@@ -309,7 +309,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$userDN = $this->getUserDN($uid);
 		$user = $this->userManager->get($uid);
 		if ($res = ldap_delete($connection, $userDN)) {
-			$message = "Delete LDAP user (isDeleted): " . $uid;
+			$message = 'Delete LDAP user (isDeleted): ' . $uid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
 			if (
 				$this->ldapProvider instanceof IDeletionFlagSupport
@@ -325,10 +325,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		} else {
 			$errno = ldap_errno($connection);
 			if ($errno === 0x20) { #LDAP_NO_SUCH_OBJECT
-				$message = "Delete LDAP user {uid}: object not found. Is already deleted? Assuming YES";
+				$message = 'Delete LDAP user {uid}: object not found. Is already deleted? Assuming YES';
 				$res = true;
 			} else {
-				$message = "Unable to delete LDAP user {uid}";
+				$message = 'Unable to delete LDAP user {uid}';
 			}
 			$this->logger->notice($message, ['app' => Application::APP_ID, 'uid' => $uid]);
 		}
@@ -466,7 +466,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 					$entry['userPassword'] = $password;
 				}
 
-				if(ldap_mod_replace($connection, $userDN, $entry)) {
+				if (ldap_mod_replace($connection, $userDN, $entry)) {
 					return true;
 				}
 				

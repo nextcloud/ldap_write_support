@@ -10,10 +10,10 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
-    ->withPaths([
-        __DIR__ . '/lib',
-        __DIR__ . '/templates',
-    ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    ->withTypeCoverageLevel(0);
+	->withPaths([
+		__DIR__ . '/lib',
+		__DIR__ . '/templates',
+	])
+	// uncomment to reach your current PHP version
+	// ->withPhpSets()
+	->withTypeCoverageLevel(0);

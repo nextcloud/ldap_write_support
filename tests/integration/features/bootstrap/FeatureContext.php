@@ -28,11 +28,11 @@ use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 class FeatureContext extends LDAPContext implements Context {
-	/** @var string[]  */
+	/** @var string[] */
 	private $userIdsToCleanUp = [];
-	/** @var string[]  */
+	/** @var string[] */
 	private $groupIdsToCleanUp = [];
-	/** @var string  */
+	/** @var string */
 	private $recentlyCreatedUser;
 
 	/**
