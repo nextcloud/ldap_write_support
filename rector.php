@@ -7,6 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+use Nextcloud\Rector\Set\NextcloudSets;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
@@ -16,4 +17,7 @@ return RectorConfig::configure()
 	])
 	->withPhpSets(php81:true)
 	->withTypeCoverageLevel(0)
-	->withImportNames(importShortClasses: false);
+	->withImportNames(importShortClasses: false)
+	->withSets([
+		NextcloudSets::NEXTCLOUD_27,
+	]);
