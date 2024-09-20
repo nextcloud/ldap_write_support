@@ -30,17 +30,17 @@ use OCA\LdapWriteSupport\Service\Configuration;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
+use OCP\Util;
 
 class Admin implements ISettings {
-	/** @var Configuration */
-	private $config;
-
 	/** @var IInitialState */
 	private $initialStateService;
 
-	public function __construct(IInitialState $initialStateService, Configuration $config) {
+	public function __construct(
+		IInitialState $initialStateService,
+		private Configuration $config,
+	) {
 		$this->initialStateService = $initialStateService;
-		$this->config = $config;
 	}
 
 	/**
@@ -68,8 +68,8 @@ class Admin implements ISettings {
 			]
 		);
 
-		\OCP\Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
-		\OCP\Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
 
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
@@ -84,8 +84,8 @@ class Admin implements ISettings {
 
 	/**
 	 * @return int whether the form should be rather on the top or bottom of
-	 * the admin section. The forms are arranged in ascending order of the
-	 * priority values. It is required to return a value between 0 and 100.
+	 *             the admin section. The forms are arranged in ascending order of the
+	 *             priority values. It is required to return a value between 0 and 100.
 	 *
 	 * E.g.: 70
 	 * @since 9.1

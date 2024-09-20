@@ -4,7 +4,8 @@
     "require-dev": {
         "nextcloud/coding-standard": "^1.1",
         "nextcloud/ocp": "dev-master",
-        "vimeo/psalm": "^5.13"
+        "vimeo/psalm": "^5.13",
+        "bamarni/composer-bin-plugin": "^1.8"
     },
     "scripts": {
         "cs:fix": "php-cs-fixer fix",
@@ -25,6 +26,9 @@
     "config": {
         "platform": {
             "php": "8.0.2"
+        },
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true
         }
     }
 }

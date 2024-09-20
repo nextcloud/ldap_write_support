@@ -22,6 +22,7 @@
 
 namespace OCA\LdapWriteSupport;
 
+use LDAP\Connection;
 use OC\ServerNotAvailableException;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Configuration;
@@ -31,21 +32,21 @@ use Psr\Log\LoggerInterface;
 class LDAPConnect {
 	/** @var Configuration */
 	private $ldapConfig;
-	/** @var LoggerInterface */
-	private $logger;
 	/** @var bool|null */
 	private $passwdSupport;
 
-	public function __construct(Helper $ldapBackendHelper, LoggerInterface $logger) {
+	public function __construct(
+		Helper $ldapBackendHelper,
+		private LoggerInterface $logger,
+	) {
 		$this->passwdSupport = null;
-		$this->logger = $logger;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
 		$prefix = array_shift($ldapConfigPrefixes);
 		$this->ldapConfig = new Configuration($prefix);
 	}
 
 	/**
-	 * @return resource|\LDAP\Connection
+	 * @return resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function connect() {
@@ -58,7 +59,7 @@ class LDAPConnect {
 			$ldapHost = 'ldap://' . $ldapHost;
 			$pos = 4;
 		}
-		if (strpos($ldapHost, ':', $pos + 1) === false && !empty($ldapPort)) {
+		if (!str_contains(substr($ldapHost, $pos + 1), ':') && !empty($ldapPort)) {
 			$ldapHost .= ':' . $ldapPort;
 		}
 
@@ -85,7 +86,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|\LDAP\Connection
+	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function bind() {
@@ -108,7 +109,7 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|\LDAP\Connection
+	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
 	public function getLDAPConnection() {
@@ -150,7 +151,7 @@ class LDAPConnect {
 	/**
 	 * checks whether the LDAP server supports the passwd exop
 	 *
-	 * @param \LDAP\Connection $connection LDAP connection to check
+	 * @param Connection $connection LDAP connection to check
 	 * @return boolean either the user can or cannot
 	 */
 	public function hasPasswdExopSupport($connection): bool {

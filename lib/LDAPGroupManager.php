@@ -41,15 +41,13 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	/** @var IGroupManager */
 	private $groupManager;
 
-	/** @var LDAPConnect */
-	private $ldapConnect;
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(IGroupManager $groupManager, LDAPConnect $ldapConnect, LoggerInterface $logger, ILDAPProvider $LDAPProvider) {
+	public function __construct(
+		IGroupManager $groupManager,
+		private LDAPConnect $ldapConnect,
+		private LoggerInterface $logger,
+		ILDAPProvider $LDAPProvider,
+	) {
 		$this->groupManager = $groupManager;
-		$this->ldapConnect = $ldapConnect;
-		$this->logger = $logger;
 		$this->ldapProvider = $LDAPProvider;
 
 		if ($this->ldapConnect->groupsEnabled()) {
@@ -111,10 +109,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		if (!$ret = ldap_delete($connection, $groupDN)) {
-			$message = "Unable to delete LDAP Group: " . $gid;
+			$message = 'Unable to delete LDAP Group: ' . $gid;
 			$this->logger->error($message, ['app' => Application::APP_ID]);
 		} else {
-			$message = "Delete LDAP Group: " . $gid;
+			$message = 'Delete LDAP Group: ' . $gid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
 		}
 		return $ret;
@@ -151,10 +149,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		}
 
 		if (!$ret = ldap_mod_add($connection, $groupDN, $entry)) {
-			$message = "Unable to add user " . $uid . " to group " . $gid;
+			$message = 'Unable to add user ' . $uid . ' to group ' . $gid;
 			$this->logger->error($message, ['app' => Application::APP_ID]);
 		} else {
-			$message = "Add user: " . $uid . " to group: " . $gid;
+			$message = 'Add user: ' . $uid . ' to group: ' . $gid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
 		}
 		return $ret;
@@ -190,10 +188,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		}
 
 		if (!$ret = ldap_mod_del($connection, $groupDN, $entry)) {
-			$message = "Unable to remove user: " . $uid . " from group: " . $gid;
+			$message = 'Unable to remove user: ' . $uid . ' from group: ' . $gid;
 			$this->logger->error($message, ['app' => Application::APP_ID]);
 		} else {
-			$message = "Remove user: " . $uid . " from group: " . $gid;
+			$message = 'Remove user: ' . $uid . ' from group: ' . $gid;
 			$this->logger->notice($message, ['app' => Application::APP_ID]);
 		}
 		return $ret;
@@ -211,7 +209,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	public function isLDAPGroup($gid): bool {
 		try {
 			return !empty($this->ldapProvider->getGroupDN($gid));
-		} catch (Exception $e) {
+		} catch (Exception) {
 			return false;
 		}
 	}

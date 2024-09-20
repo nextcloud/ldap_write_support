@@ -37,12 +37,12 @@ use OCP\EventDispatcher\IEventListener;
 class UserBackendRegisteredListener implements IEventListener {
 	/** @var IAppManager */
 	private $appManager;
-	/** @var LDAPUserManager */
-	private $ldapUserManager;
 
-	public function __construct(IAppManager $appManager, LDAPUserManager $ldapUserManager) {
+	public function __construct(
+		IAppManager $appManager,
+		private LDAPUserManager $ldapUserManager,
+	) {
 		$this->appManager = $appManager;
-		$this->ldapUserManager = $ldapUserManager;
 	}
 
 	/**
