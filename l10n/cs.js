@@ -4,6 +4,7 @@ OC.L10N.register(
     "Could not find related LDAP entry" : "Nepodařilo se najít související LDAP položku",
     "DisplayName change rejected" : "Změna DisplayName zamítnuta",
     "Write support for LDAP" : "Podpora pro zápis do LDAP",
+    "Writing" : "Zapisování",
     "Switches" : "Přepínače",
     "User template" : "Šablona uživatele",
     "Failed to set user template." : "Nepodařilo se nastavit šablonu uživatele.",
