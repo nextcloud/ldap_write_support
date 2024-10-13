@@ -14,7 +14,7 @@ OC.L10N.register(
     "An LDAP user must have an email address set." : "Un usuario LDAP debe tener definido un enderezo de correo.",
     "Allow users to set their avatar" : "Permitirlle aos usuarios definir o seu avatar",
     "Allow users to set their password" : "Permitirlle aos usuarios definir o seu contrasinal",
-    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Se o servidor non admite a operación ampliada de modificación do contrasinal, use «unicodePwd» no canto do atributo «userPassword» para axustar o contrasinal",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Se o servidor non admite a operación ampliada de modificación do contrasinal, use «unicodePwd» en troques do atributo «userPassword» para axustar o contrasinal",
     "Use the `unicodePwd` attribute for setting the user password" : "Use o atributo «unicodePwd» para axustar o contrasinal do usuario",
     "User template" : "Modelo de usuario",
     "LDIF template for creating users. Following placeholders may be used" : "Modelo LDIF para crear usuarios. Pódense empregar os seguintes marcadores de posición",
