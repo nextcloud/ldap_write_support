@@ -14,7 +14,7 @@ OC.L10N.register(
     "An LDAP user must have an email address set." : "كل مستخدم في LDAP، يجب أن يكون له عنوان بريد إلكتروني.",
     "Allow users to set their avatar" : "السماح لكل مستخدم يتعيين آفاتار avatar خاص به",
     "Allow users to set their password" : "تمكين المستخدِمين من تعيين كلمات مرورهم",
-    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "إذا كان الخادوم لا يدعم عملية تعديل كلمة المرور الموسعة، فاستعمل `unicodePwd` بدلاً عن سِمة `userPassword` لتعيين كلمة المرور",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "إذا كان الخادم لا يدعم عملية تعديل كلمة المرور الموسعة، فاستعمل `unicodePwd` بدلاً عن سِمة `userPassword` لتعيين كلمة المرور",
     "Use the `unicodePwd` attribute for setting the user password" : "استعمل السِّمة `unicodePwd` لتعيين كلمة مرور المستخدِم",
     "User template" : "قالب المستخدِم",
     "LDIF template for creating users. Following placeholders may be used" : "قالب LDIF لإنشاء المستخدمين. يمكن استخدام العناصر النائبة placeholders التالية",

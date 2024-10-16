@@ -17,7 +17,7 @@ OC.L10N.register(
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Se o servidor non admite a operación ampliada de modificación do contrasinal, use «unicodePwd» en troques do atributo «userPassword» para axustar o contrasinal",
     "Use the `unicodePwd` attribute for setting the user password" : "Use o atributo «unicodePwd» para axustar o contrasinal do usuario",
     "User template" : "Modelo de usuario",
-    "LDIF template for creating users. Following placeholders may be used" : "Modelo LDIF para crear usuarios. Pódense empregar os seguintes marcadores de posición",
+    "LDIF template for creating users. Following placeholders may be used" : "Modelo LDIF para crear usuarios. Pódense empregar os seguintes marcadores de substitución",
     "the user id provided by the (sub)admin" : "o id de usuario fornecido por (sub)admin",
     "the password provided by the (sub)admin" : "o contrasinal fornecido por (sub)admin",
     "the LDAP node of the acting (sub)admin or the configured user base" : "o nodo LDAP da (sub)admin actuante ou a base de usuarios configurada",
