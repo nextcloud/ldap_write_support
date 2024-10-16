@@ -13,6 +13,7 @@ OC.L10N.register(
     "An LDAP user must have an email address set." : "Je třeba, aby uživatel z LDAP měl zadanou e-mailovou adresu.",
     "Allow users to set their avatar" : "Umožnit uživatelům nastavit svůj zástupný obrázek",
     "Allow users to set their password" : "Umožnit uživatelů nastavit si své heslo",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Pokud server nepodporuje rozšířenou operaci změny hesla, použijte pro nastavení hesla `unicodePwd` namísto `userPassword`",
     "Use the `unicodePwd` attribute for setting the user password" : "Pro nastavení hesla uživatele použít atribut `unicodePwd`",
     "User template" : "Šablona uživatele",
     "LDIF template for creating users. Following placeholders may be used" : "LDIF šablona pro vytváření uživatelů. Je možné použít následující zástupná vyjádření",
