@@ -1,0 +1,26 @@
+{ "translations": {
+    "Could not find related LDAP entry" : "找不到相相关的 LDAP 项目",
+    "DisplayName change rejected" : "DisplayName 更改被拒绝",
+    "Write support for LDAP" : "LDAP 写入支持",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "通过 Nextcloud 添加在 LDAP 上创建、操作和删除用户和群组的支持",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "对 LDAP 的写入支持扩展了 LDAP 后端的功能，使其能够直接从 Nextcloud 管理目录： \n- 创建、编辑和删除用户 \n- 创建、修改成员关系及删除群组 \n- 防止回退至本地数据库后端（可选） \n- 自动生成用户 ID（可选） \n- 以及更多可配置的行为开关 ",
+    "Writing" : "写入",
+    "Switches" : "切换",
+    "Prevent fallback to other backends when creating users or groups." : "在创建用户或群组时防止回退到其他后端。",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "要创建用户，必须由 LDAP 提供代理（子）管理员。",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "必须生成随机用户 ID，即不能由（子）管理员提供。",
+    "An LDAP user must have an email address set." : "LDAP 用户必须设置电子邮件地址。",
+    "Allow users to set their avatar" : "允许用户自行设置头像",
+    "Allow users to set their password" : "允许用户自行设置密码",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "若服务器不支持修改密码扩展操作，请使用 “unicodePwd” 属性而非“userPassword”属性来设置密码。",
+    "Use the `unicodePwd` attribute for setting the user password" : "请使用“unicodePwd”属性来设置用户密码",
+    "User template" : "用户模板",
+    "LDIF template for creating users. Following placeholders may be used" : "用于创建用户的 LDIF 模板，可以使用以下占位字符串",
+    "the user id provided by the (sub)admin" : "由（子）管理员提供的用户 ID",
+    "the password provided by the (sub)admin" : "由（子）管理员提供的密码",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理员或设置的用户基础的 LDAP 节点",
+    "Failed to set user template." : "设置用户模板失败",
+    "Failed to set switch." : "设置切换失败",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "对 LDAP 的写入支持扩展了 LDAP 后端的功能，使其能够直接从 Nextcloud 管理目录：\n· 创建、编辑和删除用户\n· 创建、修改成员资格和删除群组\n· 防止回退至本地数据库后端（可选）\n· 自动生成用户 ID（可选）\n· 以及更多可配置的行为开关"
+},"pluralForm" :"nplurals=1; plural=0;"
+}
