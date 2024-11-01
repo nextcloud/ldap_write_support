@@ -1,3 +1,8 @@
+<!--
+  - SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-FileCopyrightText: 2017 Cooperativa EITA <eita.org.br>
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # 👥🖎 LDAP Write Support
 
 Manage your LDAP directory from within Nextcloud.
