@@ -5,6 +5,8 @@
 -->
 # 👥🖎 LDAP Write Support
 
+[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/ldap_write_support)](https://api.reuse.software/info/github.com/nextcloud/ldap_write_support)
+
 Manage your LDAP directory from within Nextcloud.
 
 ![](img/screenshots/settings.png)
