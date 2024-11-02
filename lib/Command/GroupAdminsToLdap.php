@@ -5,7 +5,7 @@
  * SPDX-FileCopyrightText: 2019 Cooperativa EITA <eita.org.br>
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
- 
+
 namespace OCA\LdapWriteSupport\Command;
 
 use Exception;
