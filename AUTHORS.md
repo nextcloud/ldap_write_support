@@ -1,0 +1,35 @@
+<!--
+  - SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+# Authors
+
+- Alan Tygel <alan@eita.org.br>
+- Alban Bedel <albeu@free.fr>
+- André Luís Monteiro <andrelsm@eita.org.br>
+- Andy Scherzinger <info@andy-scherzinger.de>
+- Arthur Schiwon <blizzz@arthur-schiwon.de>
+- Christoph Wurst <christoph@winzerhof-wurst.at>
+- Côme Chilliet <come.chilliet@nextcloud.com>
+- Daniel Calviño Sánchez <danxuliu@gmail.com>
+- Daniel Klaffenbach <danielklaffenbach@gmail.com>
+- Ferdinand Thiessen <opensource@fthiessen.de>
+- Filis Futsarov <filisko@users.noreply.github.com>
+- Gary Kim <gary@garykim.dev>
+- Joas Schilling <coding@schilljs.com>
+- John Molakvoæ <skjnldsv@protonmail.com>
+- Julius Härtl <jus@bitgrid.net>
+- Lukas Reschke <lukas@statuscode.ch>
+- Morris Jobke <hey@morrisjobke.de>
+- Pytal <24800714+Pytal@users.noreply.github.com>
+- rakekniven <2069590+rakekniven@users.noreply.github.com>
+- Robin Appelman <robin@icewind.nl>
+- Roeland Jago Douma <roeland@famdouma.nl>
+- Sergio Bertolin <sbertolin@solidgear.es>
+- Thomas Müller <thomas.mueller@tmit.eu>
+- Sascha Wiswedel <sascha.wiswedel@nextcloud.com>
+- Vincent Petry <vincent@nextcloud.com>
+- Vinicius Brand <vinicius@eita.org.br>
+- vivacarvajalito <vivacarvajalito@gmail.com>
+- EITA Cooperative <eita.org.br>
+- Nextcloud GmbH
