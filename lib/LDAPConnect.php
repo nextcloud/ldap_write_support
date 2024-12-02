@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Alan Tygel <alan@eita.org.br>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
