@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2017 EITA Cooperative (eita.org.br)
  *
@@ -466,7 +467,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 					$entry['userPassword'] = $password;
 				}
 
-				if(ldap_mod_replace($connection, $userDN, $entry)) {
+				if (ldap_mod_replace($connection, $userDN, $entry)) {
 					return true;
 				}
 				
