@@ -1,5 +1,6 @@
 { "translations": {
     "Writing" : "Idazten",
-    "Switches" : "Etengailuak"
+    "Switches" : "Etengailuak",
+    "User template" : "Erabiltzailearen txantiloia"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
