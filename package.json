@@ -4,7 +4,7 @@
   "description": "Adds write support to the LDAP backend",
   "private": true,
   "author": "Arthur Schiwon",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "build": "vite --mode production build",
