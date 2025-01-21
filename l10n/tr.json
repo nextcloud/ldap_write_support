@@ -10,7 +10,7 @@
     "To create users, the acting (sub)admin has to be provided by LDAP." : "Kullanıcı oluşturmak için, işlemi yapacak (alt) yöneticinin LDAP tarafından sağlanması gerekir.",
     "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Rastgele bir kullanıcı kimliğinin oluşturulması gerekir, yani (alt) yönetici tarafından sağlanmamalıdır.",
     "An LDAP user must have an email address set." : "Bir LDAP kullanıcısının ayarlanmış bir e-posta adresi olması gerekir.",
-    "Allow users to set their avatar" : "Kullanıcıların avatarlarını ayarlayabilsin",
+    "Allow users to set their avatar" : "Kullanıcılar avatarlarını ayarlayabilsin",
     "Allow users to set their password" : "Kullanıcıların parolalarını ayarlayabilsin",
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Sunucu, parolayı değiştirme ek işlemini desteklemiyorsa, parolayı ayarlamak için `userPassword` özniteliği yerine `unicodePwd` özniteliğini kullanın",
     "Use the `unicodePwd` attribute for setting the user password" : "Kullanıcı parolasını ayarlamak için `unicodePwd` özniteliğini kullanın",
