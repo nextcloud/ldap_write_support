@@ -16,7 +16,7 @@
 * auto generate a user ID (optional)
 * and more behavioral switches
     ]]></description>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
     <author mail="blizzz@arthur-schiwon.de" homepage="https://arthur-schiwon.de">Arthur Schiwon</author>
@@ -30,7 +30,7 @@
     <screenshot>https://raw.githubusercontent.com/nextcloud/ldap_write_support/master/img/screenshots/users.png</screenshot>
     <dependencies>
         <lib>ldap</lib>
-        <nextcloud min-version="31" max-version="31"/>
+        <nextcloud min-version="32" max-version="32"/>
     </dependencies>
     <commands>
         <command>OCA\LdapWriteSupport\Command\GroupAdminsToLdap</command>
