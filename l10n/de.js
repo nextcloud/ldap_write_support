@@ -14,7 +14,7 @@ OC.L10N.register(
     "An LDAP user must have an email address set." : "Für ein LDAP-Konto muss eine E-Mail-Adresse eingerichtet sein.",
     "Allow users to set their avatar" : "Personen können ihren Avatar festlegen",
     "Allow users to set their password" : "Personen können ihr Passwort selbst festlegen",
-    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Wenn der Server den erweiterten Vorgang „Passwort ändern“ nicht unterstützt, verwende zum Festlegen des Passworts das Attribut `unicodePwd` anstelle des Attributs `userPassword`.",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Wenn der Server den erweiterten Vorgang \"Passwort ändern\" nicht unterstützt, verwende zum Festlegen des Passworts das Attribut `unicodePwd` anstelle des Attributs `userPassword`.",
     "Use the `unicodePwd` attribute for setting the user password" : "Attribut `unicodePwd` verwenden, um das Kontenkennwort festzulegen",
     "User template" : "Benutzervorlage",
     "LDIF template for creating users. Following placeholders may be used" : "LDIF-Vorlage für die Erstellung von Konten. Folgende Platzhalter können verwendet werden",
