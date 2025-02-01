@@ -12,7 +12,7 @@
     "An LDAP user must have an email address set." : "Für einen LDAP-Benutzer muss eine E-Mail-Adresse eingerichtet sein.",
     "Allow users to set their avatar" : "Benutzer können ihren Avatar festlegen",
     "Allow users to set their password" : "Benutzer können ihr Passwort selbst festlegen",
-    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Wenn der Server den erweiterten Vorgang „Passwort ändern“ nicht unterstützt, verwenden Sie zum Festlegen des Passworts das Attribut `unicodePwd` anstelle des Attributs `userPassword`.",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Wenn der Server den erweiterten Vorgang \"Passwort ändern\" nicht unterstützt, verwenden Sie zum Festlegen des Passworts das Attribut `unicodePwd` anstelle des Attributs `userPassword`.",
     "Use the `unicodePwd` attribute for setting the user password" : "Attribut `unicodePwd` verwenden, um das Benutzerkennwort festzulegen",
     "User template" : "Benutzervorlage",
     "LDIF template for creating users. Following placeholders may be used" : "LDIF-Vorlage für die Erstellung von Benutzern. Folgende Platzhalter können verwendet werden",
