@@ -51,8 +51,8 @@ class Admin implements ISettings {
 			]
 		);
 
-		Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
-		Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		Util::addScript(Application::APP_ID, 'ldap_write_support-admin-settings');
+		Util::addStyle(Application::APP_ID, 'ldap_write_support-admin-settings');
 
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
