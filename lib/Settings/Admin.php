@@ -66,8 +66,8 @@ class Admin implements ISettings {
 			]
 		);
 
-		\OCP\Util::addScript(Application::APP_ID, 'ldap_write_suppport-admin-settings');
-		\OCP\Util::addStyle(Application::APP_ID, 'ldap_write_suppport-admin-settings');
+		\OCP\Util::addScript(Application::APP_ID, 'ldap_write_support-admin-settings');
+		\OCP\Util::addStyle(Application::APP_ID, 'ldap_write_support-admin-settings');
 
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
