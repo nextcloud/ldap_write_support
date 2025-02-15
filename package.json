@@ -21,7 +21,7 @@
     "@nextcloud/dialogs": "^6.1.1",
     "@nextcloud/initial-state": "^2.2.0",
     "@nextcloud/vue": "^8.23.1",
-    "vue": "^2.7.16"
+    "vue": "^3.5.13"
   },
   "engines": {
     "node": "^20.0.0",
