@@ -1,12 +1,26 @@
 #!/bin/sh
+#
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Stop at first error
 set -e
 
 # Use version from changelog
 # version=$(head -n1 CHANGELOG.md|cut -d"v" -f2);
-version=$1
-echo "Releasing version $version";
+version=$(grep '^# ' CHANGELOG.md|head -n1|cut -d' ' -f2|cut -d' ' -f1);
+# version=$1
+# The target branch, defaults to the current branch
+target=${2:-$(git branch --show-current)}
+
+if [ $(git branch --show-current) != $target ]; then
+    if ! git switch $target > /dev/null; then
+        echo "Target branch does not exist, please enter a valid branch name"
+        exit 1
+    fi
+fi
+
+echo "Releasing version $version on branch $target";
 
 # Ask for confirmation
 read -r -p "Are you sure? [y/N] " input
@@ -32,14 +46,14 @@ case $input in
     [yY][eE][sS]|[yY])
         echo "You say Yes"
         # Bump version in info.xml
-        sed -i -E "s|^\t<version>.+</version>|\t<version>$version</version>|" appinfo/info.xml
+        sed -i -E "s|^    <version>.+</version>|    <version>$version</version>|" appinfo/info.xml
 
         # Add changed files to git
-        # git add CHANGELOG.md
+        git add CHANGELOG.md
         git add appinfo/info.xml
 
         # Bump npm version, commit and tag
-        npm version -f $version
+        npm version --allow-same-version -f $version
 
         # Show the result
         git log -1 -p
@@ -70,6 +84,6 @@ case $input in
         ;;
 esac
 
-echo https://github.com/nextcloud/ldap_write_support/tags
-echo https://github.com/nextcloud-releases/ldap_write_support/tags
-# https://github.com/nextcloud/ldap_write_support/releases/new?tag=v1.10.0
+# Then manually:
+echo "Create release on github from tag on https://github.com/nextcloud/ldap_write_support/tags"
+echo "Create release on github from tag on https://github.com/nextcloud-releases/ldap_write_support/tags"
