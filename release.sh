@@ -8,8 +8,19 @@ set -e
 
 # Use version from changelog
 # version=$(head -n1 CHANGELOG.md|cut -d"v" -f2);
-version=$1
-echo "Releasing version $version";
+version=$(grep '^# ' CHANGELOG.md|head -n1|cut -d' ' -f2|cut -d' ' -f1);
+# version=$1
+# The target branch, defaults to the current branch
+target=${2:-$(git branch --show-current)}
+
+if [ $(git branch --show-current) != $target ]; then
+    if ! git switch $target > /dev/null; then
+        echo "Target branch does not exist, please enter a valid branch name"
+        exit 1
+    fi
+fi
+
+echo "Releasing version $version on branch $target";
 
 # Ask for confirmation
 read -r -p "Are you sure? [y/N] " input
@@ -35,10 +46,10 @@ case $input in
     [yY][eE][sS]|[yY])
         echo "You say Yes"
         # Bump version in info.xml
-        sed -i -E "s|^\t<version>.+</version>|\t<version>$version</version>|" appinfo/info.xml
+        sed -i -E "s|^    <version>.+</version>|    <version>$version</version>|" appinfo/info.xml
 
         # Add changed files to git
-        # git add CHANGELOG.md
+        git add CHANGELOG.md
         git add appinfo/info.xml
 
         # Bump npm version, commit and tag
