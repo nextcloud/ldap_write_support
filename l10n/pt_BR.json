@@ -4,6 +4,8 @@
     "Write support for LDAP" : "Suporte de gravação para LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Adiciona suporte para criação, manipulação e exclusão de usuários e grupos no LDAP via Nextcloud",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "O suporte de gravação para LDAP enriquece o backend LDAP com recursos para gerenciar o diretório do Nextcloud.\n* criar, editar e excluir usuários\n* criar, modificar associações e excluir grupos\n* evitar fallback para o backend do banco de dados local (opcional)\n* automático gerar um ID de usuário (opcional)\n* e mais opções comportamentais",
+    "Failed to set user template." : "Falha ao definir o modelo do usuário.",
+    "Failed to set switch." : "Falha ao definir o interruptor.",
     "Writing" : "Escrita",
     "Switches" : "Comutas",
     "Prevent fallback to other backends when creating users or groups." : "Evite o fallback para outros back-ends ao criar usuários ou grupos.",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "o ID do usuário fornecido pelo (sub)administrador",
     "the password provided by the (sub)admin" : "a senha fornecida pelo (sub)administrador",
     "the LDAP node of the acting (sub)admin or the configured user base" : "o nó LDAP do (sub)administrador atuante ou da base de usuários configurada",
-    "Failed to set user template." : "Falha ao definir o modelo do usuário.",
-    "Failed to set switch." : "Falha ao definir o interruptor.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "O suporte de gravação para LDAP enriquece o back-end LDAP com recursos para gerenciar o diretório do Nextcloud. \n* criar, editar e excluir usuários \n* criar, modificar associações e excluir grupos \n* evitar fallback para o back-end do banco de dados local (opcional) \n* gerar automaticamente um ID de usuário (opcional) \n* e mais mudanças comportamentais"
 },"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

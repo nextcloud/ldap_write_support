@@ -4,6 +4,8 @@
     "Write support for LDAP" : "Soporte de escritura para LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Agrega soporte para crear, manipular y eliminar usuarios y grupos en LDAP a través de Nextcloud",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "El soporte de escritura para LDAP enriquece al backend LDAP con la capacidad de administrar el directorio desde Nextcloud.\n* cree, edite y elimine usuarios\n* cree, modifique membresías o elimine grupos\n* evitar cualquier intento de recurrir a la base de datos local (opcional)\n* auto generar un ID de usuario (opcional)\n* y más interruptores para cambios de comportamiento",
+    "Failed to set user template." : "Fallo al establecer la plantilla de usuario.",
+    "Failed to set switch." : "Fallo al establecer el interruptor.",
     "Writing" : "Escribiendo",
     "Switches" : "Interruptores",
     "Prevent fallback to other backends when creating users or groups." : "Evitar intentar recurrir a otros backends cuando se crean usuarios o grupos.",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "el id de usuario provisto por el administrador o subadministrador",
     "the password provided by the (sub)admin" : "la contraseña provista por el administrador o subadministrador",
     "the LDAP node of the acting (sub)admin or the configured user base" : "el nodo LDAP del administrador o subadministrador que ejecuta o, la base de usuarios configurada",
-    "Failed to set user template." : "Fallo al establecer la plantilla de usuario.",
-    "Failed to set switch." : "Fallo al establecer el interruptor.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "El soporte de escritura para LDAP enriquece al backend LDAP con la capacidad de administrar el directorio desde Nextcloud.\n* cree, edite y elimine usuarios\n* cree, modifique membresías o elimine grupos\n* evitar cualquier intento de recurrir a la base de datos local (opcional)\n* auto generar un ID de usuario (opcional)\n* y más interruptores para cambios de comportamiento"
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

@@ -6,6 +6,8 @@ OC.L10N.register(
     "Write support for LDAP" : "LDAP نى قوللاشنى يېزىڭ",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Nextcloud ئارقىلىق LDAP دىكى ئىشلەتكۈچى ۋە گۇرۇپپىلارنى قۇرۇش ، كونترول قىلىش ۋە ئۆچۈرۈشنى قوللايدۇ",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "LDAP نى يېزىش قوللىشى LDAP ئارقا سۇپىسىنى Nextcloud دىن مۇندەرىجىنى باشقۇرۇش ئىقتىدارى بىلەن بېيىتىدۇ.\n* ئىشلەتكۈچى قۇرۇش ، تەھرىرلەش ۋە ئۆچۈرۈش\n* ئەزا قۇرۇش ، ئۆزگەرتىش ۋە ئۆچۈرۈش\n* يەرلىك ساندان ئارقا سۇپىسىغا قايتىپ كېتىشنىڭ ئالدىنى ئالىدۇ (ئىختىيارىي)\n* ئاپتوماتىك ھالدا ئىشلەتكۈچى كىملىكى ھاسىل قىلىدۇ (ئىختىيارىي)\n* ۋە تېخىمۇ كۆپ ھەرىكەت ئالماشتۇرۇش",
+    "Failed to set user template." : "ئىشلەتكۈچى قېلىپىنى تەڭشەش مەغلۇب بولدى.",
+    "Failed to set switch." : "ئالماشتۇرغۇچ مەغلۇپ بولدى.",
     "Writing" : "يېزىش",
     "Switches" : "ئالماشتۇرغۇچ",
     "Prevent fallback to other backends when creating users or groups." : "ئىشلەتكۈچى ياكى گۇرۇپپا قۇرغاندا باشقا ئارقا سەھنىلەرگە چۈشۈپ قېلىشنىڭ ئالدىنى ئالىدۇ.",
@@ -21,8 +23,6 @@ OC.L10N.register(
     "the user id provided by the (sub)admin" : "(تارماق) باشقۇرغۇچى تەمىنلىگەن ئىشلەتكۈچى كىملىكى",
     "the password provided by the (sub)admin" : "(تارماق) باشقۇرغۇچى تەمىنلىگەن پارول",
     "the LDAP node of the acting (sub)admin or the configured user base" : "ھەرىكەتچان (تارماق) باشقۇرغۇچىنىڭ LDAP تۈگۈنى ياكى سەپلەنگەن ئىشلەتكۈچى ئاساسى",
-    "Failed to set user template." : "ئىشلەتكۈچى قېلىپىنى تەڭشەش مەغلۇب بولدى.",
-    "Failed to set switch." : "ئالماشتۇرغۇچ مەغلۇپ بولدى.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "LDAP نى يېزىش قوللىشى LDAP ئارقا سۇپىسىنى Nextcloud دىن مۇندەرىجىنى باشقۇرۇش ئىقتىدارى بىلەن بېيىتىدۇ.\n* ئىشلەتكۈچى قۇرۇش ، تەھرىرلەش ۋە ئۆچۈرۈش\n* ئەزا قۇرۇش ، ئۆزگەرتىش ۋە ئۆچۈرۈش\n* يەرلىك ساندان ئارقا سۇپىسىغا قايتىپ كېتىشنىڭ ئالدىنى ئالىدۇ (ئىختىيارىي)\n* ئىشلەتكۈچى ئىشلەتكۈچى ID ھاسىل قىلىدۇ (ئىختىيارى)\n* ۋە تېخىمۇ كۆپ ھەرىكەت ئالماشتۇرۇش"
 },
 "nplurals=2; plural=(n != 1);");
