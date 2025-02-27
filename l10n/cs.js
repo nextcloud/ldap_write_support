@@ -5,6 +5,8 @@ OC.L10N.register(
     "DisplayName change rejected" : "Změna DisplayName zamítnuta",
     "Write support for LDAP" : "Podpora pro zápis do LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Přidává podporu pro vytváření, manipulaci s a mazání uživatelů a skupin v LDAP z Nextcloud",
+    "Failed to set user template." : "Nepodařilo se nastavit šablonu uživatele.",
+    "Failed to set switch." : "Nepodařilo se nastavit přepínač.",
     "Writing" : "Zapisování",
     "Switches" : "Přepínače",
     "Prevent fallback to other backends when creating users or groups." : "Při vytváření uživatelů nebo skupin bránit náhradnímu zpracování ostatními podpůrnými vrstvami.",
@@ -19,8 +21,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "LDIF šablona pro vytváření uživatelů. Je možné použít následující zástupná vyjádření",
     "the user id provided by the (sub)admin" : "identif. uživatele poskytnutý (dílčím) správcem",
     "the password provided by the (sub)admin" : "heslo poskytnuté (dílčím) správcem",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP uzel příslušného (dílčího) správce nebo nastavená uživatelská základna",
-    "Failed to set user template." : "Nepodařilo se nastavit šablonu uživatele.",
-    "Failed to set switch." : "Nepodařilo se nastavit přepínač."
+    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP uzel příslušného (dílčího) správce nebo nastavená uživatelská základna"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

@@ -4,6 +4,8 @@
     "Write support for LDAP" : "Podpora zápisu pre LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Pridáva podporu pre vytváranie, manipuláciu a odstraňovanie užívateľov a skupín v LDAP cez Nextcloud",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Podpora zápisu pre LDAP obohacuje backend LDAP o možnosti správy adresára z Nextcloud.\n* vytvárať, upravovať a mazať užívateľov\n* vytvárať, upravovať členstvá a mazať skupiny\n* zabrániť núdzovému návratu do lokálnej databázy (voliteľné)\n* automatické generovanie ID užívateľa (voliteľné)\n* a viac možností správania",
+    "Failed to set user template." : "Nepodarilo sa nastaviť uživateľskú šablónu.",
+    "Failed to set switch." : "Nepodarilo sa nastaviť prepínač.",
     "Writing" : "Zapisovanie",
     "Switches" : "Prepínače",
     "Prevent fallback to other backends when creating users or groups." : "Pri vytváraní užívateľov alebo skupín zabrániť prechodu na iný backend.",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "id uživateľa poskytnuté (sub)adminom",
     "the password provided by the (sub)admin" : "heslo poskytnuté (sub)adminom",
     "the LDAP node of the acting (sub)admin or the configured user base" : "uzol LDAP príslušného (sub)admina alebo nakonfigurovanej užívateľskej základne",
-    "Failed to set user template." : "Nepodarilo sa nastaviť uživateľskú šablónu.",
-    "Failed to set switch." : "Nepodarilo sa nastaviť prepínač.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Podpora zápisu pre LDAP obohacuje backend LDAP o možnosti správy adresára z Nextcloud.\n* vytvárať, upravovať a mazať užívateľov\n* vytvárať, upravovať členstvá a mazať skupiny\n* zabrániť núdzovému návratu do lokálnej databázy (voliteľné)\n* automatické generovanie ID užívateľa (voliteľné)\n* a viac možností správania"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }
