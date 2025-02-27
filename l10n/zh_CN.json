@@ -4,6 +4,8 @@
     "Write support for LDAP" : "LDAP 写入支持",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "通过 Nextcloud 添加在 LDAP 上创建、操作和删除用户和群组的支持",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "对 LDAP 的写入支持扩展了 LDAP 后端的功能，使其能够直接从 Nextcloud 管理目录： \n- 创建、编辑和删除用户 \n- 创建、修改成员关系及删除群组 \n- 防止回退至本地数据库后端（可选） \n- 自动生成用户 ID（可选） \n- 以及更多可配置的行为开关 ",
+    "Failed to set user template." : "设置用户模板失败",
+    "Failed to set switch." : "设置切换失败",
     "Writing" : "写入",
     "Switches" : "切换",
     "Prevent fallback to other backends when creating users or groups." : "在创建用户或群组时防止回退到其他后端。",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "由（子）管理员提供的用户 ID",
     "the password provided by the (sub)admin" : "由（子）管理员提供的密码",
     "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理员或设置的用户基础的 LDAP 节点",
-    "Failed to set user template." : "设置用户模板失败",
-    "Failed to set switch." : "设置切换失败",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "对 LDAP 的写入支持扩展了 LDAP 后端的功能，使其能够直接从 Nextcloud 管理目录：\n· 创建、编辑和删除用户\n· 创建、修改成员资格和删除群组\n· 防止回退至本地数据库后端（可选）\n· 自动生成用户 ID（可选）\n· 以及更多可配置的行为开关"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -4,6 +4,8 @@
     "Write support for LDAP" : "Υποστήριξη εγγραφής για LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Προσθέτει υποστήριξη για δημιουργία, διαχείριση και διαγραφή χρηστών και ομάδων στο LDAP μέσω του Nextcloud",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Η υποστήριξη εγγραφής για LDAP εμπλουτίζει το σύστημα υποστήριξης LDAP με δυνατότητες διαχείρισης του καταλόγου από το Nextcloud.\n* δημιουργία, επεξεργασία και διαγραφή χρηστών\n* δημιουργία, τροποποίηση μελών και διαγραφή ομάδων\n* αποτροπή επιστροφής στο τοπικό backend βάσης δεδομένων (προαιρετικά)\n* αυτόματη δημιουργία αναγνωριστικού χρήστη (προαιρετικά)\n* και περισσότερους διακόπτες συμπεριφοράς",
+    "Failed to set user template." : "Αποτυχία ορισμού προτύπου χρήστη.",
+    "Failed to set switch." : "Αποτυχία ορισμού διακόπτη.",
     "Writing" : "Εγγραφή",
     "Switches" : "Διακόπτες",
     "Prevent fallback to other backends when creating users or groups." : "Αποτροπή επιστροφής σε άλλα συστήματα υποστήριξης κατά τη δημιουργία χρηστών ή ομάδων.",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "το αναγνωριστικό χρήστη που παρέχεται από τον (υπο)διαχειριστή",
     "the password provided by the (sub)admin" : "το συνθηματικό που παρέχεται από τον (υπο)διαχειριστή",
     "the LDAP node of the acting (sub)admin or the configured user base" : "ο κόμβος LDAP του ενεργού (υπο)διαχειριστή ή η διαμορφωμένη βάση χρηστών",
-    "Failed to set user template." : "Αποτυχία ορισμού προτύπου χρήστη.",
-    "Failed to set switch." : "Αποτυχία ορισμού διακόπτη.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Η υποστήριξη εγγραφής για LDAP εμπλουτίζει το σύστημα υποστήριξης LDAP με δυνατότητες διαχείρισης του καταλόγου από το Nextcloud.\n* δημιουργία, επεξεργασία και διαγραφή χρηστών\n* δημιουργία, τροποποίηση μελών και διαγραφή ομάδων\n* αποτροπή επιστροφής στο τοπικό backend βάσης δεδομένων (προαιρετικά)\n* αυτόματη δημιουργία αναγνωριστικού χρήστη (προαιρετικά)\n* και περισσότερους διακόπτες συμπεριφοράς"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
