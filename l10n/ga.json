@@ -4,6 +4,8 @@
     "Write support for LDAP" : "Scríobh tacaíocht do LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Cuirtear leis tacaíocht chun úsáideoirí agus grúpaí ar LDAP a chruthú, a ionramháil agus a scriosadh trí Nextcloud",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Saibhríonn an tacaíocht scríofa do LDAP inneall an LDAP le cumais chun an t-eolaire ó Nextcloud a bhainistiú.\n* úsáideoirí a chruthú, a chur in eagar agus a scriosadh\n* ballraíocht a chruthú, a mhodhnú agus grúpaí a scriosadh\n* cosc ​​a chur ar chúltaca chuig inneall an bhunachair shonraí áitiúil (roghnach)\n* giniúint uathoibríoch aitheantais úsáideora (roghnach)\n* agus lasca iompraíochta níos mó",
+    "Failed to set user template." : "Theip ar an teimpléad úsáideora a shocrú.",
+    "Failed to set switch." : "Theip ar an lasc a shocrú.",
     "Writing" : "Ag scríobh",
     "Switches" : "Lasca",
     "Prevent fallback to other backends when creating users or groups." : "Cosc a chur ar aisiompair eile nuair a bhíonn úsáideoirí nó grúpaí á gcruthú.",
@@ -19,8 +21,6 @@
     "the user id provided by the (sub)admin" : "an t-aitheantas úsáideora a sholáthraíonn an (fo)riarthóir",
     "the password provided by the (sub)admin" : "an pasfhocal a sholáthraíonn an (fo)riarthóir",
     "the LDAP node of the acting (sub)admin or the configured user base" : "nód LDAP an riarthóra gníomhaigh (fo) nó an bonn úsáideora cumraithe",
-    "Failed to set user template." : "Theip ar an teimpléad úsáideora a shocrú.",
-    "Failed to set switch." : "Theip ar an lasc a shocrú.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Saibhríonn an tacaíocht scríofa do LDAP inneall an LDAP le cumais chun an t-eolaire ó Nextcloud a bhainistiú.\n* úsáideoirí a chruthú, a chur in eagar agus a scriosadh\n* ballraíocht a chruthú, a mhodhnú agus grúpaí a scriosadh\n* cosc ​​a chur ar chúltaca chuig inneall an bhunachair shonraí áitiúil (roghnach)\n* giniúint uathoibríoch aitheantais úsáideora (roghnach)\n* agus lasca iompraíochta níos mó"
 },"pluralForm" :"nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);"
 }

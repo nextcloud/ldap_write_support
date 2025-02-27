@@ -6,6 +6,8 @@ OC.L10N.register(
     "Write support for LDAP" : "Schreibunterstützung für LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Fügt Unterstützung für das Erstellen, Bearbeiten und Löschen von Benutzern und Gruppen auf LDAP über Nextcloud hinzu",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Die Schreibunterstützung für LDAP erweitert das LDAP-Backend um Funktionen zur Verwaltung des Verzeichnisses von Nextcloud aus.\n* Benutzer erstellen, bearbeiten und löschen\n* Mitgliedschaften erstellen, ändern und Gruppen löschen\n* Fallback auf das lokale Datenbank-Backend verhindern (optional)\n* Automatisch eine Benutzer-ID generieren (optional)\n* und weitere Verhaltensschalter",
+    "Failed to set user template." : "Benutzervorlage konnte nicht festgelegt werden.",
+    "Failed to set switch." : "Schalter konnte gesetzt werden.",
     "Writing" : "Schreiben",
     "Switches" : "Schalter",
     "Prevent fallback to other backends when creating users or groups." : "Beim Erstellen von Konten oder Gruppen den Rückgriff auf andere Backends verhindern.",
@@ -21,8 +23,6 @@ OC.L10N.register(
     "the user id provided by the (sub)admin" : "die von der (Sub-)Administration bereitgestellte Konto-ID",
     "the password provided by the (sub)admin" : "das von der (Sub-)Administration bereitgestellte Passwort",
     "the LDAP node of the acting (sub)admin or the configured user base" : "der LDAP-Knoten der amtierenden (Sub-)Administration oder der konfigurierten Benutzerbasis",
-    "Failed to set user template." : "Benutzervorlage konnte nicht festgelegt werden.",
-    "Failed to set switch." : "Schalter konnte gesetzt werden.",
     "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Die Schreibunterstützung für LDAP erweitert das LDAP-Backend um Funktionen zur Verwaltung des Verzeichnisses von Nextcloud aus.\n* Benutzer erstellen, bearbeiten und löschen\n* Mitgliedschaften erstellen, ändern und Gruppen löschen\n* Fallback auf das lokale Datenbank-Backend verhindern (optional)\n* Automatisch eine Benutzer-ID generieren (optional)\n* und weitere Verhaltensschalter"
 },
 "nplurals=2; plural=(n != 1);");
