@@ -61,7 +61,7 @@ class LDAPConnect {
 
 		// Connecting to LDAP - TODO: connect directly via LDAP plugin
 		$cr = ldap_connect($ldapHost);
-		if (!is_resource($cr) && !is_object($cr)) {
+		if ($cr === false) {
 			$this->logger->error('Unable to connect to LDAP host {ldapHost}:{ldapPort}',
 				[
 					'app' => Application::APP_ID,
