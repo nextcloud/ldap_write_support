@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="lib/LDAPConnect.php">
     <RedundantCast>
       <code><![CDATA[(string)$this->ldapConfig->ldapGroupFilter]]></code>
       <code><![CDATA[(string)$this->ldapConfig->ldapGroupMemberAssocAttr]]></code>
     </RedundantCast>
-    <RedundantCondition>
-      <code>!is_resource($cr)</code>
-    </RedundantCondition>
   </file>
   <file src="lib/LDAPUserManager.php">
     <UndefinedInterfaceMethod>
-      <code>listen</code>
+      <code><![CDATA[listen]]></code>
     </UndefinedInterfaceMethod>
   </file>
 </files>
