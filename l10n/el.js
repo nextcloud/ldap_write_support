@@ -22,7 +22,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "Πρότυπο LDIF για τη δημιουργία χρηστών. Μπορούν να χρησιμοποιηθούν οι ακόλουθες μεταβλητές",
     "the user id provided by the (sub)admin" : "το αναγνωριστικό χρήστη που παρέχεται από τον (υπο)διαχειριστή",
     "the password provided by the (sub)admin" : "το συνθηματικό που παρέχεται από τον (υπο)διαχειριστή",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "ο κόμβος LDAP του ενεργού (υπο)διαχειριστή ή η διαμορφωμένη βάση χρηστών",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Η υποστήριξη εγγραφής για LDAP εμπλουτίζει το σύστημα υποστήριξης LDAP με δυνατότητες διαχείρισης του καταλόγου από το Nextcloud.\n* δημιουργία, επεξεργασία και διαγραφή χρηστών\n* δημιουργία, τροποποίηση μελών και διαγραφή ομάδων\n* αποτροπή επιστροφής στο τοπικό backend βάσης δεδομένων (προαιρετικά)\n* αυτόματη δημιουργία αναγνωριστικού χρήστη (προαιρετικά)\n* και περισσότερους διακόπτες συμπεριφοράς"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "ο κόμβος LDAP του ενεργού (υπο)διαχειριστή ή η διαμορφωμένη βάση χρηστών"
 },
 "nplurals=2; plural=(n != 1);");

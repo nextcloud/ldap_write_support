@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "قالب LDIF لإنشاء المستخدمين. يمكن استخدام العناصر النائبة placeholders التالية",
     "the user id provided by the (sub)admin" : "مُعرِّف المستخدم المُعطى من قِبَل المدير (أو المدير الفرعي).",
     "the password provided by the (sub)admin" : "كلمة المرور المعطاة من قِبَل المدير (أو المدير الفرعي)",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "خلية LDAP node الخاصة بالمدير(أو المدير الفرعي) أو قاعدة المستخدمين user base التي تم تكوينها",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "يعمل دعم الكتابة على LDAP على إثراء واجهة LDAP الخلفية بإمكانيات إدارة دليل LDAP من داخل نكست كلاود. \n* إنشاء و تحرير وحذف المستخدمين \n* إنشاء وتعديل العضويات وحذف المجموعات \n* منع الرجوع إلى الواجهة الخلفية لقاعدة البيانات المحلية (اختياري) \n* إنشاء معرف مستخدم تلقائيًا (اختياري) \n* والمزيد من التبديلات في التصرفات"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "خلية LDAP node الخاصة بالمدير(أو المدير الفرعي) أو قاعدة المستخدمين user base التي تم تكوينها"
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"
 }

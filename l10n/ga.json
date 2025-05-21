@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "Teimpléad LDIF chun úsáideoirí a chruthú. Is féidir na háitsealbhóirí seo a leanas a úsáid",
     "the user id provided by the (sub)admin" : "an t-aitheantas úsáideora a sholáthraíonn an (fo)riarthóir",
     "the password provided by the (sub)admin" : "an pasfhocal a sholáthraíonn an (fo)riarthóir",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "nód LDAP an riarthóra gníomhaigh (fo) nó an bonn úsáideora cumraithe",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Saibhríonn an tacaíocht scríofa do LDAP inneall an LDAP le cumais chun an t-eolaire ó Nextcloud a bhainistiú.\n* úsáideoirí a chruthú, a chur in eagar agus a scriosadh\n* ballraíocht a chruthú, a mhodhnú agus grúpaí a scriosadh\n* cosc ​​a chur ar chúltaca chuig inneall an bhunachair shonraí áitiúil (roghnach)\n* giniúint uathoibríoch aitheantais úsáideora (roghnach)\n* agus lasca iompraíochta níos mó"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "nód LDAP an riarthóra gníomhaigh (fo) nó an bonn úsáideora cumraithe"
 },"pluralForm" :"nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);"
 }

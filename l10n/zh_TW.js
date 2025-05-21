@@ -22,7 +22,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "用於建立使用者的 LDIF 範本。可使用以下佔位字串",
     "the user id provided by the (sub)admin" : "由（子）管理員提供的使用者 ID",
     "the password provided by the (sub)admin" : "由（子）管理員提供的密碼",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理員或設定的使用者基礎的 LDAP 節點",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "對 LDAP 的寫入支援拓展了 LDAP 後端的功能，使其可以從 Nextcloud 中管理目錄。\n* 建立、編輯與刪除使用者\n* 建立、修改成員資格與刪除群組\n* 防止汰退回本機資料庫後端（選擇性）\n* 自動產生使用者 ID（選擇性）\n* 以及更多行為開關"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理員或設定的使用者基礎的 LDAP 節點"
 },
 "nplurals=1; plural=0;");

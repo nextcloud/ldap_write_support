@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "ئىشلەتكۈچى قۇرۇش ئۈچۈن LDIF ئەندىزىسى. تۆۋەندىكى ئورۇن ئىگىلىرىنى ئىشلىتىشكە بولىدۇ",
     "the user id provided by the (sub)admin" : "(تارماق) باشقۇرغۇچى تەمىنلىگەن ئىشلەتكۈچى كىملىكى",
     "the password provided by the (sub)admin" : "(تارماق) باشقۇرغۇچى تەمىنلىگەن پارول",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "ھەرىكەتچان (تارماق) باشقۇرغۇچىنىڭ LDAP تۈگۈنى ياكى سەپلەنگەن ئىشلەتكۈچى ئاساسى",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "LDAP نى يېزىش قوللىشى LDAP ئارقا سۇپىسىنى Nextcloud دىن مۇندەرىجىنى باشقۇرۇش ئىقتىدارى بىلەن بېيىتىدۇ.\n* ئىشلەتكۈچى قۇرۇش ، تەھرىرلەش ۋە ئۆچۈرۈش\n* ئەزا قۇرۇش ، ئۆزگەرتىش ۋە ئۆچۈرۈش\n* يەرلىك ساندان ئارقا سۇپىسىغا قايتىپ كېتىشنىڭ ئالدىنى ئالىدۇ (ئىختىيارىي)\n* ئىشلەتكۈچى ئىشلەتكۈچى ID ھاسىل قىلىدۇ (ئىختىيارى)\n* ۋە تېخىمۇ كۆپ ھەرىكەت ئالماشتۇرۇش"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "ھەرىكەتچان (تارماق) باشقۇرغۇچىنىڭ LDAP تۈگۈنى ياكى سەپلەنگەن ئىشلەتكۈچى ئاساسى"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

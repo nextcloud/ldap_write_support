@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "用于创建用户的 LDIF 模板，可以使用以下占位字符串",
     "the user id provided by the (sub)admin" : "由（子）管理员提供的用户 ID",
     "the password provided by the (sub)admin" : "由（子）管理员提供的密码",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理员或设置的用户基础的 LDAP 节点",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "对 LDAP 的写入支持扩展了 LDAP 后端的功能，使其能够直接从 Nextcloud 管理目录：\n· 创建、编辑和删除用户\n· 创建、修改成员资格和删除群组\n· 防止回退至本地数据库后端（可选）\n· 自动生成用户 ID（可选）\n· 以及更多可配置的行为开关"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "代理（子）管理员或设置的用户基础的 LDAP 节点"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
