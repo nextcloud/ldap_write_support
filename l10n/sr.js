@@ -22,7 +22,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "LDIF шаблон за креирање корисника. Могу да се користе следећи чувари места",
     "the user id provided by the (sub)admin" : "id корисника који обезбеђује (под)админ",
     "the password provided by the (sub)admin" : "лозинка коју обезбеђује (под)админ",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP чвор дејствујућег (под)админа или конфигурисана база корисника",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Подршка уписа у LDAP обогађује LDAP позадински механизам могућностима за управљање директоријумом из Nextcloud.\n* креирање уређивање и брисање корисника\n* креирање, измена чланства и брисање група\n* спречавање употребе позадинског механизма локалне базе података у крајњој нужди (није обавезно)\n* аутоматско генерисање id корисника (није обавезно)\n* и још прекидача понашања"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP чвор дејствујућег (под)админа или конфигурисана база корисника"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

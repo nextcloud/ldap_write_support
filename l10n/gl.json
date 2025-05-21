@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "Modelo LDIF para crear usuarios. Pódense empregar os seguintes marcadores de substitución",
     "the user id provided by the (sub)admin" : "o id de usuario fornecido por (sub)admin",
     "the password provided by the (sub)admin" : "o contrasinal fornecido por (sub)admin",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "o nodo LDAP da (sub)admin actuante ou a base de usuarios configurada",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "A compatibilidade de escritura para LDAP mellora a infraestrutura LDAP con capacidades para xestionar o directorio desde Nextcloud.\n* crear, editar e eliminar usuarios\n* crear, modificar pertenzas e eliminar grupos\n* evitar o retorno cara a infraestrutura da base de datos local (opcional)\n* xerar automaticamente un ID de usuario (opcional)\n* e máis conmutadores de comportamento"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "o nodo LDAP da (sub)admin actuante ou a base de usuarios configurada"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

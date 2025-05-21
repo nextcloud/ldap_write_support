@@ -20,7 +20,6 @@
     "LDIF template for creating users. Following placeholders may be used" : "LDIF-Vorlage für die Erstellung von Benutzern. Folgende Platzhalter können verwendet werden",
     "the user id provided by the (sub)admin" : "die vom (Sub-)Administrator bereitgestellte Benutzer-ID",
     "the password provided by the (sub)admin" : "das vom (Sub-)Administrator bereitgestellte Passwort",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "der LDAP-Knoten des amtierenden (Sub-)Administrators oder der konfigurierten Benutzerbasis",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Die Schreibunterstützung für LDAP erweitert das LDAP-Backend um Funktionen zur Verwaltung des Verzeichnisses von Nextcloud aus.\n* Benutzer erstellen, bearbeiten und löschen\n* Mitgliedschaften erstellen, ändern und Gruppen löschen\n* Fallback auf das lokale Datenbank-Backend verhindern (optional)\n* Automatisch eine Benutzer-ID generieren (optional)\n* und weitere Verhaltensschalter"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "der LDAP-Knoten des amtierenden (Sub-)Administrators oder der konfigurierten Benutzerbasis"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
