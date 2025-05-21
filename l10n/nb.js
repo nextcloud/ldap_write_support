@@ -22,7 +22,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "LDIF-mal for å opprette brukere. Følgende plassholdere kan bli brukt",
     "the user id provided by the (sub)admin" : "bruker-ID-en oppgitt av (uder)admin",
     "the password provided by the (sub)admin" : "passordet oppgitt av (under)admin",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP-noden til fungerende (under)administrator eller den konfigurerte brukerbasen",
-    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user id (optional)\n* and more behavioral switches" : "Skrivestøtten for LDAP beriker LDAP-backenden med muligheter til å administrere katalogen fra Nextcloud.\n* opprett, rediger og slett brukere\n* opprett, endre medlemskap og slett grupper\n* forhindre tilbakefall til den lokale databasen (valgfritt)\n* generer automatisk en bruker-ID (valgfritt)\n* og flere atferdsbrytere"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP-noden til fungerende (under)administrator eller den konfigurerte brukerbasen"
 },
 "nplurals=2; plural=(n != 1);");
