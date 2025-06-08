@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Kon de gerelateerde LDAP-invoer niet vinden",
+    "DisplayName change rejected" : "Wijziging DisplayName afgewezen",
+    "Write support for LDAP" : "Schrijfondersteuning voor LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Voegt ondersteuning toe voor het aanmaken, bewerken en verwijderen van gebruikers en groepen op LDAP via Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "De schrijfondersteuning voor LDAP verrijkt de LDAP-backend met mogelijkheden om de directory vanuit Nextcloud te beheren.\n* gebruikers aanmaken, bewerken en verwijderen\n* lidmaatschappen aanmaken, wijzigen en groepen verwijderen\n* terugval op de lokale database backend voorkomen (optioneel)\n* automatisch gebruikers-ID genereren (optioneel)\n* en meer gedragsinstellingen",
+    "Failed to set user template." : "Kon sjabloon voor gebruiker niet instellen.",
+    "Failed to set switch." : "Schakelaar niet in kunnen stellen.",
+    "Writing" : "Schrijven",
+    "Switches" : "Schakelaars",
+    "Prevent fallback to other backends when creating users or groups." : "Terugval naar andere backends voorkomen bij het aanmaken van gebruikers of groepen.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Om gebruikers aan te maken, moet de werkende (sub)beheerder worden geleverd door LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Een willekeurige gebruikers-ID moet worden gegenereerd, d.w.z. mag niet worden opgegeven door de (sub)admin.",
+    "An LDAP user must have an email address set." : "Een LDAP-gebruiker moet een e-mailadres hebben ingesteld.",
+    "Allow users to set their avatar" : "Gebruikers toestaan hun avatar in te stellen",
+    "Allow users to set their password" : "Gebruikers toestaan hun wachtwoord in te stellen",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Als de server de uitgebreide bewerking voor het wijzigen van het wachtwoord niet ondersteunt, gebruik dan het attribuut `unicodePwd` in plaats van `userPassword` om het wachtwoord in te stellen.",
+    "Use the `unicodePwd` attribute for setting the user password" : "Gebruik het attribuut `unicodePwd` om het gebruikerswachtwoord in te stellen",
+    "User template" : "Gebruikerssjabloon",
+    "LDIF template for creating users. Following placeholders may be used" : "LDIF-sjabloon voor het aanmaken van gebruikers. De volgende plaatsaanduidingen kunnen worden gebruikt.",
+    "the user id provided by the (sub)admin" : "de gebruikers-id die door de (sub)beheerder is aangeleverd",
+    "the password provided by the (sub)admin" : "het wactwoord dat door de (sub)admin is aangeleverd",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "het LDAP-knooppunt van de optredende (sub)beheerder of de geconfigureerde gebruikersbasis"
+},
+"nplurals=2; plural=(n != 1);");
