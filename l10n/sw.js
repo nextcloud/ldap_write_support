@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Haikuweza kupata ingizo la LDAP linalohusiana",
+    "DisplayName change rejected" : "Badiliko la DisplayName limekataliwa",
+    "Write support for LDAP" : "Andika msaada kwa LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Huongeza usaidizi wa kuunda, kudanganya na kufuta watumiaji na vikundi kwenye LDAP kupitia Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Usaidizi wa uandishi wa LDAP huboresha mazingira ya nyuma ya LDAP na uwezo wa kudhibiti saraka kutoka Nextcloud.\n* tengeneza, hariri na ufute watumiaji\n* unda, rekebisha uanachama na ufute vikundi\n* zuia kurudi nyuma kwa hifadhidata ya ndani (hiari)\n* toa kitambulisho cha mtumiaji kiotomatiki (hiari)\n* na swichi zaidi za tabia",
+    "Failed to set user template." : "Imeshindwa kuweka kiolezo cha mtumiaji.",
+    "Failed to set switch." : "Imeshindwa kuweka swichi.",
+    "Writing" : "Kuandika",
+    "Switches" : "Vibadilishi",
+    "Prevent fallback to other backends when creating users or groups." : "Zuia kurudi nyuma kwa matumizi mengine ya nyuma wakati wa kuunda watumiaji au vikundi.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Ili kuunda watumiaji, msimamizi (mdogo) anayeigiza lazima atolewe na LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Kitambulisho cha mtumiaji bila mpangilio lazima kitengenezwe, yaani, hakitolewi na (mdogo).",
+    "An LDAP user must have an email address set." : "Mtumiaji wa LDAP lazima awe na anwani ya barua pepe iliyowekwa.",
+    "Allow users to set their avatar" : "Ruhusu watumiaji kuweka avatar yao",
+    "Allow users to set their password" : "Ruhusu watumiaji kuweka nenosiri lao",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Ikiwa seva haiauni utendakazi uliopanuliwa wa nenosiri tumia `unicodePwd` badala ya sifa ya `userPassword` kwa kuweka nenosiri.",
+    "Use the `unicodePwd` attribute for setting the user password" : "Tumia sifa ya `unicodePwd` kuweka nenosiri la mtumiaji",
+    "User template" : "Kiolezo cha mtumiaji",
+    "LDIF template for creating users. Following placeholders may be used" : "Kiolezo cha LDIF cha kuunda watumiaji. Vishika nafasi vifuatavyo vinaweza kutumika",
+    "the user id provided by the (sub)admin" : "kitambulisho cha mtumiaji kilichotolewa na (ndogo) msimamizi",
+    "the password provided by the (sub)admin" : "nenosiri lililotolewa na (ndogo) msimamizi",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "nodi ya LDAP ya msimamizi anayeigiza (ndogo) au msingi wa mtumiaji aliyesanidiwa"
+},
+"nplurals=2; plural=(n != 1);");
