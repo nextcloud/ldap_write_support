@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Nie można znaleźć powiązanego wpisu LDAP",
+    "DisplayName change rejected" : "Odrzucono zmianę DisplayName",
+    "Write support for LDAP" : "Obsługa zapisu dla LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Dodaje obsługę tworzenia, modyfikowania i usuwania użytkowników oraz grup w LDAP przez Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Obsługa zapisu dla LDAP wzbogaca backend LDAP o możliwości zarządzania katalogiem z poziomu Nextcloud: \n* tworzenie, edytowanie i usuwanie użytkowników, \n* tworzenie, modyfikowanie członkostw i usuwanie grup, \n* zapobieganie przełączaniu na lokalną bazę danych (opcjonalne), \n* automatyczne generowanie identyfikatora użytkownika (opcjonalne) \n* oraz inne przełączniki zachowań",
+    "Failed to set user template." : "Nie udało się ustawić szablonu użytkownika",
+    "Failed to set switch." : "Nie udało się ustawić przełącznika.",
+    "Writing" : "Zapisywanie",
+    "Switches" : "Przełączniki",
+    "Prevent fallback to other backends when creating users or groups." : "Zapobiegaj przełączaniu na inne backendy podczas tworzenia użytkowników lub grup.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Aby tworzyć użytkowników, działający (zastępca) administrator musi być dostarczony przez LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Losowy identyfikator użytkownika musi być wygenerowany, tzn. nie może być dostarczony przez (zastępcę) administratora.",
+    "An LDAP user must have an email address set." : "Użytkownik LDAP musi mieć ustawiony adres e-mail.",
+    "Allow users to set their avatar" : "Zezwalaj użytkownikom na ustawianie awatara",
+    "Allow users to set their password" : "Zezwalaj użytkownikom na ustawianie hasła",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Jeśli serwer nie obsługuje rozszerzonej operacji zmiany hasła, użyj atrybutu 'unicodePwd' zamiast 'userPassword' do ustawienia hasła",
+    "Use the `unicodePwd` attribute for setting the user password" : "Użyj atrybutu 'unicodePwd' do ustawienia hasła użytkownika",
+    "User template" : "Szablon użytkownika",
+    "LDIF template for creating users. Following placeholders may be used" : "Szablon LDIF do tworzenia użytkowników. Mogą być użyte następujące znaczniki zastępcze",
+    "the user id provided by the (sub)admin" : "Identyfikator użytkownika dostarczony przez (zastępcę) administratora",
+    "the password provided by the (sub)admin" : "Hasło dostarczone przez (zastępcę) administratora",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "Węzeł LDAP działającego (zastępcy) administratora lub skonfigurowanej bazy użytkowników"
+},
+"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");
