@@ -2,6 +2,18 @@
   - SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
+# 1.14.0 - 21 Aug 2025
+
+- Support for Nextcloud 32
+
+# 1.13.0 - 20 Feb 2025
+
+- Support for Nextcloud 31
+
+# 1.12.1 - 18 Feb 2025
+
+- Fix UI
+
 # 1.12.0 - 20 Aug 2024
 
 - Support for Nextcloud 30
