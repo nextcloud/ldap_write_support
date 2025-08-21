@@ -38,7 +38,7 @@ case $input in
         sed -i -E "s|^\t<version>.+</version>|\t<version>$version</version>|" appinfo/info.xml
 
         # Add changed files to git
-        # git add CHANGELOG.md
+        git add CHANGELOG.md
         git add appinfo/info.xml
 
         # Bump npm version, commit and tag
