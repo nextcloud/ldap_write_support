@@ -2,7 +2,7 @@
     "name": "nextcloud/ldap_write_support",
     "type": "project",
     "require-dev": {
-        "nextcloud/ocp": "dev-master",
+        "nextcloud/ocp": "dev-stable32",
         "bamarni/composer-bin-plugin": "^1.8"
     },
     "scripts": {
