@@ -16,7 +16,7 @@
 * auto generate a user ID (optional)
 * and more behavioral switches
     ]]></description>
-    <version>2.0.0-dev.0</version>
+    <version>1.15.0-dev.0</version>
     <licence>agpl</licence>
     <author mail="alan@eita.org.br" homepage="http://eita.org.br">Alan Freihof Tygel</author>
     <author mail="blizzz@arthur-schiwon.de" homepage="https://arthur-schiwon.de">Arthur Schiwon</author>
