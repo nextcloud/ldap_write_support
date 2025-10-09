@@ -19,7 +19,7 @@ OC.L10N.register(
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Sunucu, parolayı değiştirme ek işlemini desteklemiyorsa, parolayı ayarlamak için `userPassword` özniteliği yerine `unicodePwd` özniteliğini kullanın",
     "Use the `unicodePwd` attribute for setting the user password" : "Kullanıcı parolasını ayarlamak için `unicodePwd` özniteliğini kullanın",
     "User template" : "Kullanıcı kalıbı",
-    "LDIF template for creating users. Following placeholders may be used" : "Kullanıcı oluşturmak için LDIF kalıbı. Aşağıdaki kodlar kullanılabilir",
+    "LDIF template for creating users. Following placeholders may be used" : "Kullanıcı oluşturmak için LDIF kalıbı. Şu kodlar kullanılabilir",
     "the user id provided by the (sub)admin" : "(alt) yönetici tarafından sağlanan kullanıcı kimliği",
     "the password provided by the (sub)admin" : "(alt) yönetici tarafından sağlanan parola",
     "the LDAP node of the acting (sub)admin or the configured user base" : "işlemi yapan (alt) yöneticinin veya yapılandırılmış kullanıcı tabanının LDAP düğümü"
