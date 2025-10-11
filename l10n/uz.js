@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Tegishli LDAP yozuvi topilmadi",
+    "DisplayName change rejected" : "DisplayName oʻzgarishi rad etildi",
+    "Write support for LDAP" : "LDAP uchun yordam yozing",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Nextcloud orqali LDAP-da foydalanuvchilar va guruhlarni yaratish, manipulyatsiya qilish va o'chirish uchun yordam qo'shadi",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "LDAP uchun yozishni qo'llab-quvvatlash LDAP backendini Nextcloud-dan katalogni boshqarish imkoniyatlari bilan boyitadi.\n* foydalanuvchilarni yaratish, tahrirlash va o'chirish\n* aʼzoliklarni yaratish, oʻzgartirish va guruhlarni oʻchirish\n* mahalliy ma'lumotlar bazasiga qaytishni oldini olish (ixtiyoriy)\n* foydalanuvchi identifikatorini avtomatik yaratish (ixtiyoriy)\n* va boshqa xatti-harakatlar kalitlari",
+    "Failed to set user template." : "Foydalanuvchi shablonini o‘rnatib bo‘lmadi.",
+    "Failed to set switch." : "Kalitni o‘rnatib bo‘lmadi.",
+    "Writing" : "Yozish",
+    "Switches" : "Kalitlar",
+    "Prevent fallback to other backends when creating users or groups." : "Foydalanuvchilar yoki guruhlarni yaratishda boshqa backendlarga qaytishni oldini olish.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Foydalanuvchilarni yaratish uchun amaldagi (sub) administrator LDAP tomonidan taqdim etilishi kerak.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Tasodifiy foydalanuvchi identifikatori yaratilishi kerak, ya'ni (sub) administrator tomonidan taqdim etilmaydi.",
+    "An LDAP user must have an email address set." : "LDAP foydalanuvchisi o'rnatilgan elektron pochta manziliga ega bo'lishi kerak.",
+    "Allow users to set their avatar" : "Foydalanuvchilarga o'z avatarini o'rnatishga ruxsat bering",
+    "Allow users to set their password" : "Foydalanuvchilarga o'z parollarini o'rnatishga ruxsat bering",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Agar server parolni o'zgartirish kengaytirilgan operatsiyani qo'llab-quvvatlamasa, parolni o'rnatish uchun \"userPassword\" atributi o'rniga \"unicodePwd\" dan foydalaning.",
+    "Use the `unicodePwd` attribute for setting the user password" : "Foydalanuvchi parolini o'rnatish uchun \"unicodePwd\" atributidan foydalaning",
+    "User template" : "Foydalanuvchi shabloni",
+    "LDIF template for creating users. Following placeholders may be used" : "Foydalanuvchilarni yaratish uchun LDIF shabloni. Quyidagi to'ldiruvchilardan foydalanish mumkin",
+    "the user id provided by the (sub)admin" : "(sub) administrator tomonidan taqdim etilgan foydalanuvchi identifikatori",
+    "the password provided by the (sub)admin" : "(sub) administrator tomonidan taqdim etilgan parol",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "amaldagi (sub) administratorning LDAP tuguni yoki sozlangan foydalanuvchi bazasi"
+},
+"nplurals=1; plural=0;");
