@@ -8,7 +8,7 @@ ROOT_DIR=${APP_INTEGRATION_DIR}/../../../..
 
 # Nextcloud integration tests composer
 (
-    cd ${ROOT_DIR}/build/integration
+    cd ${ROOT_DIR}
     composer install
 )
 
