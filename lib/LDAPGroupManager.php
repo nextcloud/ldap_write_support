@@ -48,10 +48,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		if (!$this->ldapConnect->groupsEnabled()) {
 			return 0;
 		}
-		return GroupInterface::CREATE_GROUP |
-			GroupInterface::DELETE_GROUP |
-			GroupInterface::ADD_TO_GROUP |
-			GroupInterface::REMOVE_FROM_GROUP;
+		return GroupInterface::CREATE_GROUP
+			| GroupInterface::DELETE_GROUP
+			| GroupInterface::ADD_TO_GROUP
+			| GroupInterface::REMOVE_FROM_GROUP;
 	}
 
 	/**
