@@ -69,10 +69,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			? Backend::SET_PASSWORD
 			: 0;
 
-		return Backend::SET_DISPLAYNAME |
-			Backend::PROVIDE_AVATAR |
-			Backend::CREATE_USER |
-			$setPassword;
+		return Backend::SET_DISPLAYNAME
+			| Backend::PROVIDE_AVATAR
+			| Backend::CREATE_USER
+			| $setPassword;
 	}
 
 	/**
@@ -450,7 +450,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 				if (ldap_mod_replace($connection, $userDN, $entry)) {
 					return true;
 				}
-				
+
 				$message = 'Failed to set password for user {dn} using ldap_mod_replace';
 				$this->logger->error($message, [
 					'ldap_error' => ldap_error($connection),

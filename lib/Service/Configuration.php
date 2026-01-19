@@ -49,12 +49,12 @@ class Configuration {
 
 	public function getUserTemplateDefault() {
 		return
-			'dn: uid={UID},{BASE}' . PHP_EOL .
-			'objectClass: inetOrgPerson' . PHP_EOL .
-			'uid: {UID}' . PHP_EOL .
-			'displayName: {UID}' . PHP_EOL .
-			'cn: {UID}' . PHP_EOL .
-			'sn: {UID}';
+			'dn: uid={UID},{BASE}' . PHP_EOL
+			. 'objectClass: inetOrgPerson' . PHP_EOL
+			. 'uid: {UID}' . PHP_EOL
+			. 'displayName: {UID}' . PHP_EOL
+			. 'cn: {UID}' . PHP_EOL
+			. 'sn: {UID}';
 	}
 
 	public function isRequireEmail(): bool {
