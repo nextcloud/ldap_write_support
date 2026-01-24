@@ -1,0 +1,25 @@
+{ "translations": {
+    "Could not find related LDAP entry" : "Tidak dapat menemukan entri LDAP terkait",
+    "DisplayName change rejected" : "Perubahan DisplayName ditolak",
+    "Write support for LDAP" : "Dukungan tulis untuk LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Menambahkan dukungan untuk membuat, memanipulasi, dan menghapus pengguna serta grup di LDAP melalui Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Dukungan tulis untuk LDAP memperkaya backend LDAP dengan kemampuan untuk mengelola direktori dari Nextcloud.\n* membuat, mengedit, dan menghapus pengguna\n* membuat, mengubah keanggotaan, dan menghapus grup\n* mencegah fallback ke backend basis data lokal (opsional)\n* membuat ID pengguna secara otomatis (opsional)\n* dan lebih banyak pengalihan perilaku",
+    "Failed to set user template." : "Gagal menyetel templat pengguna.",
+    "Failed to set switch." : "Gagal menyetel pengalihan.",
+    "Writing" : "Penulisan",
+    "Switches" : "Pengalihan",
+    "Prevent fallback to other backends when creating users or groups." : "Cegah fallback ke backend lain saat membuat pengguna atau grup.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Untuk membuat pengguna, (sub)admin yang bertindak harus disediakan oleh LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "ID pengguna acak harus dibuat, yaitu tidak disediakan oleh (sub)admin.",
+    "An LDAP user must have an email address set." : "Pengguna LDAP harus memiliki alamat email yang disetel.",
+    "Allow users to set their avatar" : "Izinkan pengguna menyetel avatar mereka",
+    "Allow users to set their password" : "Izinkan pengguna menyetel kata sandi mereka",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Jika server tidak mendukung operasi extended modify password gunakan `unicodePwd` alih-alih atribut `userPassword` untuk menyetel kata sandi",
+    "Use the `unicodePwd` attribute for setting the user password" : "Gunakan atribut `unicodePwd` untuk menyetel kata sandi pengguna",
+    "User template" : "Templat pengguna",
+    "LDIF template for creating users. Following placeholders may be used" : "Templat LDIF untuk membuat pengguna. Placeholder berikut dapat digunakan",
+    "the user id provided by the (sub)admin" : "ID pengguna yang disediakan oleh (sub)admin",
+    "the password provided by the (sub)admin" : "Kata sandi yang disediakan oleh (sub)admin",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "Node LDAP dari (sub)admin yang bertindak atau basis pengguna yang dikonfigurasi"
+},"pluralForm" :"nplurals=1; plural=0;"
+}
