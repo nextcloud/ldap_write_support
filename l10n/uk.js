@@ -14,7 +14,7 @@ OC.L10N.register(
     "To create users, the acting (sub)admin has to be provided by LDAP." : "Для створення користувачів, діючий (суб-)адміністратор повинен бути наданий LDAP.",
     "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Ідентифікатор користувача має бути згенерований випадковим чином, тобто не наданий (під)адміністратором.",
     "An LDAP user must have an email address set." : "Користувач LDAP повинен мати встановлену адресу електронної пошти.",
-    "Allow users to set their avatar" : "Дозвольте користувачам встановлювати свій аватар",
+    "Allow users to set their avatar" : "Дозволити користувачам встановлювати аватарки",
     "Allow users to set their password" : "Дозвольте користувачам встановлювати свій пароль",
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Якщо сервер не підтримує розширену операцію зміни пароля, використовуйте атрибут `unicodePwd` замість атрибуту `userPassword` для встановлення пароля.",
     "Use the `unicodePwd` attribute for setting the user password" : "Використовуйте атрибут `unicodePwd` для встановлення пароля користувача",
