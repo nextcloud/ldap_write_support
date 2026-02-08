@@ -116,17 +116,17 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
-			case 'memberUid':
+		switch (strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid))) {
+			case 'memberuid':
 				$entry['memberuid'] = $uid;
 				break;
-			case 'uniqueMember':
+			case 'uniquemember':
 				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'member':
 				$entry['member'] = $this->ldapProvider->getUserDN($uid);
 				break;
-			case 'gidNumber':
+			case 'gidnumber':
 				throw new Exception('Cannot add to group when gidNumber is used as relation');
 				break;
 		}
@@ -156,17 +156,17 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
-			case 'memberUid':
+		switch (strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid))) {
+			case 'memberuid':
 				$entry['memberuid'] = $uid;
 				break;
-			case 'uniqueMember':
+			case 'uniquemember':
 				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
 				break;
 			case 'member':
 				$entry['member'] = $this->ldapProvider->getUserDN($uid);
 				break;
-			case 'gidNumber':
+			case 'gidnumber':
 				throw new Exception('Cannot remove from group when gidNumber is used as relation');
 		}
 
