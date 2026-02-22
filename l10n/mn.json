@@ -1,0 +1,5 @@
+{ "translations": {
+    "Could not find related LDAP entry" : "Холбоотой LDAP бичлэг олдсонгүй",
+    "DisplayName change rejected" : "Харуулах нэр өөрчлөлтийг татгалзлаа"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
