@@ -64,6 +64,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @return int bitwise-or'ed actions
 	 */
+	#[\Override]
 	public function respondToActions() {
 		$setPassword = $this->canSetPassword() && !$this->ldapConnect->hasPasswordPolicy()
 			? Backend::SET_PASSWORD
@@ -83,6 +84,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @throws HintException
 	 * @throws ServerNotAvailableException
 	 */
+	#[\Override]
 	public function setDisplayName($uid, $displayName) {
 		$userDN = $this->getUserDN($uid);
 
@@ -123,6 +125,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param string $uid the Nextcloud user name
 	 * @return bool either the user can or cannot
 	 */
+	#[\Override]
 	public function canChangeAvatar($uid) {
 		return $this->configuration->hasAvatarPermission();
 	}
@@ -175,6 +178,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @return bool|string the created user of false
 	 * @throws Exception
 	 */
+	#[\Override]
 	public function createUser($uid, $password) {
 		$adminUser = $this->userSession->getUser();
 		$requireActorFromLDAP = $this->configuration->isLdapActorRequired();
@@ -335,6 +339,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * Change the password of a user
 	 */
+	#[\Override]
 	public function setPassword($uid, $password) {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 		$userDN = $this->getUserDN($uid);
@@ -348,6 +353,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param string $uid the username
 	 * @return bool
 	 */
+	#[\Override]
 	public function getHome($uid) {
 		// Not implemented
 		return false;
@@ -359,6 +365,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @param string $uid user ID of the user
 	 * @return string display name
 	 */
+	#[\Override]
 	public function getDisplayName($uid) {
 		// Not implemented
 		return $uid;
@@ -369,6 +376,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @return int|bool
 	 */
+	#[\Override]
 	public function countUsers() {
 		// Not implemented
 		return false;

@@ -23,11 +23,13 @@ class Application extends App implements IBootstrap {
 		parent::__construct(self::APP_ID, $urlParams);
 	}
 
+	#[\Override]
 	public function register(IRegistrationContext $context): void {
 		$context->registerEventListener(UserBackendRegistered::class, UserBackendRegisteredListener::class);
 		$context->registerEventListener(GroupBackendRegistered::class, GroupBackendRegisteredListener::class);
 	}
 
+	#[\Override]
 	public function boot(IBootContext $context): void {
 	}
 }

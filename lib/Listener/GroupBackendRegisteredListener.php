@@ -31,6 +31,7 @@ class GroupBackendRegisteredListener implements IEventListener {
 	/**
 	 * @inheritDoc
 	 */
+	#[\Override]
 	public function handle(Event $event): void {
 		if (!$event instanceof GroupBackendRegistered
 			|| !$this->appManager->isEnabledForUser('user_ldap')
