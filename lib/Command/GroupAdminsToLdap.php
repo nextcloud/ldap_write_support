@@ -51,6 +51,7 @@ class GroupAdminsToLdap extends Command {
 		$this->groupProxy = $groupProxy;
 	}
 
+	#[\Override]
 	protected function configure() {
 		$this
 			->setName('ldap-ext:sync-group-admins')
@@ -70,6 +71,7 @@ class GroupAdminsToLdap extends Command {
 		;
 	}
 
+	#[\Override]
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if ($input->getOption('sim')) {
 			$this->simulate = true;

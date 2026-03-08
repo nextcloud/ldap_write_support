@@ -30,6 +30,7 @@ class Admin implements ISettings {
 	 * @return TemplateResponse returns the instance with all parameters set, ready to be rendered
 	 * @since 9.1
 	 */
+	#[\Override]
 	public function getForm() {
 		$this->initialStateService->provideInitialState(
 			'templates',
@@ -61,6 +62,7 @@ class Admin implements ISettings {
 	 * @return string the section ID, e.g. 'sharing'
 	 * @since 9.1
 	 */
+	#[\Override]
 	public function getSection() {
 		return 'ldap';
 	}
@@ -73,6 +75,7 @@ class Admin implements ISettings {
 	 * E.g.: 70
 	 * @since 9.1
 	 */
+	#[\Override]
 	public function getPriority() {
 		return 35;
 	}

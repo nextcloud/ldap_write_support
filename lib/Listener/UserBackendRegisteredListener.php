@@ -31,6 +31,7 @@ class UserBackendRegisteredListener implements IEventListener {
 	/**
 	 * @inheritDoc
 	 */
+	#[\Override]
 	public function handle(Event $event): void {
 		if (!$event instanceof UserBackendRegistered
 			|| !$this->appManager->isEnabledForUser('user_ldap')
