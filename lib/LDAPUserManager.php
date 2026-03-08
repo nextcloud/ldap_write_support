@@ -12,7 +12,6 @@ use Exception;
 use LDAP\Connection;
 use OC\ServerNotAvailableException;
 use OC\User\Backend;
-use OC_User;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\LdapWriteSupport\Service\Configuration;
 use OCA\User_LDAP\Exceptions\ConstraintViolationException;
@@ -29,31 +28,15 @@ use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
 
 class LDAPUserManager implements ILDAPUserPlugin {
-	/** @var ILDAPProvider */
-	private $ldapProvider;
-
-	/** @var IUserSession */
-	private $userSession;
-
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IL10N */
-	private $l10n;
-
 	public function __construct(
-		IUserManager $userManager,
-		IUserSession $userSession,
+		private IUserManager $userManager,
+		private IUserSession $userSession,
 		private LDAPConnect $ldapConnect,
-		ILDAPProvider $LDAPProvider,
+		private ILDAPProvider $ldapProvider,
 		private Configuration $configuration,
-		IL10N $l10n,
+		private IL10N $l10n,
 		private LoggerInterface $logger,
 	) {
-		$this->userManager = $userManager;
-		$this->userSession = $userSession;
-		$this->ldapProvider = $LDAPProvider;
-		$this->l10n = $l10n;
-
 		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
 		$this->makeLdapBackendFirst();
 	}
@@ -388,7 +371,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		$this->userManager->clearBackends();
 		foreach ($backends as $backend) {
 			if ($backend instanceof IUserLDAP) {
-				OC_User::useBackend($backend);
+				$this->userManager->registerBackend($backend);
 			} else {
 				$otherBackends[] = $backend;
 			}
@@ -396,7 +379,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 
 		#insert other backends: database, etc
 		foreach ($otherBackends as $backend) {
-			OC_User::useBackend($backend);
+			$this->userManager->registerBackend($backend);
 		}
 	}
 
