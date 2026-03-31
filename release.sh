@@ -35,7 +35,7 @@ case $input in
     [yY][eE][sS]|[yY])
         echo "You say Yes"
         # Bump version in info.xml
-        sed -i -E "s|^\t<version>.+</version>|\t<version>$version</version>|" appinfo/info.xml
+        sed -i -E "s|^([ \t]+)<version>.+</version>|\1<version>$version</version>|" appinfo/info.xml
 
         # Add changed files to git
         git add CHANGELOG.md
