@@ -9,7 +9,6 @@
 namespace OCA\LdapWriteSupport;
 
 use Exception;
-use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Group_Proxy;
 use OCA\User_LDAP\ILDAPGroupPlugin;
 use OCP\GroupInterface;
@@ -18,21 +17,12 @@ use OCP\LDAP\ILDAPProvider;
 use Psr\Log\LoggerInterface;
 
 class LDAPGroupManager implements ILDAPGroupPlugin {
-	/** @var ILDAPProvider */
-	private $ldapProvider;
-
-	/** @var IGroupManager */
-	private $groupManager;
-
 	public function __construct(
-		IGroupManager $groupManager,
+		private IGroupManager $groupManager,
 		private LDAPConnect $ldapConnect,
 		private LoggerInterface $logger,
-		ILDAPProvider $LDAPProvider,
+		private ILDAPProvider $ldapProvider,
 	) {
-		$this->groupManager = $groupManager;
-		$this->ldapProvider = $LDAPProvider;
-
 		if ($this->ldapConnect->groupsEnabled()) {
 			$this->makeLdapBackendFirst();
 		}
@@ -44,7 +34,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 *
 	 * @return int bitwise-or'ed actions
 	 */
-	public function respondToActions() {
+	public function respondToActions(): int {
 		if (!$this->ldapConnect->groupsEnabled()) {
 			return 0;
 		}
@@ -56,9 +46,8 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 
 	/**
 	 * @param string $gid
-	 * @return string|null
 	 */
-	public function createGroup($gid) {
+	public function createGroup($gid): ?string {
 		/**
 		 * FIXME could not create group using LDAPProvider, because its methods rely
 		 * on passing an already inserted [ug]id, which we do not have at this point.
@@ -70,12 +59,10 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		$newGroupDN = $this->ldapProvider->sanitizeDN([$newGroupDN])[0];
 
 		if ($connection && ($ret = ldap_add($connection, $newGroupDN, $newGroupEntry))) {
-			$message = "Create LDAP group '$gid' ($newGroupDN)";
-			$this->logger->notice($message, ['app' => Application::APP_ID]);
+			$this->logger->notice("Create LDAP group '$gid' ($newGroupDN)");
 			return $newGroupDN;
 		} else {
-			$message = "Unable to create LDAP group '$gid' ($newGroupDN)";
-			$this->logger->error($message, ['app' => Application::APP_ID]);
+			$this->logger->error("Unable to create LDAP group '$gid' ($newGroupDN)");
 			return null;
 		}
 	}
@@ -84,19 +71,16 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 * delete a group
 	 *
 	 * @param string $gid gid of the group to delete
-	 * @return bool
 	 * @throws Exception
 	 */
-	public function deleteGroup($gid) {
+	public function deleteGroup($gid): bool {
 		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		if (!$ret = ldap_delete($connection, $groupDN)) {
-			$message = 'Unable to delete LDAP Group: ' . $gid;
-			$this->logger->error($message, ['app' => Application::APP_ID]);
+			$this->logger->error('Unable to delete LDAP Group: ' . $gid);
 		} else {
-			$message = 'Delete LDAP Group: ' . $gid;
-			$this->logger->notice($message, ['app' => Application::APP_ID]);
+			$this->logger->notice('Delete LDAP Group: ' . $gid);
 		}
 		return $ret;
 	}
@@ -106,37 +90,35 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 *
 	 * @param string $uid Name of the user to add to group
 	 * @param string $gid Name of the group in which add the user
-	 * @return bool
 	 *
 	 * Adds a LDAP user to a LDAP group.
 	 * @throws Exception
 	 */
-	public function addToGroup($uid, $gid) {
+	public function addToGroup($uid, $gid): bool {
 		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
-			case 'memberUid':
-				$entry['memberuid'] = $uid;
+		$attribute = strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid));
+		switch ($attribute) {
+			case 'memberuid':
+				$entry[$attribute] = $uid;
 				break;
-			case 'uniqueMember':
-				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
-				break;
-			case 'member':
-				$entry['member'] = $this->ldapProvider->getUserDN($uid);
-				break;
-			case 'gidNumber':
+			case 'gidnumber':
 				throw new Exception('Cannot add to group when gidNumber is used as relation');
+				break;
+			default:
+				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+			case 'uniquemember':
+			case 'member':
+				$entry[$attribute] = $this->ldapProvider->getUserDN($uid);
 				break;
 		}
 
 		if (!$ret = ldap_mod_add($connection, $groupDN, $entry)) {
-			$message = 'Unable to add user ' . $uid . ' to group ' . $gid;
-			$this->logger->error($message, ['app' => Application::APP_ID]);
+			$this->logger->error('Unable to add user ' . $uid . ' to group ' . $gid);
 		} else {
-			$message = 'Add user: ' . $uid . ' to group: ' . $gid;
-			$this->logger->notice($message, ['app' => Application::APP_ID]);
+			$this->logger->notice('Add user: ' . $uid . ' to group: ' . $gid);
 		}
 		return $ret;
 	}
@@ -146,46 +128,45 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 	 *
 	 * @param string $uid Name of the user to remove from group
 	 * @param string $gid Name of the group from which remove the user
-	 * @return bool
 	 *
 	 * removes the user from a group.
 	 * @throws Exception
 	 */
-	public function removeFromGroup($uid, $gid) {
+	public function removeFromGroup($uid, $gid): bool {
 		$connection = $this->ldapProvider->getGroupLDAPConnection($gid);
 		$groupDN = $this->ldapProvider->getGroupDN($gid);
 
 		$entry = [];
-		switch ($this->ldapProvider->getLDAPGroupMemberAssoc($gid)) {
-			case 'memberUid':
-				$entry['memberuid'] = $uid;
+		$attribute = strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid));
+		switch ($attribute) {
+			case 'memberuid':
+				$entry[$attribute] = $uid;
 				break;
-			case 'uniqueMember':
-				$entry['uniquemember'] = $this->ldapProvider->getUserDN($uid);
-				break;
-			case 'member':
-				$entry['member'] = $this->ldapProvider->getUserDN($uid);
-				break;
-			case 'gidNumber':
+			case 'gidnumber':
 				throw new Exception('Cannot remove from group when gidNumber is used as relation');
+				break;
+			default:
+				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+			case 'uniquemember':
+			case 'member':
+				$entry[$attribute] = $this->ldapProvider->getUserDN($uid);
+				break;
 		}
 
 		if (!$ret = ldap_mod_del($connection, $groupDN, $entry)) {
-			$message = 'Unable to remove user: ' . $uid . ' from group: ' . $gid;
-			$this->logger->error($message, ['app' => Application::APP_ID]);
+			$this->logger->error('Unable to remove user: ' . $uid . ' from group: ' . $gid);
 		} else {
-			$message = 'Remove user: ' . $uid . ' from group: ' . $gid;
-			$this->logger->notice($message, ['app' => Application::APP_ID]);
+			$this->logger->notice('Remove user: ' . $uid . ' from group: ' . $gid);
 		}
 		return $ret;
 	}
 
 
-	public function countUsersInGroup($gid, $search = '') {
+	public function countUsersInGroup($gid, $search = ''): bool {
 		return false;
 	}
 
-	public function getGroupDetails($gid) {
+	public function getGroupDetails($gid): bool {
 		return false;
 	}
 
@@ -197,12 +178,26 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		}
 	}
 
-	private function buildNewEntry($gid): array {
-		return [
-			'objectClass' => ['groupOfNames', 'top'],
+	private function buildNewEntry(string $gid): array {
+		$entry = [
+			'objectClass' => [],
 			'cn' => $gid,
-			'member' => ['']
 		];
+		$attribute = strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid));
+		switch ($attribute) {
+			case 'memberuid':
+			case 'gidnumber':
+				$entry['objectClass'][] = 'posixGroup';
+				break;
+			default:
+				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+			case 'uniquemember':
+			case 'member':
+				$entry['objectClass'][] = 'groupOfNames';
+				$entry[$attribute] = [''];
+				break;
+		}
+		return $entry;
 	}
 
 	public function makeLdapBackendFirst(): void {
