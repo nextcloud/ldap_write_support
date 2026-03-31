@@ -53,7 +53,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		 * on passing an already inserted [ug]id, which we do not have at this point.
 		 */
 
-		$newGroupEntry = $this->buildNewEntry($gid);
+		$newGroupEntry = $this->buildNewEntry($gid, $this->ldapConnect->getGroupMemberAssocAttribute());
 		$connection = $this->ldapConnect->getLDAPConnection();
 		$newGroupDN = "cn=$gid," . $this->ldapConnect->getLDAPBaseGroups()[0];
 		$newGroupDN = $this->ldapProvider->sanitizeDN([$newGroupDN])[0];
@@ -178,12 +178,11 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		}
 	}
 
-	private function buildNewEntry(string $gid): array {
+	private function buildNewEntry(string $gid, string $attribute): array {
 		$entry = [
 			'objectClass' => [],
 			'cn' => $gid,
 		];
-		$attribute = strtolower($this->ldapProvider->getLDAPGroupMemberAssoc($gid));
 		switch ($attribute) {
 			case 'memberuid':
 			case 'gidnumber':
