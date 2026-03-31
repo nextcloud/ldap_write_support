@@ -122,6 +122,10 @@ class LDAPConnect {
 		return $this->ldapConfig->ldapUserDisplayName;
 	}
 
+	public function getGroupMemberAssocAttribute(): string {
+		return strtolower($this->ldapConfig->ldapGroupMemberAssocAttr);
+	}
+
 	public function groupsEnabled(): bool {
 		$filter = trim((string)$this->ldapConfig->ldapGroupFilter);
 		$gAssoc = trim((string)$this->ldapConfig->ldapGroupMemberAssocAttr);
