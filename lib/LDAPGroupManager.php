@@ -109,6 +109,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				break;
 			default:
 				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+				// no break
 			case 'uniquemember':
 			case 'member':
 				$entry[$attribute] = $this->ldapProvider->getUserDN($uid);
@@ -147,6 +148,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				break;
 			default:
 				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+				// no break
 			case 'uniquemember':
 			case 'member':
 				$entry[$attribute] = $this->ldapProvider->getUserDN($uid);
@@ -190,6 +192,7 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 				break;
 			default:
 				$this->logger->notice('Unexpected attribute {attribute} as group member association.', ['attribute' => $attribute]);
+				// no break
 			case 'uniquemember':
 			case 'member':
 				$entry['objectClass'][] = 'groupOfNames';
