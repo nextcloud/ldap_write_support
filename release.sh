@@ -7,8 +7,8 @@
 set -e
 
 # Use version from changelog
-# version=$(head -n1 CHANGELOG.md|cut -d"v" -f2);
-version=$1
+version=$(grep '#' CHANGELOG.md|head -n1|cut -d" " -f2);
+# version=$1
 echo "Releasing version $version";
 
 # Ask for confirmation
