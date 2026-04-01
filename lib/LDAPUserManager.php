@@ -84,7 +84,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			);
 		}
 
-		if (!is_resource($connection) && !is_object($connection)) {
+		if (!is_object($connection)) {
 			$this->logger->debug('LDAP resource not available', ['app' => 'ldap_write_support']);
 			throw new ServerNotAvailableException('LDAP server is not available');
 		}
@@ -253,7 +253,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		foreach ($lines as $line) {
 			$split = explode(':', $line, 2);
 			$key = trim($split[0]);
-			$value = trim($split[1]);
+			$value = trim($split[1] ?? '');
 			if (!isset($entry[$key])) {
 				$entry[$key] = $value;
 			} elseif (is_array($entry[$key])) {
