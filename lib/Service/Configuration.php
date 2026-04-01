@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -12,11 +13,9 @@ use OCA\LdapWriteSupport\AppInfo\Application;
 use OCP\IConfig;
 
 class Configuration {
-	/** @var IConfig */
-	private $config;
-
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	public function __construct(
+		private IConfig $config,
+	) {
 	}
 
 	public function isLdapActorRequired(): bool {
@@ -39,7 +38,7 @@ class Configuration {
 		return $this->config->getAppValue('ldap_write_support', 'useUnicodePassword', '0') === '1';
 	}
 
-	public function getUserTemplate() {
+	public function getUserTemplate(): string {
 		return $this->config->getAppValue(
 			Application::APP_ID,
 			'template.user',
@@ -47,7 +46,7 @@ class Configuration {
 		);
 	}
 
-	public function getUserTemplateDefault() {
+	public function getUserTemplateDefault(): string {
 		return
 			'dn: uid={UID},{BASE}' . PHP_EOL
 			. 'objectClass: inetOrgPerson' . PHP_EOL
