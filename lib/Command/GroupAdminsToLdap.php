@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2019 Cooperativa EITA <eita.org.br>
@@ -38,7 +40,7 @@ class GroupAdminsToLdap extends Command {
 	}
 
 	#[\Override]
-	protected function configure() {
+	protected function configure(): void {
 		$this
 			->setName('ldap-ext:sync-group-admins')
 			->setDescription('syncs group admin informations to ldap')

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -18,14 +19,10 @@ use OCP\EventDispatcher\IEventListener;
  * @template-implements IEventListener<GroupBackendRegistered>
  */
 class GroupBackendRegisteredListener implements IEventListener {
-	/** @var IAppManager */
-	private $appManager;
-
 	public function __construct(
-		IAppManager $appManager,
+		private IAppManager $appManager,
 		private LDAPGroupManager $ldapGroupManager,
 	) {
-		$this->appManager = $appManager;
 	}
 
 	/**
