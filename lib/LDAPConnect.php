@@ -16,10 +16,8 @@ use OCA\User_LDAP\Helper;
 use Psr\Log\LoggerInterface;
 
 class LDAPConnect {
-	/** @var Configuration */
-	private $ldapConfig;
-	/** @var bool|null */
-	private $passwdSupport;
+	private Configuration $ldapConfig;
+	private ?bool $passwdSupport;
 
 	public function __construct(
 		Helper $ldapBackendHelper,
@@ -27,15 +25,14 @@ class LDAPConnect {
 	) {
 		$this->passwdSupport = null;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
-		$prefix = array_shift($ldapConfigPrefixes);
+		$prefix = array_shift($ldapConfigPrefixes) ?? '';
 		$this->ldapConfig = new Configuration($prefix);
 	}
 
 	/**
-	 * @return resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
-	public function connect() {
+	public function connect(): Connection {
 		$ldapHost = $this->ldapConfig->ldapHost;
 		$ldapPort = $this->ldapConfig->ldapPort;
 
@@ -51,7 +48,7 @@ class LDAPConnect {
 
 		// Connecting to LDAP - TODO: connect directly via LDAP plugin
 		$cr = ldap_connect($ldapHost);
-		if (!is_resource($cr) && !is_object($cr)) {
+		if (!is_object($cr)) {
 			$this->logger->error('Unable to connect to LDAP host {ldapHost}:{ldapPort}',
 				[
 					'app' => Application::APP_ID,
@@ -72,10 +69,9 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
-	public function bind() {
+	public function bind(): Connection|false {
 		$ds = $this->connect();
 		$dn = $this->ldapConfig->ldapAgentName;
 		$secret = $this->ldapConfig->ldapAgentPassword;
@@ -95,10 +91,9 @@ class LDAPConnect {
 	}
 
 	/**
-	 * @return false|resource|Connection
 	 * @throws ServerNotAvailableException
 	 */
-	public function getLDAPConnection() {
+	public function getLDAPConnection(): Connection|false {
 		return $this->bind();
 	}
 
@@ -142,11 +137,12 @@ class LDAPConnect {
 	 * checks whether the LDAP server supports the passwd exop
 	 *
 	 * @param Connection $connection LDAP connection to check
-	 * @return boolean either the user can or cannot
+	 * @return bool either the user can or cannot
 	 */
-	public function hasPasswdExopSupport($connection): bool {
+	public function hasPasswdExopSupport(Connection $connection): bool {
 		// TODO: We should cache this by ldap prefix, but currently we have no access to it.
 		if (is_null($this->passwdSupport)) {
+			/** @var \LDAP\Result|false */
 			$ret = ldap_read($connection, '', '(objectclass=*)', ['supportedExtension']);
 			if ($ret === false) {
 				$this->passwdSupport = false;
