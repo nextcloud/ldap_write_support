@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -16,14 +17,10 @@ use OCP\Settings\ISettings;
 use OCP\Util;
 
 class Admin implements ISettings {
-	/** @var IInitialState */
-	private $initialStateService;
-
 	public function __construct(
-		IInitialState $initialStateService,
+		private IInitialState $initialStateService,
 		private Configuration $config,
 	) {
-		$this->initialStateService = $initialStateService;
 	}
 
 	/**
@@ -31,7 +28,7 @@ class Admin implements ISettings {
 	 * @since 9.1
 	 */
 	#[\Override]
-	public function getForm() {
+	public function getForm(): TemplateResponse {
 		$this->initialStateService->provideInitialState(
 			'templates',
 			[
@@ -58,25 +55,13 @@ class Admin implements ISettings {
 		return new TemplateResponse(Application::APP_ID, 'settings-admin');
 	}
 
-	/**
-	 * @return string the section ID, e.g. 'sharing'
-	 * @since 9.1
-	 */
 	#[\Override]
-	public function getSection() {
+	public function getSection(): string {
 		return 'ldap';
 	}
 
-	/**
-	 * @return int whether the form should be rather on the top or bottom of
-	 *             the admin section. The forms are arranged in ascending order of the
-	 *             priority values. It is required to return a value between 0 and 100.
-	 *
-	 * E.g.: 70
-	 * @since 9.1
-	 */
 	#[\Override]
-	public function getPriority() {
+	public function getPriority(): int {
 		return 35;
 	}
 }

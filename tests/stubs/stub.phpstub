@@ -176,7 +176,7 @@ namespace OCA\User_LDAP {
 		public string $ldapGroupFilter;
 		public string $ldapGroupDisplayName;
 		/**
-		* @return resource|\LDAP\Connection The LDAP resource
+		* @return \LDAP\Connection The LDAP resource
 		*/
 		public function getConnectionResource();
 	}

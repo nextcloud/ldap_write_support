@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2019 Cooperativa EITA <eita.org.br>
@@ -22,37 +24,23 @@ class GroupAdminsToLdap extends Command {
 	/**
 	 * This adds/removes group subadmins as ldap group owners
 	 */
-	private $simulate = false;
-	private $verbose = false;
-
-	/** @var SubAdmin */
-	private $subAdmin;
-	/** @var IConfig */
-	private $ocConfig;
-	/** @var Helper */
-	private $helper;
-	/** @var Group_Proxy */
-	private $groupProxy;
+	private bool $simulate = false;
+	private bool $verbose = false;
 
 	/**
 	 * GroupAdminsToLdap constructor.
 	 */
 	public function __construct(
-		SubAdmin $subAdmin,
-		IConfig $ocConfig,
-		Helper $helper,
-		Group_Proxy $groupProxy,
+		private SubAdmin $subAdmin,
+		private IConfig $ocConfig,
+		private Helper $helper,
+		private Group_Proxy $groupProxy,
 	) {
 		parent::__construct();
-
-		$this->subAdmin = $subAdmin;
-		$this->ocConfig = $ocConfig;
-		$this->helper = $helper;
-		$this->groupProxy = $groupProxy;
 	}
 
 	#[\Override]
-	protected function configure() {
+	protected function configure(): void {
 		$this
 			->setName('ldap-ext:sync-group-admins')
 			->setDescription('syncs group admin informations to ldap')
@@ -147,6 +135,9 @@ class GroupAdminsToLdap extends Command {
 
 			foreach ($onlyInNC as $gid => $users) {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
+				if ($groupDN === false) {
+					throw new Exception('Failed to find group '.$gid);
+				}
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);
 					$entry = [
@@ -163,6 +154,9 @@ class GroupAdminsToLdap extends Command {
 
 			foreach ($onlyInLDAP as $gid => $users) {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
+				if ($groupDN === false) {
+					throw new Exception('Failed to find group '.$gid);
+				}
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);
 					$entry = [
