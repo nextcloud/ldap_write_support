@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace OCA\LdapWriteSupport;
 
 use LDAP\Connection;
+use LDAP\Result;
 use OC\ServerNotAvailableException;
 use OCA\LdapWriteSupport\AppInfo\Application;
 use OCA\User_LDAP\Configuration;
@@ -18,12 +19,12 @@ use OCA\User_LDAP\Helper;
 use Psr\Log\LoggerInterface;
 
 class LDAPConnect {
-	private Configuration $ldapConfig;
+	private readonly Configuration $ldapConfig;
 	private ?bool $passwdSupport;
 
 	public function __construct(
 		Helper $ldapBackendHelper,
-		private LoggerInterface $logger,
+		private readonly LoggerInterface $logger,
 	) {
 		$this->passwdSupport = null;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
@@ -144,7 +145,7 @@ class LDAPConnect {
 	public function hasPasswdExopSupport(Connection $connection): bool {
 		// TODO: We should cache this by ldap prefix, but currently we have no access to it.
 		if (is_null($this->passwdSupport)) {
-			/** @var \LDAP\Result|false */
+			/** @var Result|false */
 			$ret = ldap_read($connection, '', '(objectclass=*)', ['supportedExtension']);
 			if ($ret === false) {
 				$this->passwdSupport = false;

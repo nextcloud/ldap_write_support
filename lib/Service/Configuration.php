@@ -14,7 +14,7 @@ use OCP\IConfig;
 
 class Configuration {
 	public function __construct(
-		private IConfig $config,
+		private readonly IConfig $config,
 	) {
 	}
 

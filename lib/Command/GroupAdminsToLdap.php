@@ -31,10 +31,10 @@ class GroupAdminsToLdap extends Command {
 	 * GroupAdminsToLdap constructor.
 	 */
 	public function __construct(
-		private SubAdmin $subAdmin,
-		private IConfig $ocConfig,
-		private Helper $helper,
-		private Group_Proxy $groupProxy,
+		private readonly SubAdmin $subAdmin,
+		private readonly IConfig $ocConfig,
+		private readonly Helper $helper,
+		private readonly Group_Proxy $groupProxy,
 	) {
 		parent::__construct();
 	}
@@ -136,7 +136,7 @@ class GroupAdminsToLdap extends Command {
 			foreach ($onlyInNC as $gid => $users) {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
 				if ($groupDN === false) {
-					throw new Exception('Failed to find group '.$gid);
+					throw new Exception('Failed to find group ' . $gid);
 				}
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);
@@ -155,7 +155,7 @@ class GroupAdminsToLdap extends Command {
 			foreach ($onlyInLDAP as $gid => $users) {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
 				if ($groupDN === false) {
-					throw new Exception('Failed to find group '.$gid);
+					throw new Exception('Failed to find group ' . $gid);
 				}
 				foreach ($users as $uid) {
 					$userDN = $access->getUserMapper()->getDNByName($uid);

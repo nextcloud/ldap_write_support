@@ -20,8 +20,8 @@ use OCP\EventDispatcher\IEventListener;
  */
 class UserBackendRegisteredListener implements IEventListener {
 	public function __construct(
-		private IAppManager $appManager,
-		private LDAPUserManager $ldapUserManager,
+		private readonly IAppManager $appManager,
+		private readonly LDAPUserManager $ldapUserManager,
 	) {
 	}
 

@@ -18,7 +18,8 @@
         "psalm": "psalm",
         "psalm:fix": "psalm --alter --issues=InvalidReturnType,InvalidNullableReturnType,MissingParamType,InvalidFalsableReturnType",
         "psalm:update-baseline": "psalm --threads=1 --update-baseline",
-        "test:integration": "cd tests/integration && ./run.sh"
+        "test:integration": "cd tests/integration && ./run.sh",
+		"rector": "rector && composer cs:fix"
     },
     "license": "AGPLv3",
     "authors": [

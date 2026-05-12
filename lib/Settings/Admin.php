@@ -18,8 +18,8 @@ use OCP\Util;
 
 class Admin implements ISettings {
 	public function __construct(
-		private IInitialState $initialStateService,
-		private Configuration $config,
+		private readonly IInitialState $initialStateService,
+		private readonly Configuration $config,
 	) {
 	}
 

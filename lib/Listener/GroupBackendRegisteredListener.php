@@ -20,8 +20,8 @@ use OCP\EventDispatcher\IEventListener;
  */
 class GroupBackendRegisteredListener implements IEventListener {
 	public function __construct(
-		private IAppManager $appManager,
-		private LDAPGroupManager $ldapGroupManager,
+		private readonly IAppManager $appManager,
+		private readonly LDAPGroupManager $ldapGroupManager,
 	) {
 	}
 

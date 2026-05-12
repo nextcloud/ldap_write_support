@@ -31,15 +31,15 @@ use Psr\Log\LoggerInterface;
 
 class LDAPUserManager implements ILDAPUserPlugin {
 	public function __construct(
-		private IUserManager $userManager,
-		private IUserSession $userSession,
-		private LDAPConnect $ldapConnect,
-		private ILDAPProvider $ldapProvider,
-		private Configuration $configuration,
-		private IL10N $l10n,
-		private LoggerInterface $logger,
+		private readonly IUserManager $userManager,
+		private readonly IUserSession $userSession,
+		private readonly LDAPConnect $ldapConnect,
+		private readonly ILDAPProvider $ldapProvider,
+		private readonly Configuration $configuration,
+		private readonly IL10N $l10n,
+		private readonly LoggerInterface $logger,
 	) {
-		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
+		$this->userManager->listen('\OC\User', 'changeUser', $this->changeUserHook(...));
 		$this->makeLdapBackendFirst();
 	}
 
