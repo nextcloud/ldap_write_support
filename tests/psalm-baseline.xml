@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
-  - SPDX-License-Identifier: AGPL-3.0-or-later
--->
-<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
+<files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
   <file src="lib/LDAPConnect.php">
     <RedundantCast>
       <code><![CDATA[(string)$this->ldapConfig->ldapGroupFilter]]></code>
       <code><![CDATA[(string)$this->ldapConfig->ldapGroupMemberAssocAttr]]></code>
     </RedundantCast>
-    <RedundantCondition>
-      <code>!is_resource($cr)</code>
-    </RedundantCondition>
   </file>
   <file src="lib/LDAPUserManager.php">
     <UndefinedInterfaceMethod>
-      <code>listen</code>
+      <code><![CDATA[listen]]></code>
     </UndefinedInterfaceMethod>
   </file>
 </files>
