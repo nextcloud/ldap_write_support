@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019-2024 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2017-2019 Cooperativa EITA <eita.org.br>
@@ -18,10 +20,10 @@ use Psr\Log\LoggerInterface;
 
 class LDAPGroupManager implements ILDAPGroupPlugin {
 	public function __construct(
-		private IGroupManager $groupManager,
-		private LDAPConnect $ldapConnect,
-		private LoggerInterface $logger,
-		private ILDAPProvider $ldapProvider,
+		private readonly IGroupManager $groupManager,
+		private readonly LDAPConnect $ldapConnect,
+		private readonly LoggerInterface $logger,
+		private readonly ILDAPProvider $ldapProvider,
 	) {
 		if ($this->ldapConnect->groupsEnabled()) {
 			$this->makeLdapBackendFirst();

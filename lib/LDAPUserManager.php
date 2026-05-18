@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019-2024 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2017-2019 Cooperativa EITA <eita.org.br>
@@ -29,15 +31,15 @@ use Psr\Log\LoggerInterface;
 
 class LDAPUserManager implements ILDAPUserPlugin {
 	public function __construct(
-		private IUserManager $userManager,
-		private IUserSession $userSession,
-		private LDAPConnect $ldapConnect,
-		private ILDAPProvider $ldapProvider,
-		private Configuration $configuration,
-		private IL10N $l10n,
-		private LoggerInterface $logger,
+		private readonly IUserManager $userManager,
+		private readonly IUserSession $userSession,
+		private readonly LDAPConnect $ldapConnect,
+		private readonly ILDAPProvider $ldapProvider,
+		private readonly Configuration $configuration,
+		private readonly IL10N $l10n,
+		private readonly LoggerInterface $logger,
 	) {
-		$this->userManager->listen('\OC\User', 'changeUser', [$this, 'changeUserHook']);
+		$this->userManager->listen('\OC\User', 'changeUser', $this->changeUserHook(...));
 		$this->makeLdapBackendFirst();
 	}
 
@@ -48,7 +50,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * @return int bitwise-or'ed actions
 	 */
 	#[\Override]
-	public function respondToActions() {
+	public function respondToActions(): int {
 		$setPassword = $this->canSetPassword() && !$this->ldapConnect->hasPasswordPolicy()
 			? Backend::SET_PASSWORD
 			: 0;
@@ -63,12 +65,11 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $uid user ID of the user
 	 * @param string $displayName new user's display name
-	 * @return string
 	 * @throws HintException
 	 * @throws ServerNotAvailableException
 	 */
 	#[\Override]
-	public function setDisplayName($uid, $displayName) {
+	public function setDisplayName($uid, $displayName): string {
 		$userDN = $this->getUserDN($uid);
 
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
@@ -84,10 +85,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 			);
 		}
 
-		if (!is_resource($connection) && !is_object($connection)) {
-			$this->logger->debug('LDAP resource not available', ['app' => 'ldap_write_support']);
-			throw new ServerNotAvailableException('LDAP server is not available');
-		}
 		try {
 			if (ldap_mod_replace($connection, $userDN, [$displayNameField => $displayName])) {
 				return $displayName;
@@ -106,10 +103,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * checks whether the user is allowed to change his avatar in Nextcloud
 	 *
 	 * @param string $uid the Nextcloud user name
-	 * @return bool either the user can or cannot
 	 */
 	#[\Override]
-	public function canChangeAvatar($uid) {
+	public function canChangeAvatar($uid): bool {
 		return $this->configuration->hasAvatarPermission();
 	}
 
@@ -158,11 +154,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $uid The username of the user to create
 	 * @param string $password The password of the new user
-	 * @return bool|string the created user of false
 	 * @throws Exception
 	 */
 	#[\Override]
-	public function createUser($uid, $password) {
+	public function createUser($uid, $password): string|false {
 		$adminUser = $this->userSession->getUser();
 		$requireActorFromLDAP = $this->configuration->isLdapActorRequired();
 		if ($requireActorFromLDAP && !$adminUser instanceof IUser) {
@@ -230,7 +225,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 	}
 
-	public function buildNewEntry($username, $password, $base): array {
+	private function buildNewEntry(string $username, string $password, string $base): array {
 		// Make sure the parameters don't fool the following algorithm
 		if (str_contains($username, PHP_EOL)) {
 			throw new Exception('Username contains a new line');
@@ -253,6 +248,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		foreach ($lines as $line) {
 			$split = explode(':', $line, 2);
 			$key = trim($split[0]);
+			if (!isset($split[1])) {
+				throw new Exception('Invalid LDIF format');
+			}
 			$value = trim($split[1]);
 			if (!isset($entry[$key])) {
 				$entry[$key] = $value;
@@ -268,10 +266,6 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		return [$dn, $entry];
 	}
 
-	/**
-	 * @param $uid
-	 * @return bool
-	 */
 	public function deleteUser($uid): bool {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 		$userDN = $this->getUserDN($uid);
@@ -318,12 +312,11 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 *
 	 * @param string $uid The username
 	 * @param string $password The new password
-	 * @return bool
 	 *
 	 * Change the password of a user
 	 */
 	#[\Override]
-	public function setPassword($uid, $password) {
+	public function setPassword($uid, $password): bool {
 		$connection = $this->ldapProvider->getLDAPConnection($uid);
 		$userDN = $this->getUserDN($uid);
 
@@ -334,10 +327,9 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * get the user's home directory
 	 *
 	 * @param string $uid the username
-	 * @return bool
 	 */
 	#[\Override]
-	public function getHome($uid) {
+	public function getHome($uid): bool {
 		// Not implemented
 		return false;
 	}
@@ -346,21 +338,18 @@ class LDAPUserManager implements ILDAPUserPlugin {
 	 * get display name of the user
 	 *
 	 * @param string $uid user ID of the user
-	 * @return string display name
 	 */
 	#[\Override]
-	public function getDisplayName($uid) {
+	public function getDisplayName($uid): string {
 		// Not implemented
 		return $uid;
 	}
 
 	/**
 	 * Count the number of users
-	 *
-	 * @return int|bool
 	 */
 	#[\Override]
-	public function countUsers() {
+	public function countUsers(): false {
 		// Not implemented
 		return false;
 	}
@@ -398,7 +387,7 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		}
 	}
 
-	private function getUserDN($uid): string {
+	private function getUserDN(string $uid): string {
 		return $this->ldapProvider->getUserDN($uid);
 	}
 
