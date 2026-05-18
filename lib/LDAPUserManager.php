@@ -248,7 +248,10 @@ class LDAPUserManager implements ILDAPUserPlugin {
 		foreach ($lines as $line) {
 			$split = explode(':', $line, 2);
 			$key = trim($split[0]);
-			$value = trim($split[1] ?? '');
+			if (!isset($split[1])) {
+				throw new Exception('Invalid LDIF format');
+			}
+			$value = trim($split[1]);
 			if (!isset($entry[$key])) {
 				$entry[$key] = $value;
 			} elseif (is_array($entry[$key])) {

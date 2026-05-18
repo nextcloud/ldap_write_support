@@ -28,7 +28,10 @@ class LDAPConnect {
 	) {
 		$this->passwdSupport = null;
 		$ldapConfigPrefixes = $ldapBackendHelper->getServerConfigurationPrefixes(true);
-		$prefix = array_shift($ldapConfigPrefixes) ?? '';
+		$prefix = array_shift($ldapConfigPrefixes);
+		if ($prefix === null) {
+			throw new \LogicException('This should never get called when no LDAP configurations were saved');
+		}
 		$this->ldapConfig = new Configuration($prefix);
 	}
 
