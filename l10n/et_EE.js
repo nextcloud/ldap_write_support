@@ -1,8 +1,12 @@
 OC.L10N.register(
     "ldap_write_support",
     {
+    "Could not find related LDAP entry" : "Vastava kirje leidmine LDAP-ist ei õnnestunud",
+    "Failed to set user template." : "Kasutajamalli määratlemine ei õnnestunud.",
+    "An LDAP user must have an email address set." : "Kõikidel LDAP-is leiduvatel kasutajatel peab olema olemas e-posti aadress",
     "Allow users to set their avatar" : "Luba kasutajatel seadistada oma tunnuspilti",
     "Allow users to set their password" : "Luba kasutajatel muuta oma salasõnu",
-    "User template" : "Kasutajamall"
+    "User template" : "Kasutajamall",
+    "LDIF template for creating users. Following placeholders may be used" : "LDIF-mall kasutajate loomiseks. Saad kasutada järgnevaid kohatäitjaid"
 },
 "nplurals=2; plural=(n != 1);");
