@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Nepavyko rasti susijusio LDAP įrašo",
+    "DisplayName change rejected" : "Rodomojo vardo keitimas atmestas",
+    "Write support for LDAP" : "Įdiegti LDAP palaikymą",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Prideda galimybę per „Nextcloud“ kurti, valdyti ir šalinti LDAP naudotojus bei grupes.",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "LDAP įrašymo palaikymas papildo LDAP posistemę galimybe valdyti katalogą tiesiai iš „Nextcloud“:\n* kurti, redaguoti ir šalinti vartotojus;\n* kurti grupes, keisti jų narystę ir jas šalinti;\n* neleisti grįžti prie vietinės duomenų bazės posistemės (pasirenkama);\n* automatiškai generuoti vartotojo ID (pasirenkama);\n* bei kiti veiksenos nustatymai.",
+    "Failed to set user template." : "Nepavyko nustatyti vartotojo šablono.",
+    "Failed to set switch." : "Nepavyko nustatyti jungiklio.",
+    "Writing" : "Rašymas",
+    "Switches" : "Jungikliai",
+    "Prevent fallback to other backends when creating users or groups." : "Neleiskite grįžti prie kitų posistemių, kai kuriami vartotojai ar grupės.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Norint sukurti vartotojus, veikiantis (sub)administratorius turi būti gaunamas iš LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Turi būti sugeneruotas atsitiktinis vartotojo ID, t. y. jo neturi pateikti (sub)administratorius.",
+    "An LDAP user must have an email address set." : "LDAP vartotojui turi būti nustatytas el. pašto adresas.",
+    "Allow users to set their avatar" : "Leisti vartotojams nustatyti savo avatarą",
+    "Allow users to set their password" : "Leisti vartotojams nustatyti slaptažodį",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Jei serveris nepalaiko slaptažodžio keitimo išplėstinės operacijos, slaptažodžiui nustatyti naudokite „unicodePwd“ atributą, o ne „userPassword“.",
+    "Use the `unicodePwd` attribute for setting the user password" : "Naudokite „unicodePwd“ atributą vartotojo slaptažodžiui nustatyti.",
+    "User template" : "Vartotojo šablonas",
+    "LDIF template for creating users. Following placeholders may be used" : "LDIF šablonas vartotojams kurti. Galima naudoti šiuos vietos žymeklius.",
+    "the user id provided by the (sub)admin" : "vartotojo identifikatorius, kurį pateikė (sub)administratorius",
+    "the password provided by the (sub)admin" : "slaptažodis, kurį pateikė (sub)administratorius",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "veikiančiojo (sub)administratoriaus LDAP mazgas arba sukonfigūruota naudotojų bazė"
+},
+"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");
