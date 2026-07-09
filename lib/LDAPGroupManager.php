@@ -165,7 +165,6 @@ class LDAPGroupManager implements ILDAPGroupPlugin {
 		return $ret;
 	}
 
-
 	public function countUsersInGroup($gid, $search = ''): bool {
 		return false;
 	}
