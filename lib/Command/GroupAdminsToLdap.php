@@ -128,10 +128,8 @@ class GroupAdminsToLdap extends Command {
 				return $difference;
 			}
 
-
 			$onlyInLDAP = diff_user_arrays($currentLDAPAdmins, $currentNCAdmins);
 			$onlyInNC = diff_user_arrays($currentNCAdmins, $currentLDAPAdmins);
-
 
 			foreach ($onlyInNC as $gid => $users) {
 				$groupDN = $access->getGroupMapper()->getDNByName($gid);
