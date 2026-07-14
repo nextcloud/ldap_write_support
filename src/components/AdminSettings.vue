@@ -3,38 +3,104 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
+<script setup lang="ts">
+import { showError } from '@nextcloud/dialogs'
+import { t } from '@nextcloud/l10n'
+import { ref } from 'vue'
+import NcActionCheckbox from '@nextcloud/vue/components/NcActionCheckbox'
+
+import '@nextcloud/dialogs/style.css'
+
+interface Templates {
+	user: string
+	userDefault: string
+}
+
+const props = defineProps<{
+	templates: Templates
+	switches: Record<string, boolean>
+}>()
+
+const userTemplate = ref(props.templates.user.slice())
+const checkboxes = ref({ ...props.switches })
+
+/**
+ * Persist the user template, or reset to the default when it is empty.
+ */
+function setUserTemplate(): void {
+	if (props.templates.user === '') {
+		OCP.AppConfig.deleteKey('ldap_write_support', 'template.user', {
+			success: () => {
+				userTemplate.value = props.templates.userDefault.slice()
+			},
+			error: () => showError(t('ldap_write_support', 'Failed to set user template.')),
+		})
+		return
+	}
+	OCP.AppConfig.setValue('ldap_write_support', 'template.user', userTemplate.value)
+}
+
+/**
+ * Toggle a switch and persist it through the app config.
+ *
+ * @param prefKey - The preference key to write
+ * @param state - The new checked state
+ * @param appId - The app the preference belongs to
+ */
+function toggleSwitch(prefKey: string, state: boolean, appId = 'ldap_write_support'): void {
+	checkboxes.value[prefKey] = state
+	let value = Number(state).toString()
+	if (appId === 'core') {
+		// the database key has a slighlty different style, need to transform
+		prefKey = 'newUser.' + prefKey.charAt(7).toLowerCase() + prefKey.slice(8)
+		value = value === '1' ? 'yes' : 'no'
+	}
+
+	OCP.AppConfig.setValue(appId, prefKey, value, {
+		error: () => showError(t('ldap_write_support', 'Failed to set switch.')),
+	})
+}
+</script>
+
 <template>
 	<div id="ldap-write-support-admin-settings" class="section">
 		<h2>{{ t('ldap_write_support', 'Writing') }}</h2>
 		<h3>{{ t('ldap_write_support', 'Switches') }}</h3>
 		<ul>
-			<NcActionCheckbox :checked="switches.createPreventFallback"
-				@change.stop.prevent="toggleSwitch('createPreventFallback', !switches.createPreventFallback)">
+			<NcActionCheckbox
+				:modelValue="checkboxes.createPreventFallback"
+				@update:modelValue="toggleSwitch('createPreventFallback', $event)">
 				{{ t('ldap_write_support', 'Prevent fallback to other backends when creating users or groups.') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.createRequireActorFromLdap"
-				@change.stop.prevent="toggleSwitch('createRequireActorFromLdap', !switches.createRequireActorFromLdap)">
+			<NcActionCheckbox
+				:modelValue="checkboxes.createRequireActorFromLdap"
+				@update:modelValue="toggleSwitch('createRequireActorFromLdap', $event)">
 				{{ t('ldap_write_support', 'To create users, the acting (sub)admin has to be provided by LDAP.') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.newUserGenerateUserID"
-				@change.stop.prevent="toggleSwitch('newUserGenerateUserID', !switches.newUserGenerateUserID, 'core')">
+			<NcActionCheckbox
+				:modelValue="checkboxes.newUserGenerateUserID"
+				@update:modelValue="toggleSwitch('newUserGenerateUserID', $event, 'core')">
 				{{ t('ldap_write_support', 'A random user ID has to be generated, i.e. not being provided by the (sub)admin.') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.newUserRequireEmail"
-				@change.stop.prevent="toggleSwitch('newUserRequireEmail', !switches.newUserRequireEmail, 'core')">
+			<NcActionCheckbox
+				:modelValue="checkboxes.newUserRequireEmail"
+				@update:modelValue="toggleSwitch('newUserRequireEmail', $event, 'core')">
 				{{ t('ldap_write_support', 'An LDAP user must have an email address set.') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.hasAvatarPermission"
-				@change.stop.prevent="toggleSwitch('hasAvatarPermission', !switches.hasAvatarPermission)">
+			<NcActionCheckbox
+				:modelValue="checkboxes.hasAvatarPermission"
+				@update:modelValue="toggleSwitch('hasAvatarPermission', $event)">
 				{{ t('ldap_write_support', 'Allow users to set their avatar') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.hasPasswordPermission"
-				@change.stop.prevent="toggleSwitch('hasPasswordPermission', !switches.hasPasswordPermission)">
+			<NcActionCheckbox
+				:modelValue="checkboxes.hasPasswordPermission"
+				@update:modelValue="toggleSwitch('hasPasswordPermission', $event)">
 				{{ t('ldap_write_support', 'Allow users to set their password') }}
 			</NcActionCheckbox>
-			<NcActionCheckbox :checked="switches.useUnicodePassword"
+			<NcActionCheckbox
+				:modelValue="checkboxes.useUnicodePassword"
 				:title="t('ldap_write_support', 'If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password')"
-				@change.stop.prevent="toggleSwitch('useUnicodePassword', !switches.useUnicodePassword)">
+				@update:modelValue="toggleSwitch('useUnicodePassword', $event)">
 				{{ t('ldap_write_support', 'Use the `unicodePwd` attribute for setting the user password') }}
 			</NcActionCheckbox>
 		</ul>
@@ -49,65 +115,6 @@
 	</div>
 </template>
 
-<script>
-import NcActionCheckbox from '@nextcloud/vue/dist/Components/NcActionCheckbox.js'
-import { showError } from '@nextcloud/dialogs'
-import i10n from '../mixins/i10n.js'
-
-import '@nextcloud/dialogs/style.css'
-
-export default {
-	name: 'AdminSettings',
-	components: {
-		NcActionCheckbox,
-	},
-	mixins: [i10n],
-	props: {
-		templates: {
-			required: true,
-			type: Object,
-		},
-		switches: {
-			required: true,
-			type: Object,
-		},
-	},
-	data() {
-		return {
-			userTemplate: this.templates.user.slice(),
-			checkboxes: { ...this.switches },
-		}
-	},
-	methods: {
-		setUserTemplate() {
-			if (this.templates.user === '') {
-				OCP.AppConfig.deleteKey('ldap_write_support', 'template.user', {
-					success: () => {
-						this.userTemplate = this.templates.userDefault.slice()
-					},
-					error: () => showError(t('ldap_write_support', 'Failed to set user template.')),
-				})
-				return
-			}
-			OCP.AppConfig.setValue('ldap_write_support', 'template.user', this.userTemplate)
-		},
-
-		toggleSwitch(prefKey, state, appId = 'ldap_write_support') {
-			this.checkboxes[prefKey] = state
-			let value = (state | 0).toString()
-			if (appId === 'core') {
-				// the database key has a slighlty different style, need to transform
-				prefKey = 'newUser.' + prefKey.charAt(7).toLowerCase() + prefKey.slice(8)
-				value = value === '1' ? 'yes' : 'no'
-			}
-
-			OCP.AppConfig.setValue(appId, prefKey, value, {
-				error: () => showError(t('ldap_write_support', 'Failed to set switch.')),
-			})
-		},
-	},
-}
-</script>
 <style lang="scss">
 #ldap-write-support-admin-settings {
 	.mono {
