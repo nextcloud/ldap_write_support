@@ -1,0 +1,25 @@
+{ "translations": {
+    "Could not find related LDAP entry" : "Kunde inte hitta tillhörande LDAP-post",
+    "DisplayName change rejected" : "Ändringen av visningsnamnet avvisades",
+    "Write support for LDAP" : "Skrivstöd för LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Lägger till stöd för att skapa, ändra och ta bort användare och grupper i LDAP via Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Skrivstödet för LDAP utökar LDAP-bakänden med funktioner för att hantera katalogen från Nextcloud.\n* skapa, redigera och ta bort användare\n* skapa grupper, ändra medlemskap och ta bort grupper\n* förhindra reservanvändning av den lokala databasbakänden (valfritt)\n* generera ett användar-ID automatiskt (valfritt)\n* och fler beteendeinställningar",
+    "Failed to set user template." : "Kunde inte ange användarmall.",
+    "Failed to set switch." : "Kunde inte ange inställning.",
+    "Writing" : "Skrivning",
+    "Switches" : "Inställningar",
+    "Prevent fallback to other backends when creating users or groups." : "Förhindra reservanvändning av andra bakändar när användare eller grupper skapas.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "För att skapa användare måste den agerande (under)administratören tillhandahållas av LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Ett slumpmässigt användar-ID måste genereras, alltså inte anges av (under)administratören.",
+    "An LDAP user must have an email address set." : "En LDAP-användare måste ha en e-postadress angiven.",
+    "Allow users to set their avatar" : "Tillåt användare att ange sin avatar",
+    "Allow users to set their password" : "Tillåt användare att ange sitt lösenord",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Om servern inte stöder den utökade åtgärden för lösenordsändring används attributet `unicodePwd` i stället för `userPassword` för att ange lösenordet",
+    "Use the `unicodePwd` attribute for setting the user password" : "Använd attributet `unicodePwd` för att ange användarens lösenord",
+    "User template" : "Användarmall",
+    "LDIF template for creating users. Following placeholders may be used" : "LDIF-mall för att skapa användare. Följande platshållare kan användas",
+    "the user id provided by the (sub)admin" : "användar-ID:t som anges av (under)administratören",
+    "the password provided by the (sub)admin" : "lösenordet som anges av (under)administratören",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "LDAP-noden för den agerande (under)administratören eller den konfigurerade användarbasen"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
