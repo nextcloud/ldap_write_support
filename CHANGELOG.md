@@ -3,6 +3,10 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
+# 1.16.0 - 10 Aug 2026
+
+- Support for Nextcloud 34
+
 # 1.15.0 - 31 Mar 2026
 
 - Support for Nextcloud 33
