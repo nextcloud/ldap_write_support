@@ -3,6 +3,16 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
+# 1.17.0 - 13 Aug 2026
+
+- Support for Nextcloud 35
+- feat: migrate admin settings to Vue 3
+- fix: Use stricter typing and increase psalm level
+
+# 1.16.0 - 10 Aug 2026
+
+- Support for Nextcloud 34
+
 # 1.15.0 - 31 Mar 2026
 
 - Support for Nextcloud 33
