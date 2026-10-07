@@ -13,7 +13,7 @@ OC.L10N.register(
     "Prevent fallback to other backends when creating users or groups." : "Pri vytváraní užívateľov alebo skupín zabrániť prechodu na iný backend.",
     "To create users, the acting (sub)admin has to be provided by LDAP." : "Pre vytvorenie užívateľov musí LDAP poskytnúť zastupujúceho (sub)administrátora.",
     "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Musí byť vygenerované náhodné ID používateľa, t. j. neposkytnuté (sub)adminom.",
-    "An LDAP user must have an email address set." : "LDAP užívateľ musí mať nastavenú e-mail adresu",
+    "An LDAP user must have an email address set." : "LDAP používateľ musí mať nastavenú e-mailovú adresu",
     "Allow users to set their avatar" : "Povoliť užívateľom nastaviť vlastného avatara",
     "Allow users to set their password" : "Povoliť užívateľom nastaviť vlastné heslo",
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Ak server nepodporuje rozšírenú operáciu úpravy hesla, použite na nastavenie hesla atribút `unicodePwd` namiesto atribútu `userPassword`",
@@ -22,6 +22,6 @@ OC.L10N.register(
     "LDIF template for creating users. Following placeholders may be used" : "Šablóna LDIF pre vytváranie užívateľov. Môžu sa použiť nasledujúce zástupné symboly",
     "the user id provided by the (sub)admin" : "id uživateľa poskytnuté (sub)adminom",
     "the password provided by the (sub)admin" : "heslo poskytnuté (sub)adminom",
-    "the LDAP node of the acting (sub)admin or the configured user base" : "uzol LDAP príslušného (sub)admina alebo nakonfigurovanej užívateľskej základne"
+    "the LDAP node of the acting (sub)admin or the configured user base" : "uzol LDAP príslušného (sub)admina alebo nakonfigurovanej používateľskej základne"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");
