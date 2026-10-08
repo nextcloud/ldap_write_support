@@ -1,5 +1,5 @@
 { "translations": {
-    "Could not find related LDAP entry" : "Nepodarilo sa nájisť súvisiaci záznam LDAP",
+    "Could not find related LDAP entry" : "Nepodarilo sa nájsť súvisiaci záznam LDAP",
     "DisplayName change rejected" : "Zmena DisplayName bola odmietnutá",
     "Write support for LDAP" : "Podpora zápisu pre LDAP",
     "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Pridáva podporu pre vytváranie, manipuláciu a odstraňovanie používateľov a skupín v LDAP cez Nextcloud",
@@ -12,7 +12,7 @@
     "To create users, the acting (sub)admin has to be provided by LDAP." : "Pre vytvorenie užívateľov musí LDAP poskytnúť zastupujúceho (sub)administrátora.",
     "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Musí byť vygenerované náhodné ID používateľa, t. j. neposkytnuté (sub)adminom.",
     "An LDAP user must have an email address set." : "LDAP používateľ musí mať nastavenú e-mailovú adresu",
-    "Allow users to set their avatar" : "Povoliť užívateľom nastaviť vlastného avatara",
+    "Allow users to set their avatar" : "Povoliť používateľom nastaviť vlastného avatara",
     "Allow users to set their password" : "Povoliť užívateľom nastaviť vlastné heslo",
     "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Ak server nepodporuje rozšírenú operáciu úpravy hesla, použite na nastavenie hesla atribút `unicodePwd` namiesto atribútu `userPassword`",
     "Use the `unicodePwd` attribute for setting the user password" : "Pre nastavenie hesla používateľa použite atribút `unicodePwd`",
