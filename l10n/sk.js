@@ -20,7 +20,7 @@ OC.L10N.register(
     "Use the `unicodePwd` attribute for setting the user password" : "Pre nastavenie hesla používateľa použite atribút `unicodePwd`",
     "User template" : "Používateľská šablóna",
     "LDIF template for creating users. Following placeholders may be used" : "Šablóna LDIF pre vytváranie užívateľov. Môžu sa použiť nasledujúce zástupné symboly",
-    "the user id provided by the (sub)admin" : "id uživateľa poskytnuté (sub)adminom",
+    "the user id provided by the (sub)admin" : "id používateľa poskytnuté (sub)adminom",
     "the password provided by the (sub)admin" : "heslo poskytnuté (sub)adminom",
     "the LDAP node of the acting (sub)admin or the configured user base" : "uzol LDAP príslušného (sub)admina alebo nakonfigurovanej používateľskej základne"
 },
