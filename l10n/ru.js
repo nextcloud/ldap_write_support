@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "ldap_write_support",
+    {
+    "Could not find related LDAP entry" : "Не удалось найти связанную запись LDAP",
+    "DisplayName change rejected" : "Изменение DisplayName отклонено",
+    "Write support for LDAP" : "Поддержка записи в LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Добавляет поддержку создания, изменения и удаления пользователей и групп в LDAP через Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Поддержка записи для LDAP добавляет в бэкэнд LDAP возможность управлять каталогом из Nextcloud.\n* создание, редактирование и удаление пользователей\n* создание, изменение членства и удаление групп\n* предотвращение отката к локальному бэкэнду базы данных (необязательно)\n* автоматическая генерация идентификатора пользователя (необязательно)\n* и другие переключатели поведения",
+    "Failed to set user template." : "Не удалось задать шаблон пользователя.",
+    "Failed to set switch." : "Не удалось задать переключатель.",
+    "Writing" : "Запись",
+    "Switches" : "Переключатели",
+    "Prevent fallback to other backends when creating users or groups." : "Предотвратить откат к другим бэкэндам при создании пользователей или групп.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Чтобы создавать пользователей, действующий (суб)администратор должен быть пользователем LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "Идентификатор пользователя должен генерироваться случайно, то есть не предоставляться (суб)администратором.",
+    "An LDAP user must have an email address set." : "У пользователя LDAP должен быть указан адрес электронной почты.",
+    "Allow users to set their avatar" : "Разрешить пользователям задавать свой аватар",
+    "Allow users to set their password" : "Разрешить пользователям задавать свой пароль",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Если сервер не поддерживает расширенную операцию изменения пароля, для установки пароля используйте атрибут `unicodePwd` вместо `userPassword`",
+    "Use the `unicodePwd` attribute for setting the user password" : "Использовать атрибут `unicodePwd` для установки пароля пользователя",
+    "User template" : "Шаблон пользователя",
+    "LDIF template for creating users. Following placeholders may be used" : "Шаблон LDIF для создания пользователей. Можно использовать следующие подстановки",
+    "the user id provided by the (sub)admin" : "идентификатор пользователя, предоставленный (суб)администратором",
+    "the password provided by the (sub)admin" : "пароль, предоставленный (суб)администратором",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "узел LDAP действующего (суб)администратора или настроенной базы пользователей"
+},
+"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
