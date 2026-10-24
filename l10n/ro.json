@@ -1,0 +1,25 @@
+{ "translations": {
+    "Could not find related LDAP entry" : "Intrarea LDAP asociată nu a fost găsită",
+    "DisplayName change rejected" : "Schimbarea numelui afișat a fost respinsă",
+    "Write support for LDAP" : "Suport de scriere pentru LDAP",
+    "Adds support for creating, manipulating and deleting users and groups on LDAP via Nextcloud" : "Adaugă posibilitatea de a crea, modifica și șterge utilizatori și grupuri în LDAP din Nextcloud",
+    "The write support for LDAP enriches the LDAP backend with capabilities to manage the directory from Nextcloud.\n* create, edit and delete users\n* create, modify memberships and delete groups\n* prevent fallback to the local database backend (optional)\n* auto generate a user ID (optional)\n* and more behavioral switches" : "Suportul de scriere pentru LDAP extinde backendul LDAP cu posibilitatea de a gestiona directorul din Nextcloud:\n* creează, editează și șterge utilizatori\n* creează grupuri, modifică membrii lor și șterge grupuri\n* împiedică revenirea la backendul bazei de date locale (opțional)\n* generează automat ID-ul utilizatorului (opțional)\n* și alte opțiuni de comportament",
+    "Failed to set user template." : "Șablonul de utilizator nu a putut fi setat.",
+    "Failed to set switch." : "Opțiunea nu a putut fi setată.",
+    "Writing" : "Scriere",
+    "Switches" : "Opțiuni",
+    "Prevent fallback to other backends when creating users or groups." : "Împiedică revenirea la alte backenduri la crearea utilizatorilor sau a grupurilor.",
+    "To create users, the acting (sub)admin has to be provided by LDAP." : "Pentru a crea utilizatori, (sub)administratorul care face acțiunea trebuie să provină din LDAP.",
+    "A random user ID has to be generated, i.e. not being provided by the (sub)admin." : "ID-ul utilizatorului trebuie generat aleatoriu, adică nu este furnizat de (sub)administrator.",
+    "An LDAP user must have an email address set." : "Un utilizator LDAP trebuie să aibă setată o adresă de e-mail.",
+    "Allow users to set their avatar" : "Permite utilizatorilor să-și seteze avatarul",
+    "Allow users to set their password" : "Permite utilizatorilor să-și seteze parola",
+    "If the server does not support the modify password extended operation use the `unicodePwd` instead of the `userPassword` attribute for setting the password" : "Dacă serverul nu acceptă operațiunea extinsă de modificare a parolei, folosește atributul `unicodePwd` în loc de `userPassword` pentru setarea parolei",
+    "Use the `unicodePwd` attribute for setting the user password" : "Folosește atributul `unicodePwd` pentru setarea parolei utilizatorului",
+    "User template" : "Șablon de utilizator",
+    "LDIF template for creating users. Following placeholders may be used" : "Șablon LDIF pentru crearea utilizatorilor. Se pot folosi următorii substituenți",
+    "the user id provided by the (sub)admin" : "ID-ul utilizatorului furnizat de (sub)administrator",
+    "the password provided by the (sub)admin" : "parola furnizată de (sub)administrator",
+    "the LDAP node of the acting (sub)admin or the configured user base" : "nodul LDAP al (sub)administratorului care face acțiunea sau baza de utilizatori configurată"
+},"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
+}
