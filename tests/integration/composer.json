@@ -1,7 +1,7 @@
 {
   "require-dev": {
     "phpunit/phpunit": "^9.6",
-    "behat/behat": "^3.13",
+    "behat/behat": "^4.0",
     "guzzlehttp/guzzle": "^7.8"
   },
   "autoload": {
