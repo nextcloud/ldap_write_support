@@ -8,6 +8,7 @@ updates:
   - /vendor-bin/cs-fixer
   - /vendor-bin/psalm
   - /vendor-bin/rector
+  - /tests/integration
   schedule:
     interval: weekly
     day: saturday
