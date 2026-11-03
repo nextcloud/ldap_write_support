@@ -14,10 +14,12 @@ return RectorConfig::configure()
 	->withPaths([
 		__DIR__ . '/lib',
 		__DIR__ . '/templates',
+		__DIR__ . '/tests/integration/features',
 	])
 	->withPhpSets(php81:true)
 	->withTypeCoverageLevel(0)
 	->withImportNames(importShortClasses: false)
+	->withAttributesSets(behat: true)
 	->withSets([
 		NextcloudSets::NEXTCLOUD_27,
 	]);
