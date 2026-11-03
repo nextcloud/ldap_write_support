@@ -1,13 +1,17 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Hook\AfterScenario;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use PHPUnit\Framework\Assert;
 
 class FeatureContext extends LDAPContext implements Context {
@@ -18,9 +22,7 @@ class FeatureContext extends LDAPContext implements Context {
 	/** @var string */
 	private $recentlyCreatedUser;
 
-	/**
-	 * @AfterScenario
-	 */
+	#[AfterScenario]
 	public function deleteCreatedObjects() {
 		$this->asAn('admin');
 		while ($uid = array_shift($this->userIdsToCleanUp)) {
@@ -39,52 +41,42 @@ class FeatureContext extends LDAPContext implements Context {
 		$this->modifyServerConfig('core', 'newUser.requireEmail', 'no');
 	}
 
-	/**
-	 * @Then /^it yields "([^"]*)" result$/
-	 */
+	#[Then('/^it yields "([^"]*)" result$/')]
 	public function itYieldsResult($count) {
-		$users = simplexml_load_string($this->getResponse()->getBody()->getContents())->data->users;
+		$users = simplexml_load_string((string)$this->getResponse()->getBody()->getContents())->data->users;
 		Assert::assertSame((int)$count, $users->children()->count());
 	}
 
-	/**
-	 * @When /^creating a user with$/
-	 */
+	#[When('/^creating a user with$/')]
 	public function creatingAUserWith(TableNode $args) {
 		$this->sendingToWith('POST', '/cloud/users', $args);
-		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
+		$xml = simplexml_load_string((string)$this->getResponse()->getBody()->getContents());
 		if ($xml->data && $xml->data->id) {
 			$this->userIdsToCleanUp[(string)$xml->data->id] = (string)$xml->data->id;
 			$this->recentlyCreatedUser = (string)$xml->data->id;
 		}
 	}
 
-	/**
-	 * @Given /^the created users resides on LDAP$/
-	 */
+	#[Given('/^the created users resides on LDAP$/')]
 	public function theCreatedUsersResidesOnLDAP() {
 		$tableNode = new TableNode([['backend', 'LDAP']]);
 		$this->userHasSetting($this->recentlyCreatedUser, $tableNode);
 	}
 
-	/**
-	 * @Given /^creating a group with gid "([^"]*)"$/
-	 */
+	#[Given('/^creating a group with gid "([^"]*)"$/')]
 	public function creatingAGroupWithGid($gid) {
 		$args = new TableNode([['groupid', $gid]]);
 		$this->sendingToWith('POST', '/cloud/groups', $args);
-		$xml = simplexml_load_string($this->getResponse()->getBody()->getContents());
+		$xml = simplexml_load_string((string)$this->getResponse()->getBody()->getContents());
 		if ($this->getOCSResponse($this->getResponse()) === 200) {
 			$this->groupIdsToCleanUp[$gid] = $gid;
 		}
 	}
 
-	/**
-	 * @Given /^user "([^"]*)" exists on "([^"]*)" backend$/
-	 */
+	#[Given('/^user "([^"]*)" exists on "([^"]*)" backend$/')]
 	public function userExistsOnBackend($uid, $backendName) {
 		$this->assureUserExists($uid);
 		$needle = '<backend>' . $backendName . '</backend>';
-		Assert::assertNotFalse(strpos($this->getResponse()->getBody()->getContents(), $needle));
+		Assert::assertNotFalse(strpos((string)$this->getResponse()->getBody()->getContents(), $needle));
 	}
 }
