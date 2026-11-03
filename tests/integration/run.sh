@@ -22,6 +22,7 @@ ${ROOT_DIR}/occ app:list
 
 export TEST_SERVER_URL="http://localhost:8080/ocs/"
 
+mkdir -p work/local_storage
 ${APP_INTEGRATION_DIR}/vendor/bin/behat --colors -f junit -f pretty $1 $2
 RESULT=$?
 
