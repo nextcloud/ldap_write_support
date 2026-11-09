@@ -9,8 +9,6 @@ import { t } from '@nextcloud/l10n'
 import { ref } from 'vue'
 import NcActionCheckbox from '@nextcloud/vue/components/NcActionCheckbox'
 
-import '@nextcloud/dialogs/style.css'
-
 interface Templates {
 	user: string
 	userDefault: string
